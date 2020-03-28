@@ -1,0 +1,94 @@
+html {
+    min-height: 100%;
+    min-width: 1100px;
+    max-width:2560px;
+    font-family:  "fzlt","Microsoft YaHei","Helvetica Neue", Helvetica, "PingFang SC", Tahoma, Arial, sans-serif;
+    max-height: 100%;
+    margin: 0 auto;
+    padding: 0;
+    font-size: 60px;
+    -ms-overflow-style: scrollbar;
+}
+body {
+    font-size:  medium;
+    margin: 0 auto;
+    padding: 0;
+    background-color: rgb(240,240,240);
+}
+@media screen and (min-width: 1366px) {
+    html {
+        font-size: 71px;
+    }
+}
+
+@media screen and (min-width: 1440px) {
+    html {
+        font-size: 75px;
+    }
+}
+@media screen and (min-width: 1680px) {
+    html {
+        font-size: 87px;
+    }
+}
+@media screen and (min-width: 1920px) {
+    html {
+        font-size: 100px;
+    }
+}
+@media screen and (min-width: 2048px) {
+    html {
+        font-size: 107px;
+    }
+}
+@media screen and (min-width: 2304px) {
+    html {
+        font-size: 120px;
+    }
+}
+@media screen and (min-width: 2560px) {
+    html {
+        font-size: 133px;
+    }
+}
+
+/*1920*1080,1600*900,1440*900分辨率字体大小*/
+
+@media screen and (max-width: 1920px) and (min-width: 1440px) {
+    .font_large {
+        font-size: 18px;
+    }
+
+    .font_middle {
+        font-size: 16px;
+    }
+
+    .font_small {
+        font-size: 14px;
+    }
+
+    .font_mini {
+        font-size: 12px;
+    }
+}
+
+
+/*1366*768,1280*800,1024*600分辨率字体大小*/
+
+@media screen and (max-width: 1366px) and (min-width: 1024px) {
+    .font_large {
+        font-size: 16px;
+    }
+
+    .font_middle {
+        font-size: 14px;
+    }
+
+    .font_small {
+        font-size: 12px;
+    }
+
+    .font_mini {
+        font-size: 10px;
+    }
+}

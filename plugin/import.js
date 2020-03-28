@@ -1,0 +1,53 @@
+/**
+ * @author tongzn
+ */
+(function () {
+    var jsfiles = [
+        "plugin/angular.plugin",
+        "plugin/jquery.plugin",
+        "plugin/main.plugin",
+        "plugin/watcher.plugin",
+
+    ];
+    var cssfiles = [
+        "css/common.css",
+
+    ];
+
+    var i;
+    for (i = 0; i < jsfiles.length; i++) {
+        addTag('script', {
+            "type": "text/javascript",
+            "src": jsfiles[i]
+        });
+    }
+    for (i = 0; i < cssfiles.length; i++) {
+        addTag('link', {
+            "rel": "stylesheet",
+            "href": cssfiles[i]
+        });
+    }
+    window.addTag = addTag;
+
+    function addTag(name, attributes) {
+        var el = document.createElement(name), attrName;
+        for (attrName in attributes) {
+            el.setAttribute(attrName, attributes[attrName]);
+        }
+        document.write(outerHTML(el));
+        document.close();
+    }
+
+    function outerHTML(node) {
+        // if IE, Chrome take the internal method otherwise build one
+        return node.outerHTML || (function (n) {
+            var div = document.createElement('div'), h;
+            div.appendChild(n);
+            h = div.innerHTML;
+            div = null;
+            return h;
+        })(node);
+    }
+
+})();
+
