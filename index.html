@@ -4,21 +4,138 @@
     <meta charset="UTF-8">
     <title>题库管理系统</title>
     <script src="index.js"></script>
+<!--    <script src="html/login/login.js"></script>-->
     <script src="plugin/import.js"></script>
-    <link rel="stylesheet" href="css/login.css">
 </head>
-<body>
-    <div class="loginbg">
-        <div class="login">
-            <div class="login_title">用户登录</div>
-            <input type="text" placeholder="请输入用户名">
-            <input type="password" placeholder="请输入密码">
-            <div class="login_btn">登录</div>
-        </div>
-        <div class="loginbt">
-            <span style="color:#D65113;">忘记密码</span>
-            <span style="color: #6495ED">账号申请 >> </span>
-        </div>
-    </div>
+<body ng-app="QBMsys">
+<div id="view"></div>
 </body>
+<script>
+    function loadJS(url) {
+        // let el = document.createElement('script');
+        // el.rel = "text/javascript";
+        // el.src = url;
+        // document.write(el.outerHTML);
+        // document.close();
+
+        let el= document.createElement("script");
+        el.setAttribute("type", "text/javascript");
+        el.setAttribute("src", url);
+        document.body.appendChild(el);
+
+    }
+
+
+    var QBMsys = angular.module('QBMsys', []);
+console.log(111)
+    //
+    // var loginCtrl = function($scope){
+    //     // alert(222)
+    //     $scope.title = "Hello  Injector";
+    // }
+    QBMsys.controller("loginCtrl",loginCtrl);
+    /*
+     *run方法用于初始化全局的数据，仅对全局作用域起作用。
+     *这里的run方法只会在angular启动的时候运行一次。
+     */
+    QBMsys.run(function ($rootScope) {
+        $rootScope.$on("$stateChangeStart", function (event, toState, toParams, fromState, fromParams) {
+            $rootScope.$routesStack = $rootScope.$routesStack || [];
+            console.log(JSON.stringify($rootScope.$routesStack));
+            if (!$rootScope.$backFlag) { //回退的过程不记录历史
+                $rootScope.$routesStack.push(toState.url);
+                console.log($rootScope.$routesStack);
+            }
+            $rootScope.$backFlag = false;
+            //清理交易标题$TradeTitle
+            delete $rootScope.$TradeTitle;
+        });
+
+        $rootScope.goto = function (url) {
+            loadJS('html/login/login.js')
+            var id = 'view';
+            var req = false;
+            // Safari, Firefox, 及其他非微软浏览器
+            if (window.XMLHttpRequest) {
+                try {
+                    req = new XMLHttpRequest();
+                } catch (e) {
+                    req = false;
+                }
+            } else if (window.ActiveXObject) {
+                // For Internet Explorer on Windows
+                try {
+                    req = new ActiveXObject("Msxml2.XMLHTTP");
+                } catch (e) {
+                    try {
+                        req = new ActiveXObject("Microsoft.XMLHTTP");
+                    } catch (e) {
+                        req = false;
+                    }
+                }
+            }
+            var element = document.getElementById(id);
+            if (!element) {
+                alert("函数clientSideInclude无法找到id " + id + "。" +
+                    "你的网页中必须有一个含有这个id的div 或 span 标签。");
+                return;
+            }
+            if (req) {
+                // 同步请求，等待收到全部内容
+                req.open('GET', url, false);
+                req.send(null);
+                element.innerHTML = req.responseText;
+            } else {
+                element.innerHTML =
+                    "对不起，你的浏览器不支持" +
+                    "XMLHTTPRequest 对象。这个网页的显示要求" +
+                    "Internet Explorer 5 以上版本, " +
+                    "或 Firefox 或 Safari 浏览器，也可能会有其他可兼容的浏览器存在。";
+            }
+        }
+        $rootScope.$goback = function () {
+            if ($targets.$viewBack('content')) { //no has vpage history
+                var routeStack = $rootScope.$routesStack;
+                routeStack.pop();//pop current routeUrl
+                if (routeStack.length == 0) {
+                    // 提醒退出登录
+                } else {
+                    $rootScope.$backFlag = true;
+                    window.history.back(-1);
+                    console.log("goback");
+                }
+            }
+        };
+        /**
+         * 监听碎片页面加载，添加上面的标题
+         */
+        $rootScope.$on("$pageContentLoaded", function () {
+            var title = arguments[4];
+            if (title) {
+                $rootScope.$TradeTitle = title;
+            }
+        });
+        $rootScope.$on("$vLazyLoadLoaded", function (event, element, attr) {
+            var title = attr.title;
+            if (title) {
+                $rootScope.$TradeTitle = title;
+            }
+        });
+        //完成当前交易，回到上一个路由或者是关闭当前webview(用于交易的结果页面返回调用)
+        $rootScope.finishWeb = function () {
+            var routeStack = $rootScope.$routesStack;
+            routeStack.pop();//pop current routeUrl
+            if (routeStack.length == 0) {
+                console.log("true:last route!");
+            } else {
+                $rootScope.$backFlag = true;
+                window.history.back(-1);
+                console.log("false:center route");
+            }
+        };
+        // setTimeout(function () {
+            $rootScope.goto('html/login/login.html');
+        // },1000)
+    });
+</script>
 </html>

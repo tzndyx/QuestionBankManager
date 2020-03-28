@@ -6,6 +6,4 @@ function f() {
     setInterval(function () {
         location.reload()
     },2000)
-
 }
-f();

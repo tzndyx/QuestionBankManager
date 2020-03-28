@@ -2,16 +2,19 @@
  * @author tongzn
  */
 (function () {
+    console.log(222)
     var jsfiles = [
-        "plugin/angular.plugin",
-        "plugin/jquery.plugin",
-        "plugin/main.plugin",
-        "plugin/watcher.plugin",
+        "plugin/angular.js",
+        "plugin/jquery.js",
+        "plugin/main.js",
+        "plugin/watcher.js",
+
+        "html/login/login.js"
 
     ];
     var cssfiles = [
         "css/common.css",
-
+        "css/style.css",
     ];
 
     var i;
@@ -32,7 +35,8 @@
     function addTag(name, attributes) {
         var el = document.createElement(name), attrName;
         for (attrName in attributes) {
-            el.setAttribute(attrName, attributes[attrName]);
+            el[attrName] = attributes[attrName];
+            // el.setAttribute(attrName, attributes[attrName]);
         }
         document.write(outerHTML(el));
         document.close();
