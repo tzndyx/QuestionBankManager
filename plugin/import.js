@@ -8,9 +8,6 @@
         "plugin/jquery.js",
         "plugin/main.js",
         "plugin/watcher.js",
-
-        "html/login/login.js"
-
     ];
     var cssfiles = [
         "css/common.css",
