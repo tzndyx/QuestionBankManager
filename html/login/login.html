@@ -1,7 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>题库管理系统</title>
+    <script src="../../plugin/import.js"></script>
+    <script src="login.js"></script>
+</head>
+<body ng-app="QBMsys">
 <div id="container" ng-controller="loginCtrl" ng-init="init()">
     <div class="login_bg">
         <div class="login_frame">
-            <div class="login_title">{{title}}</div>
+            <div class="login_title">用户登录</div>
             <input type="text" placeholder="请输入用户名">
             <input type="password" placeholder="请输入密码">
             <div class="login_btn">登录</div>
@@ -10,7 +19,12 @@
             <span style="color:#D65113;">忘记密码</span>
             <span ng-model="title"></span>
             <span style="color: #6495ED"
-                  ng-click="goto('html/user/accountApply.html')">账号申请 >> </span>
+                  ng-click="goto('accountApply')">账号申请 >> </span>
         </div>
     </div>
 </div>
+</body>
+<script>
+
+</script>
+</html>

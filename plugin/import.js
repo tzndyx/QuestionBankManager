@@ -3,11 +3,12 @@
  */
 (function () {
     console.log(222)
+    var baseUrl = '../../'
     var jsfiles = [
         "plugin/angular.js",
         "plugin/jquery.js",
         "plugin/main.js",
-        "plugin/watcher.js",
+        "plugin/router.js",
     ];
     var cssfiles = [
         "css/common.css",
@@ -18,13 +19,13 @@
     for (i = 0; i < jsfiles.length; i++) {
         addTag('script', {
             "type": "text/javascript",
-            "src": jsfiles[i]
+            "src": baseUrl + jsfiles[i]
         });
     }
     for (i = 0; i < cssfiles.length; i++) {
         addTag('link', {
             "rel": "stylesheet",
-            "href": cssfiles[i]
+            "href": baseUrl + cssfiles[i]
         });
     }
     window.addTag = addTag;

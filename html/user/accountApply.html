@@ -4,9 +4,10 @@
     <meta charset="UTF-8">
     <title>账号申请</title>
     <script src="../../plugin/import.js"></script>
+    <script src="user.js"></script>
 </head>
-<body>
-<div class="apply_top">
+<body ng-app="QBMsys">
+<div class="apply_top" ng-controller="acctapplyCtrl" ng-init="init()">
     <div class="apply_top_title">欢迎注册题库管理系统</div>
     <div class="apply_top_line">
         <img src="../../img/user/yin.png" alt="">
