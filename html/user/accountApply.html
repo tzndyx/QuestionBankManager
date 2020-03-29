@@ -6,19 +6,55 @@
     <script src="../../plugin/import.js"></script>
     <script src="user.js"></script>
 </head>
-<body ng-app="QBMsys">
-<div class="apply_top" ng-controller="acctapplyCtrl" ng-init="init()">
+<body ng-app="QBMsys" class="selectNone" ng-controller="acctapplyCtrl" ng-init="init()">
+<div class="apply_top">
     <div class="apply_top_title">欢迎注册题库管理系统</div>
     <div class="apply_top_line">
-        <img src="../../img/user/yin.png" alt="">
-        <img src="../../img/user/blueline.png" alt="">
-        <img src="../../img/user/xian.png" alt="">
-        <img src="../../img/user/whiteline.png" alt="">
-        <img src="../../img/user/xian.png" alt="">
+        <img class="apply_top_line_dot" src="../../img/user/yin.png" alt="">
+        <img class="apply_top_line_line" src="../../img/user/blueline.png" alt="">
+        <img class="apply_top_line_dot" src="../../img/user/xian.png" alt="">
+        <img class="apply_top_line_line" src="../../img/user/whiteline.png" alt="">
+        <img class="apply_top_line_dot" src="../../img/user/xian.png" alt="">
     </div>
-    <div class="apply_top_txt"></div>
+    <div class="apply_top_txt">
+        <p class="apply_top_txt_1">信息录入</p>
+        <p class="apply_top_txt_2"></p>
+        <p class="apply_top_txt_1">密码设置</p>
+        <p class="apply_top_txt_2"></p>
+        <p class="apply_top_txt_1">注册完成</p>
+    </div>
 </div>
-<div class="apply_mid"></div>
-<div class="apply_bottom"></div>
+
+<div class="apply_mid">
+    <div class="apply_mid_form_list">
+        <p>姓名</p>
+        <input type="text" ng-model="title" placeholder="请输入姓名" required="required">
+    </div>
+    <div class="apply_mid_form_list">
+        <p>职工号</p>
+        <input type="text"ng-model="title"  placeholder="请输入职工号">
+    </div>
+    <div class="apply_mid_form_list">
+        <p>所在院系</p>
+        <select name="" id=" ">
+            <option value='' disabled selected style='display:none;'>请选择所在院系</option>
+        </select>
+    </div>
+    <div class="apply_mid_form_list">
+        <p>所授课程</p>
+        <select name="" id="">
+            <option value='' disabled selected style='display:none;'>请选择所授课程</option>
+        </select>
+    </div>
+    <div class="apply_mid_form_list">
+        <p>邮箱</p>
+        <input type="email" placeholder="请输入邮箱">
+    </div>
+    <div class="apply_mid_btn" ng-click="test()">下一步</div>
+</div>
+<div class="apply_bottom">
+    <p>{{errorMsg}}</p>
+    <img src="../../img/user/wxgzh.jpg" alt="">
+</div>
 </body>
 </html>

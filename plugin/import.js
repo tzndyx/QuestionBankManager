@@ -2,7 +2,7 @@
  * @author tongzn
  */
 (function () {
-    console.log(222)
+    console.log('init import')
     var baseUrl = '../../'
     var jsfiles = [
         "plugin/angular.js",

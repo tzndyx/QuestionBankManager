@@ -5,5 +5,9 @@ QBMsys.controller("acctapplyCtrl", acctapplyCtrl);
 
 function acctapplyCtrl($scope){
     injectCommon($scope)
-        alert('apply')
+    $scope.init = function(){
+    }
+    $scope.test = function () {
+        $scope.errorMsg = '测试';
+    }
 }
