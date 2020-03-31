@@ -23,12 +23,12 @@ const injectCommon = function (obj) {
         params && sessionStorage.setItem('urlparams',JSON.stringify(params));
         window.location.replace(baseUrl + route.url)
     }
-    obj.goback = function (setp) {
-        var setp = step || 0;
+    obj.goback = function (steps) {
+        let step = steps || 0;
         window.history.back(step);
     }
-    obj.goreturn = function (setp) {
-        var setp = step || 0;
+    obj.goreturn = function (steps) {
+        let step = steps || 0;
         window.history.back(step);
         window.location.reload();
     }

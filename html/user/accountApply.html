@@ -10,11 +10,11 @@
 <div class="apply_top">
     <div class="apply_top_title">欢迎注册题库管理系统</div>
     <div class="apply_top_line">
-        <img class="apply_top_line_dot" src="../../img/user/yin.png" alt="">
-        <img class="apply_top_line_line" src="../../img/user/blueline.png" alt="">
-        <img class="apply_top_line_dot" src="../../img/user/xian.png" alt="">
-        <img class="apply_top_line_line" src="../../img/user/whiteline.png" alt="">
-        <img class="apply_top_line_dot" src="../../img/user/xian.png" alt="">
+        <img class="apply_top_line_dot" src="{{titleLine[0]}}" alt="">
+        <img class="apply_top_line_line" src="{{titleLine[1]}}" alt="">
+        <img class="apply_top_line_dot" src="{{titleLine[2]}}" alt="">
+        <img class="apply_top_line_line" src="{{titleLine[3]}}" alt="">
+        <img class="apply_top_line_dot" src="{{titleLine[4]}}" alt="">
     </div>
     <div class="apply_top_txt">
         <p class="apply_top_txt_1">信息录入</p>
@@ -25,14 +25,14 @@
     </div>
 </div>
 
-<div class="apply_mid">
+<div class="apply_mid" ng-if="step == 1">
     <div class="apply_mid_form_list">
         <p>姓名</p>
         <input type="text" ng-model="title" placeholder="请输入姓名" required="required">
     </div>
     <div class="apply_mid_form_list">
         <p>职工号</p>
-        <input type="text"ng-model="title"  placeholder="请输入职工号">
+        <input type="text" ng-model="title" placeholder="请输入职工号">
     </div>
     <div class="apply_mid_form_list">
         <p>所在院系</p>
@@ -50,10 +50,34 @@
         <p>邮箱</p>
         <input type="email" placeholder="请输入邮箱">
     </div>
-    <div class="apply_mid_btn" ng-click="test()">下一步</div>
+    <div class="apply_mid_btn" ng-click="goNext(2)">下一步</div>
+    <p class="apply_mid_err">{{errorMsg}}</p>
+</div>
+
+<div class="apply_mid" ng-if="step == 2">
+    <div class="apply_mid_form_list">
+        <p>密码</p>
+        <input type="password" style="text-align: right" ng-model="title" placeholder="请输入密码" required="required">
+    </div>
+    <div class="apply_mid_form_list">
+        <p>确认密码</p>
+        <input type="password" style="text-align: right" ng-model="title" placeholder="请再次输入密码">
+    </div>
+    <div class="apply_mid_btn2">
+        <div ng-click="goNext(1)">返回</div>
+        <div ng-click="goNext(3)">提交</div>
+    </div>
+    <p class="apply_mid_err">{{errorMsg}}</p>
+</div>
+</div>
+
+<div class="apply_mid" ng-if="step == 3">
+    <div class="apply_mid_suc">
+        账号注册申请已提交，等待管理员审核。
+    </div>
+    <div class="apply_mid_btn" ng-click="goreplace('login')">完成</div>
 </div>
 <div class="apply_bottom">
-    <p>{{errorMsg}}</p>
     <img src="../../img/user/wxgzh.jpg" alt="">
 </div>
 </body>
