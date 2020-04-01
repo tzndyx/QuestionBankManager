@@ -1,7 +1,7 @@
 /**
  * @author tongzn
  */
-//注册申请
+// 注册申请
 QBMsys.controller("acctapplyCtrl", acctapplyCtrl);
 function acctapplyCtrl($scope){
     injectCommon($scope)
@@ -42,5 +42,48 @@ function acctapplyCtrl($scope){
             ]
         }
         $scope.step = step;
+    }
+}
+
+
+//用户信息
+QBMsys.controller("userinfoCtrl", userinfoCtrl);
+function userinfoCtrl($scope) {
+    injectCommon($scope)
+    $scope.init = function(){
+        $scope.userInfoList = [{
+            title:'姓名',
+            value:'张三'
+        },{
+            title:'姓名',
+            value:'张三'
+        },{
+            title:'姓名',
+            value:'张三'
+        },{
+            title:'姓名',
+            value:'张三'
+        },{
+            title:'姓名',
+            value:'张三'
+        },{
+            title:'姓名',
+            value:'张三'
+        },{
+            title:'姓名',
+            value:'张三'
+        },{
+            title:'姓名',
+            value:'张三'
+        },{
+            title:'姓名',
+            value:'张三'
+        },{
+            title:'姓名',
+            value:'张三'
+        }]
+    }
+    $scope.doFocus = function (id) {
+        document.getElementById(id).focus()
     }
 }
