@@ -13,7 +13,7 @@ const QBMsys = angular.module('QBMsys', []);
 //注入公共方法，塞入路由传参
 const injectCommon = function (obj) {
     console.log('info>> inject started')
-    var baseUrl = '../../'
+    var baseUrl = '../../';
     obj.goto = function (target,params) {
         let route = router[target];
         params && sessionStorage.setItem('urlparams',JSON.stringify(params));
@@ -32,6 +32,12 @@ const injectCommon = function (obj) {
         let step = steps || 0;
         window.history.back(step);
         window.location.reload();
+    }
+    obj.commonShowcomplete = function () {
+        $(".common_shortcuts").animate({'right':'0'},200);
+    }
+    obj.commonHidecomplete = function () {
+        $(".common_shortcuts").animate({'right':'-1.4rem'},200);
     }
     try {
         var params = JSON.parse(sessionStorage.getItem('urlparams'));

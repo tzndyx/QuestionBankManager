@@ -86,4 +86,5 @@ function userinfoCtrl($scope) {
     $scope.doFocus = function (id) {
         document.getElementById(id).focus()
     }
+
 }

@@ -7,6 +7,16 @@
     <script src="user.js"></script>
 </head>
 <body ng-app="QBMsys" class="selectNone" ng-controller="userinfoCtrl" ng-init="init()">
+<div class="common_header">
+    <div class="common_header_logo">
+        <img src="../../img/common/logo.png" alt="">
+        <p>题库管理系统</p>
+    </div>
+    <div class="common_header_menu">
+        <p>题库管理</p>
+        <p>试卷管理</p>
+    </div>
+</div>
 <div class="user_info">
     <div class="user_info_list" ng-repeat="item in userInfoList track by $index">
         <span>{{item.title}}</span>
@@ -14,6 +24,38 @@
         <img src="../../img/common/pencil.jpg" ng-click="doFocus($index)">
     </div>
 </div>
+
+<footer class="common_footer">
+    <div class="common_footer_left">
+        <div>
+            <p>网站声明</p>
+            <span>|</span>
+            <p>服务网点</p>
+            <span>|</span>
+            <p>联系我们</p>
+            <span>|</span>
+            <p>客服热线</p>
+        </div>
+        <div>版权所有©太原科技大学版权所有  晋公网安备14010002001548号</div>
+        <div>地址：中国·山西省·太原市万柏林区窊流路66号</div>
+    </div>
+    <div class="common_footer_right">
+
+    </div>
+</footer>
+<div class="common_shortcuts" ng-mouseover="commonShowcomplete()" ng-mouseleave="commonHidecomplete(this)">
+    <div>
+        <img src="../../img/common/home.jpg" alt="">
+        <p>回到首页</p>
+    </div>
+    <div>
+        <img src="../../img/common/suggest.jpg" alt="">
+        <p>我要留言</p>
+    </div>
+    <div class="borderNone">
+        <img src="../../img/common/backtop.jpg" alt="">
+        <p>回到顶部</p>
+    </div>
 </div>
 </body>
 </html>

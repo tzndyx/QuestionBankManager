@@ -228,7 +228,7 @@
     flex-direction: row;
     flex-wrap: wrap;
     width: 100vw;
-    height: 60vh;
+    height: calc(100vh - 2.8rem);
     background-color: #f6f6f6;
     overflow-y: scroll;
 }
@@ -256,6 +256,7 @@
     border-radius: 0.05rem;
     outline: none;
     background-color: #f6f6f6;
+    text-indent: 0.2rem;
 }
 .user_info_list img{
     height: 0.5rem;
