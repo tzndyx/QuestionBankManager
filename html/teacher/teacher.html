@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <title>个人中心</title>
     <script src="../../plugin/import.js"></script>
-    <script src="user.js"></script>
+    <script src="teacher.js"></script>
 </head>
-<body ng-app="QBMsys" class="selectNone" ng-controller="userinfoCtrl" ng-init="init()">
+<body ng-app="QBMsys" class="selectNone" ng-controller="teacherCtrl" ng-init="init()">
 <div id="bar_common_header" class="common_header">
     <div class="common_header_logo">
         <img src="../../img/common/logo.png" alt="">
@@ -19,7 +19,7 @@
             <p>题库管理</p>
             <div id="common_header_menu_float1">
                 <p ng-click="goto('addQuestion')">题目添加</p>
-                <p ng-click="goto('teacher')">题目维护</p>
+                <p>题目维护</p>
             </div>
         </div>
         <div class="common_header_menu_float common_header_menu_float2"
@@ -38,19 +38,33 @@
     </div>
 </div>
 
-<div class="user_info">
-    <div class="user_info_list" ng-repeat="item in userInfoList track by $index">
-        <span>{{item.title}}</span>
-        <input type="text" ng-model="item.value" id="{{$index}}">
-        <img src="../../img/common/pencil.jpg" ng-click="doFocus($index)">
+<div class="teacher_main">
+    <div class="teacher_main_Q_title">
+        <div>
+            <p style="background-color: #e6eae9;width: 5vw">{{questionList.length}}</p>
+            <p><span>题目名称</span> <input class="teacher_main_Q_title_other" placeholder="按回车键搜索" type="text"></p>
+            <p><span>题目类型</span> <select class="teacher_main_Q_title_other" ng-model="searchParams.questionAuthor"
+                                         ng-options="type for type in searchList.questionType"></select></p>
+            <p><span>添加时间</span> <img
+                    ng-src="../../img/teacher/{{searchParams.questionTimeFlag == '0' ? 'desc.jpg':'asc.jpg' }}"
+                    ng-click="toggleTimeFlag()"></p>
+            <p><span>添加人</span> <input class="teacher_main_Q_title_other" placeholder="按回车键搜索" type="text"></p>
+            <p style="justify-content: center">操作</p>
+        </div>
+
+        <img class="teacher_main_img1" ng-click="togleMaxed()" ng-show="maxed" src="../../img/teacher/pull.jpg" alt="">
+        <img class="teacher_main_img2" ng-click="togleMaxed()" ng-hide="maxed" src="../../img/teacher/push.jpg" alt="">
     </div>
-    <div class="user_info_list_textarea" style="width: 92vw;">
-        <span>预留信息</span>
-        <input type="text" ng-model="ReservedMsg">
-        <img src="../../img/common/pencil.jpg" ng-click="doFocus($index)">
+    <div class="teacher_main_Q_body" ng-class-even="'common_bg_f5'" ng-repeat="item in questionList track by $index">
+        <p style="width: 5vw">{{$index + 1}}</p>
+        <p title="{{item.name}}" ng-click="goto('questiondetails',{uncompileable:true})" class="common_clickHover">{{item.name}}</p>
+        <p>{{item.type}}</p>
+        <p>{{item.time}}</p>
+        <p class="common_clickHover">{{item.author}}</p>
+        <p><span ng-click="goto('questiondetails',{uncompileable:false})" class="common_clickHover">修改</span><span class="common_clickHover">删除</span></p>
     </div>
 
-    <button class="user_info_btn">提交修改</button>
+
 </div>
 
 <footer id="bar_common_footer" class="common_footer">

@@ -10,11 +10,15 @@ html {
     -ms-overflow-style: scrollbar;
 }
 body {
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: scroll;
     width: 100vw;
-    height: 100vh;
-    margin: 0 !important;
+    margin: 0 auto;
     color: #333333;
+    font-size: 0.2rem;
+}
+body::-webkit-scrollbar {
+    width: 0;
 }
 @media screen and (min-width: 1366px) {
     html {
@@ -101,6 +105,8 @@ body {
     border: none !important;
 }
 .common_header{
+    position: fixed;
+    top: 0;
     width: 100vw;
     height: 1.5rem;
     font-size: 0.2rem;
@@ -129,14 +135,70 @@ body {
 .common_header_menu{
     display: flex;
     flex-direction: row;
-    height: 0.5rem;
-    margin-top: 1rem;
-    width: 40vw;
+    height: 0.6rem;
+    margin-top: 0.9rem;
+    width: 50vw;
     justify-content: space-around;
+    position: relative;
 }
-.common_header_menu p{
-    line-height: 0.5rem;
+.common_header_menu_float{
+    position: absolute;
+    display: flex;
+    /*height: 1.8rem;*/
+    top: 0;
+    width: 10vw;
+    background-color: #002147;
+    z-index: 10;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.common_header_menu_float p{
+    line-height: 0.6rem;
+    width: 10vw;
+    font-size: 0.2rem;
+    text-align: center;
     margin: 0;
+}
+.common_header_menu_float div{
+    display: none;
+}
+.common_header_menu_float p:hover{
+    background-color: #244285;
+}
+.common_header_menu p:hover{
+    background-color: #244285;
+}
+.common_header_menu_float1{
+    right: 35vw;
+}
+.common_header_menu_float2{
+    right: 15vw;
+}
+#common_header_menu_float1{
+    cursor: pointer;
+}
+#common_header_menu_float2{
+    cursor: pointer;
+}
+.common_header_btn{
+    position: absolute;
+    top: 0.05rem;
+    right: 0.1rem;
+    font-size: 0.18rem;
+    color: #999999;
+}
+.common_header_btn span{
+    display: inline-block;
+    width: 0.8rem;
+    text-align: center;
+    cursor: pointer;
+    font-size: 0.14rem;
+    line-height: 0.2rem;
+    height: 0.2rem;
+}
+.common_header_btn span:hover{
+    font-size: 0.16rem;
 }
 .common_footer{
     width: 100vw;
@@ -205,4 +267,83 @@ body {
     margin: 0;
     text-align: center;
     margin-right: 0.1rem;
+}
+.common_titlebar{
+    width: 100vw;
+    height: 0.8rem;
+    box-shadow: 0 10px 20px #C0C0C0;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 10;
+    background-color: #ffffff;
+}
+
+.common_titlebar div{
+    height: 0.7rem;
+    padding: 0 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.common_titlebar img{
+    height: 0.5rem;
+    cursor: pointer;
+    opacity: 0.5;
+}
+.common_titlebar img:hover{
+    opacity: 1;
+}
+.common_titlebar img:active{
+    opacity: 0.9;
+}
+.common_titlebar p{
+    font-size: 0.26rem;
+    font-weight: bold;
+    color: #333333;
+    text-align: center;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*颜色*/
+.common_bg_f5{
+    background-color: #f5fafa;
+}
+.common_clickHover{
+    cursor:pointer;
+}
+.common_clickHover:hover{
+    color: #1db15b;
+    text-decoration:underline;
+    font-size: 110%;
+}
+.common_clickHover:active{
+    text-decoration:underline;
+    font-size: 100%;
 }

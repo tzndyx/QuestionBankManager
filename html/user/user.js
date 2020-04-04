@@ -55,33 +55,22 @@ function userinfoCtrl($scope) {
             title:'姓名',
             value:'张三'
         },{
-            title:'姓名',
-            value:'张三'
+            title:'院系',
+            value:'计算机系'
         },{
-            title:'姓名',
-            value:'张三'
+            title:'课程',
+            value:'编译原理'
         },{
-            title:'姓名',
-            value:'张三'
+            title:'职工号',
+            value:'0844'
         },{
-            title:'姓名',
-            value:'张三'
+            title:'邮箱地址',
+            value:'mahuateng@qq.com'
         },{
-            title:'姓名',
-            value:'张三'
-        },{
-            title:'姓名',
-            value:'张三'
-        },{
-            title:'姓名',
-            value:'张三'
-        },{
-            title:'姓名',
-            value:'张三'
-        },{
-            title:'姓名',
-            value:'张三'
-        }]
+            title:'邮寄地址',
+            value:'山西省太原市万柏林区窊流路66号'
+        }];
+        $scope.ReservedMsg = '这是一条预留信息';
     }
     $scope.doFocus = function (id) {
         document.getElementById(id).focus()

@@ -14,6 +14,7 @@ const QBMsys = angular.module('QBMsys', []);
 const injectCommon = function (obj) {
     console.log('info>> inject started')
     var baseUrl = '../../';
+    var commonShowcompleteflag = true;
     obj.goto = function (target,params) {
         let route = router[target];
         params && sessionStorage.setItem('urlparams',JSON.stringify(params));
@@ -33,11 +34,31 @@ const injectCommon = function (obj) {
         window.history.back(step);
         window.location.reload();
     }
+    //悬浮菜单的方法
     obj.commonShowcomplete = function () {
-        $(".common_shortcuts").animate({'right':'0'},200);
+        if(commonShowcompleteflag){
+            commonShowcompleteflag = false;
+            setTimeout(function () {
+                commonShowcompleteflag = true
+            },500)
+            $(".common_shortcuts").animate({'right':'0'},300);
+        }
     }
     obj.commonHidecomplete = function () {
-        $(".common_shortcuts").animate({'right':'-1.4rem'},200);
+        $(".common_shortcuts").animate({'right':'-1.4rem'},300);
+    }
+    obj.backTOtop = function () {
+        document.body.scrollTop = document.documentElement.scrollTop = 0;
+    }
+    obj.goToHome = function(){
+        obj.goto('teacher')
+    }
+    obj.goToMsg = function () {
+
+    }
+    obj.commonToggleMenu = function (selector,flag) {
+        flag && $(selector).slideDown(400);
+        flag || $(selector).slideUp(400);
     }
     try {
         var params = JSON.parse(sessionStorage.getItem('urlparams'));
