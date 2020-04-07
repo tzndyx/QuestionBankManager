@@ -90,20 +90,6 @@ function questiondetailCtrl($scope) {
         arr.splice(arr.indexOf(item),1)
     }
 
-    // 刷新数据
-    $scope.refresh = function(obj){
-        for(name in obj){
-            console.log(obj[name])
-            console.error(Array.isArray(obj[name]))
-            Array.isArray(obj[name]) && obj[name].splice()
-        }
-    }
-
-
-    $scope.test = function () {
-        alert(JSON.stringify($scope.nowEdited))
-    }
-
     //刷新input的改变
     $scope.getInputVal = function (obj,index,val) {
         obj[index] = val;
