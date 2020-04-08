@@ -98,6 +98,14 @@ const QBMsysUtils = {
     'getJson': (string) => {
         return JSON.parse(string);
     },
+    //根据JSON数组得到id的字符串
+    'getIdString':(arr)=>{
+        let arrtemp = [];
+        for(index in arr){
+            arrtemp.push(arr[index].id)
+        }
+        return this.saveArray(arrtemp);
+    },
     //获取试题和试卷模板
     'getQuestionTemplate': () => {
         return {
@@ -170,7 +178,6 @@ const operateQuestion = {
             // 从更新队列中删除
             let questionUpdate = QBMsysUtils.getArray(window.localStorage.getItem('questionUpdate'));
             questionUpdate.splice(questionUpdate.indexOf(id), 1);
-
             if (flag) {
                 // 塞入完成队列中
                 let key = id.split('-')[0];
@@ -228,13 +235,97 @@ const operateQuestion = {
 }
 // 操作试卷的模块：新建试卷保存   修改试卷保存  审核试卷保存  删除试卷    查询试卷
 const savePaper = {
-    'create': () => {
+    'create': (paper) => {
+        // 保存对象到本地--试卷对象不会保存试题，只会以字符串形式保存试题的id
+        paper.choiceQuestion && (paper.choiceQuestion = QBMsysUtils.getIdArray(paper.choiceQuestion))
+        paper.fillblankQuestion && (paper.fillblankQuestion = QBMsysUtils.getIdArray(paper.fillblankQuestion))
+        paper.judgementQuestion && (paper.judgementQuestion = QBMsysUtils.getIdArray(paper.judgementQuestion))
+        paper.explanQuestion && (paper.explanQuestion = QBMsysUtils.getIdArray(paper.explanQuestion))
+        paper.shortanswerQuestion && (paper.shortanswerQuestion = QBMsysUtils.getIdArray(paper.shortanswerQuestion))
+        paper.id = QBMsysUtils.getTimeStamp()
+        paper.lastUpdate = QBMsysUtils.getTimeStamp();
+        let key = paper.id;
+        let value = QBMsysUtils.saveJson(paper)
+        window.localStorage.setItem(key, value)
+        // 保存id到 paperCreate
+        let paperCreate;
+        try {
+            paperCreate = QBMsysUtils.getArray(window.localStorage.getItem('paperCreate'))
+        } catch (e) {
+            paperCreate = []
+        }
+        paperCreate.push(key);
+        window.localStorage.setItem('paperCreate', QBMsysUtils.saveArray(paperCreate));
     },
-    'update': () => {
+    'update': (id, paper) => {
+        // 保存对象到本地--试卷对象不会保存试题，只会以字符串形式保存试题的id
+        paper.choiceQuestion && (paper.choiceQuestion = QBMsysUtils.getIdArray(paper.choiceQuestion))
+        paper.fillblankQuestion && (paper.fillblankQuestion = QBMsysUtils.getIdArray(paper.fillblankQuestion))
+        paper.judgementQuestion && (paper.judgementQuestion = QBMsysUtils.getIdArray(paper.judgementQuestion))
+        paper.explanQuestion && (paper.explanQuestion = QBMsysUtils.getIdArray(paper.explanQuestion))
+        paper.shortanswerQuestion && (paper.shortanswerQuestion = QBMsysUtils.getIdArray(paper.shortanswerQuestion))
+        paper.id = id + "-1";
+        paper.lastUpdate = QBMsysUtils.getTimeStamp();
+        let key = paper.id;
+        let value = QBMsysUtils.saveJson(paper)
+        window.localStorage.setItem(key, value)
+        // 保存id到 paperUpdate
+        let paperUpdate;
+        try {
+            paperUpdate = QBMsysUtils.getArray(window.localStorage.getItem('paperUpdate'))
+        } catch (e) {
+            paperUpdate = []
+        }
+        paperUpdate.push(key);
+        window.localStorage.setItem('paperUpdate', QBMsysUtils.saveArray(paperUpdate));
     },
-    'examine': () => {
+    'examine': (id, flag) => { //审核对象id   审核通过 true     OR     拒绝 false
+        if (-1 != id.indexOf('-1')) {//修改待审核
+            // 从更新队列中删除
+            let paperUpdate = QBMsysUtils.getArray(window.localStorage.getItem('paperUpdate'));
+            paperUpdate.splice(paperUpdate.indexOf(id), 1);
+            if (flag) {
+                // 塞入完成队列中
+                let key = id.split('-')[0];
+                let paperFinished;
+                try {
+                    paperFinished = QBMsysUtils.getArray(window.localStorage.getItem('paperFinished'))
+                } catch (e) {
+                    paperFinished = []
+                }
+                paperFinished.push(key)
+                // 更新本地存储的数据
+                window.localStorage.setItem(key, window.localStorage.getItem(id))
+            }
+            window.localStorage.removeItem(id);
+        } else {//新建待审核
+            // 从新建队列中删除
+            let paperCreate = QBMsysUtils.getArray(window.localStorage.getItem('paperCreate'));
+            paperCreate.splice(paperCreate.indexOf(id), 1);
+            if (flag) {
+                // 塞入完成队列中
+                let paperFinished;
+                try {
+                    paperFinished = QBMsysUtils.getArray(window.localStorage.getItem('paperFinished'))
+                } catch (e) {
+                    paperFinished = []
+                }
+                paperFinished.push(key)
+                // 本地数据已存在，不需要更新
+                return
+            }
+            window.localStorage.removeItem(id);
+        }
     },
-    'delete': () => {
+    'delete': (id) => {
+        let paperFinished;
+        try {
+            paperUpdate = QBMsysUtils.getArray(window.localStorage.getItem('paperUpdate'))
+        } catch (e) {
+            paperUpdate = []
+        }
+        paperFinished.splice(paperFinished.indexOf(id), 1);
+        window.localStorage.removeItem(id);
     },
     // 根据id获取试卷对象
     'query': (id) => {
