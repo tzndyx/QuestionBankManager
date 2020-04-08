@@ -234,7 +234,7 @@ const operateQuestion = {
     }
 }
 // 操作试卷的模块：新建试卷保存   修改试卷保存  审核试卷保存  删除试卷    查询试卷
-const savePaper = {
+const operatePaper = {
     'create': (paper) => {
         // 保存对象到本地--试卷对象不会保存试题，只会以字符串形式保存试题的id
         paper.choiceQuestion && (paper.choiceQuestion = QBMsysUtils.getIdArray(paper.choiceQuestion))
