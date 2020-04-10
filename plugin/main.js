@@ -99,9 +99,9 @@ const QBMsysUtils = {
         return JSON.parse(string);
     },
     //根据JSON数组得到id的字符串
-    'getIdString':(arr)=>{
+    'getIdString': (arr) => {
         let arrtemp = [];
-        for(index in arr){
+        for (index in arr) {
             arrtemp.push(arr[index].id)
         }
         return this.saveArray(arrtemp);
@@ -352,75 +352,75 @@ const operatePaper = {
     }
 }
 
-    /*TODO
-    *question对象
-    * {
-        id:'时间戳',
-        lastUpdate："修改提交的时间--新建提交、修改提交、审核提交",
-        title:"",
-        type:"",
-        descripe:"",
-        options:"",//以下五个字符串转数组
-        answer:""
-    }
-    *
-    *paper对象
-    * {
-        id:'时间戳',
-        lastUpdate："修改提交的时间--新建提交、修改提交、审核提交",
-        title:"",
-        descripe:"",
-        choiceQuestion:"",  //以下五个字符串转数组
-        fillblankQuestion:"",
-        judgementQuestion:"",
-        explanQuestion:"",
-        shortanswerQuestion:""
-    }
-    *
-    * question表--新建--questionCreate
-    * question表--修改--questionUpdate
-    * question表--完成--questionFinished
-    *
-    * paper表--新建--paperCreate
-    * paper表--修改--paperUpdate
-    * paper表--完成--paperFinished
-    *
-    * 表中存储的唯一索引为对象id，不同表的索引可以重复，如修改和完成
-    * localStorge存储的 key为时间戳 value为 question和paper对象
-    * 查询的对象为完成表   审核的对象为 新建表和修改表
-    * 表为数组，其保存的为对象（题目对象和试卷对象）的id
-    *
-    * 新建的流程     创建对象 id为时间戳 ==> id保存到新建表（数组） ==> 对象存储到本地，key为id
-    * 审核的流程     获取并遍历新建表（数组）的id，得到所有新建的对象 ==>
-    *                   同意：id保存到完成表（数组），并从新建表（数组）中删除对应的id
-    *                   拒绝：根据id删除本地存储的对象，并从新建表（数组）中删除对应的id
-    *
-    * 修改的流程     创建修改的对象，id为原id ==> id保存到修改表（数组） ==> 对象存储到本地，key为id-1（本地存储的key值不能重复）
-    * 审核的流程     获取并遍历修改表（数组）的id-1，得到所有修改的对象 ==>
-    *                   同意：对象存储到本地，key为id，removeItem（id+'-1'）删除本地存储的修改对象，并从修改表（数组）中删除对应的id
-    *                   拒绝：removeItem（）删除本地存储的对象，并从修改表（数组）中删除对应的id
-    *
-    * 查询的流程     获取并遍历完成表（数组）的id，得到所有处理完成的对象
-    *
-    * 本地存储的key值和对象的id是同一个值  修改表中的key值和id都为 原值 加 字符串 ‘-1’
-    *
-    * */
+/*TODO
+*question对象
+* {
+    id:'时间戳',
+    lastUpdate："修改提交的时间--新建提交、修改提交、审核提交",
+    title:"",
+    type:"",
+    descripe:"",
+    options:"",//以下五个字符串转数组
+    answer:""
+}
+*
+*paper对象
+* {
+    id:'时间戳',
+    lastUpdate："修改提交的时间--新建提交、修改提交、审核提交",
+    title:"",
+    descripe:"",
+    choiceQuestion:"",  //以下五个字符串转数组
+    fillblankQuestion:"",
+    judgementQuestion:"",
+    explanQuestion:"",
+    shortanswerQuestion:""
+}
+*
+* question表--新建--questionCreate
+* question表--修改--questionUpdate
+* question表--完成--questionFinished
+*
+* paper表--新建--paperCreate
+* paper表--修改--paperUpdate
+* paper表--完成--paperFinished
+*
+* 表中存储的唯一索引为对象id，不同表的索引可以重复，如修改和完成
+* localStorge存储的 key为时间戳 value为 question和paper对象
+* 查询的对象为完成表   审核的对象为 新建表和修改表
+* 表为数组，其保存的为对象（题目对象和试卷对象）的id
+*
+* 新建的流程     创建对象 id为时间戳 ==> id保存到新建表（数组） ==> 对象存储到本地，key为id
+* 审核的流程     获取并遍历新建表（数组）的id，得到所有新建的对象 ==>
+*                   同意：id保存到完成表（数组），并从新建表（数组）中删除对应的id
+*                   拒绝：根据id删除本地存储的对象，并从新建表（数组）中删除对应的id
+*
+* 修改的流程     创建修改的对象，id为原id ==> id保存到修改表（数组） ==> 对象存储到本地，key为id-1（本地存储的key值不能重复）
+* 审核的流程     获取并遍历修改表（数组）的id-1，得到所有修改的对象 ==>
+*                   同意：对象存储到本地，key为id，removeItem（id+'-1'）删除本地存储的修改对象，并从修改表（数组）中删除对应的id
+*                   拒绝：removeItem（）删除本地存储的对象，并从修改表（数组）中删除对应的id
+*
+* 查询的流程     获取并遍历完成表（数组）的id，得到所有处理完成的对象
+*
+* 本地存储的key值和对象的id是同一个值  修改表中的key值和id都为 原值 加 字符串 ‘-1’
+*
+* */
 
-    (function () {
-        localStorage.clear();
-        // 插入测试数据
-        let questionCreate = [];
-        let questionUpdate = [];
-        let questionFinished = [];
+(function () {
+    localStorage.clear();
+    // 插入测试数据
+    let questionCreate = [];
+    let questionUpdate = [];
+    let questionFinished = [];
 
-        let paperCreate = [];
-        let paperUpdate = [];
-        let paperFinished = [];
-        localStorage.setItem('questionCreate', QBMsysUtils.saveArray(questionCreate));
-        localStorage.setItem('questionUpdate', QBMsysUtils.saveArray(questionUpdate));
-        localStorage.setItem('questionFinished', QBMsysUtils.saveArray(questionFinished));
-        localStorage.setItem('paperCreate', QBMsysUtils.saveArray(paperCreate));
-        localStorage.setItem('paperUpdate', QBMsysUtils.saveArray(paperUpdate));
-        localStorage.setItem('paperUpdate', QBMsysUtils.saveArray(paperUpdate));
-        localStorage.setItem('paperFinished', QBMsysUtils.saveArray(paperFinished));
-    })()
+    let paperCreate = [];
+    let paperUpdate = [];
+    let paperFinished = [];
+    localStorage.setItem('questionCreate', QBMsysUtils.saveArray(questionCreate));
+    localStorage.setItem('questionUpdate', QBMsysUtils.saveArray(questionUpdate));
+    localStorage.setItem('questionFinished', QBMsysUtils.saveArray(questionFinished));
+    localStorage.setItem('paperCreate', QBMsysUtils.saveArray(paperCreate));
+    localStorage.setItem('paperUpdate', QBMsysUtils.saveArray(paperUpdate));
+    localStorage.setItem('paperUpdate', QBMsysUtils.saveArray(paperUpdate));
+    localStorage.setItem('paperFinished', QBMsysUtils.saveArray(paperFinished));
+})()
