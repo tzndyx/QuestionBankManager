@@ -115,7 +115,7 @@ const QBMsysUtils = {
             type: "",
             descripe: "",
             options: [],//以下五个字符串转数组
-            answer: []
+            answer: []//元素为 答案在options中的下标（仅对选择和判断题有效）
         }
     },
     'getPaperTemplate': () => {
@@ -424,3 +424,23 @@ const operatePaper = {
     localStorage.setItem('paperUpdate', QBMsysUtils.saveArray(paperUpdate));
     localStorage.setItem('paperFinished', QBMsysUtils.saveArray(paperFinished));
 })()
+var question = {
+    id:'时间戳',
+    lastUpdate:"修改提交的时间--新建提交、修改提交、审核提交",
+    title:"",
+    type:"",
+    descripe:"",
+    options:"",//以下五个字符串转数组
+    answer:""
+}
+var paper = {
+    id:'时间戳',
+    lastUpdate:"修改提交的时间--新建提交、修改提交、审核提交",
+    title:"",
+    descripe:"",
+    choiceQuestion:"",  //以下五个字符串转数组
+    fillblankQuestion:"",
+    judgementQuestion:"",
+    explanQuestion:"",
+    shortanswerQuestion:""
+}
