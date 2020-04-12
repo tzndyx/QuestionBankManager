@@ -12,14 +12,14 @@ const router = {
     'userInfo':{
         url: 'html/user/userInfo.html'
     },
-    'teacher':{
-        url: 'html/teacher/teacher.html'
+    'questionMain':{
+        url: 'html/question/main.html'
     },
     'questiondetails':{
-        url: 'html/teacher/questiondetails.html'
+        url: 'html/question/questiondetails.html'
     },
     'addQuestion':{
-        url: 'html/teacher/addQuestion.html'
+        url: 'html/question/addQuestion.html'
     },
 
 

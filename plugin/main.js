@@ -3,19 +3,35 @@
  * 公共的模块化的方法
  */
 function f() {
-    // history.go(0)
-    setInterval(function () {
-        location.reload()
-    }, 2000)
+    // 构造原型方法 尽量不要,会污染语法环境
+    Array.prototype.indexOf = function(val) {
+        for (var i = 0; i < this.length; i++) {
+            if (this[i] == val) return i;
+        }
+        return -1;
+    };
 }
+f()
 
 const QBMsys = angular.module('QBMsys', []);
 //过滤器-最后更新时间 时间戳转日期格式
 QBMsys.filter('updateTime', function () {
     return function (text) {
-        return new Date(parseInt(nS) * 1000).toLocaleString().replace(/:\d{1,2}$/, ' ');
+        return new Date(parseInt(text) * 1000).toLocaleString().replace(/年|月/g, "-").replace(/日/g, " ")
     }
-});
+})
+// 试题类型 选择题-01 填空题-02 判断题-03 名词解释题-04 简答题-05
+QBMsys.filter('questionType', function () {
+    return function (text) {
+        switch (text) {
+            case '01':return '选择题';
+            case '02':return '填空题';
+            case '03':return '判断题';
+            case '04':return '名词解释题';
+            case '05':return '简答题';
+        }
+    }
+})
 //注入公共方法，塞入路由传参
 const injectCommon = (obj) => {
     console.log('info>> inject started')
@@ -57,7 +73,7 @@ const injectCommon = (obj) => {
         document.body.scrollTop = document.documentElement.scrollTop = 0;
     }
     obj.goToHome = function () {
-        obj.goto('teacher')
+        obj.goto('questionMain')
     }
     obj.goToMsg = function () {
 
@@ -83,11 +99,15 @@ const injectCommon = (obj) => {
 const QBMsysUtils = {
     // 获取时间戳
     'getTimeStamp': () => {
-        return new Date().getTime()
+        return Math.round(new Date() / 1000)
     },
     // 转化需要保存和获取的数组跟JOSN对象  （都转为字符串）
     'saveArray': (arr) => {
-        return arr.join(';');
+        switch (arr.length) {
+            case 0:return '';break;
+            case 1:return arr[0];break;
+            default :return arr.join(';');
+        }
     },
     'getArray': (string) => {
         return string.split(';');
@@ -130,17 +150,24 @@ const QBMsysUtils = {
             explanQuestion: [],
             shortanswerQuestion: []
         }
-    }
+    },
+    'getUserInfo':()=>{
+        return {
+            userName:'张三'
+        }
+    },
+
 }
 
 // 操作试题的模块：新建试题保存   修改试题保存  审核试题保存  删除试题    查询试题
 const operateQuestion = {
     'create': (question) => {
         // 保存对象到本地
-        question.options && (options.options = QBMsysUtils.saveArray(options.options))
-        question.answer && (options.answer = QBMsysUtils.saveArray(options.answer))
+        question.options && (question.options = QBMsysUtils.saveArray(question.options))
+        question.answer && (question.answer = QBMsysUtils.saveArray(question.answer))
         question.id = QBMsysUtils.getTimeStamp()
         question.lastUpdate = QBMsysUtils.getTimeStamp();
+        question.author = QBMsysUtils.getUserInfo().userName;
         let key = question.id;
         let value = QBMsysUtils.saveJson(question)
         window.localStorage.setItem(key, value)
@@ -153,13 +180,15 @@ const operateQuestion = {
         }
         questionCreate.push(key);
         window.localStorage.setItem('questionCreate', QBMsysUtils.saveArray(questionCreate));
+        alert('保存成功')
     },
     'update': (id, question) => {
         // 保存对象到本地
-        question.options && (options.options = QBMsysUtils.saveArray(options.options))
-        question.answer && (options.answer = QBMsysUtils.saveArray(options.answer))
+        question.options && (question.options = QBMsysUtils.saveArray(question.options))
+        question.answer && (question.answer = QBMsysUtils.saveArray(question.answer))
         question.id = id + "-1";
         question.lastUpdate = QBMsysUtils.getTimeStamp();
+        question.author = QBMsysUtils.getUserInfo().userName;
         let key = question.id;
         let value = QBMsysUtils.saveJson(question)
         window.localStorage.setItem(key, value)
@@ -214,12 +243,13 @@ const operateQuestion = {
     'delete': (id) => {
         let questionFinished;
         try {
-            questionUpdate = QBMsysUtils.getArray(window.localStorage.getItem('questionUpdate'))
+            questionFinished = QBMsysUtils.getArray(window.localStorage.getItem('questionFinished'))
         } catch (e) {
-            questionUpdate = []
+            questionFinished = []
         }
         questionFinished.splice(questionFinished.indexOf(id), 1);
         window.localStorage.removeItem(id);
+        window.localStorage.setItem('questionFinished',QBMsysUtils.saveArray(questionFinished));
     },
     // 根据id获取试题对象
     'query': (id) => {
@@ -230,7 +260,28 @@ const operateQuestion = {
             return QBMsysUtils.getJson(localStorage.getItem(id))
         } catch (e) {
             console.error('QBMsys logInfo >> 试题：' + id + ' 查询失败')
+            return undefined
         }
+    },
+    // 获取试题数据 01-新建表    02-更新表  03-完成表
+    'getData':(type)=>{
+        let tabName = '';
+        let questionData = [];
+        let arr = [];
+        switch (type) {
+            case '01': tabName= 'questionCreate';break;
+            case '02': tabName= 'questionUpdate';break;
+            case '03': tabName= 'questionFinished';break;
+        }
+        // localStorage.setItem('questionUpdate',localStorage.getItem('questionCreate'))
+        // localStorage.setItem('questionFinished',localStorage.getItem('questionCreate'))
+        arr = QBMsysUtils.getArray(localStorage.getItem(tabName));
+        for (i in arr){
+            questionData.push(operateQuestion.query(arr[i]))
+        }
+        return questionData.filter((item)=>{
+            return (item != undefined)
+        });
     }
 }
 // 操作试卷的模块：新建试卷保存   修改试卷保存  审核试卷保存  删除试卷    查询试卷
@@ -244,6 +295,7 @@ const operatePaper = {
         paper.shortanswerQuestion && (paper.shortanswerQuestion = QBMsysUtils.getIdArray(paper.shortanswerQuestion))
         paper.id = QBMsysUtils.getTimeStamp()
         paper.lastUpdate = QBMsysUtils.getTimeStamp();
+        paper.author = QBMsysUtils.getUserInfo().userName;
         let key = paper.id;
         let value = QBMsysUtils.saveJson(paper)
         window.localStorage.setItem(key, value)
@@ -266,6 +318,7 @@ const operatePaper = {
         paper.shortanswerQuestion && (paper.shortanswerQuestion = QBMsysUtils.getIdArray(paper.shortanswerQuestion))
         paper.id = id + "-1";
         paper.lastUpdate = QBMsysUtils.getTimeStamp();
+        paper.author = QBMsysUtils.getUserInfo().userName;
         let key = paper.id;
         let value = QBMsysUtils.saveJson(paper)
         window.localStorage.setItem(key, value)
@@ -320,12 +373,13 @@ const operatePaper = {
     'delete': (id) => {
         let paperFinished;
         try {
-            paperUpdate = QBMsysUtils.getArray(window.localStorage.getItem('paperUpdate'))
+            paperFinished = QBMsysUtils.getArray(window.localStorage.getItem('paperFinished'))
         } catch (e) {
-            paperUpdate = []
+            paperFinished = []
         }
         paperFinished.splice(paperFinished.indexOf(id), 1);
         window.localStorage.removeItem(id);
+        window.localStorage.setItem('paperFinished',QBMsysUtils.saveArray(paperFinished));
     },
     // 根据id获取试卷对象
     'query': (id) => {
@@ -349,6 +403,22 @@ const operatePaper = {
         } catch (e) {
             console.error('QBMsys logInfo >> 试卷：' + id + ' 查询失败')
         }
+    },
+    // 获取试卷数据 01-新建表    02-更新表  03-完成表
+    'getData':(type)=>{
+        let tabName = '';
+        let paperData = [];
+        let arr = [];
+        switch (type) {
+            case '01': tabName= 'paperCreate';break;
+            case '02': tabName= 'paperUpdate';break;
+            case '03': tabName= 'paperFinished';break;
+        }
+        arr = QBMsysUtils.getArray(localStorage.getItem(tabName));
+        for (i in arr){
+            paperData.push(operatePaper.query(arr[i]))
+        }
+        return paperData;
     }
 }
 
@@ -405,42 +475,3 @@ const operatePaper = {
 * 本地存储的key值和对象的id是同一个值  修改表中的key值和id都为 原值 加 字符串 ‘-1’
 *
 * */
-
-(function () {
-    localStorage.clear();
-    // 插入测试数据
-    let questionCreate = [];
-    let questionUpdate = [];
-    let questionFinished = [];
-
-    let paperCreate = [];
-    let paperUpdate = [];
-    let paperFinished = [];
-    localStorage.setItem('questionCreate', QBMsysUtils.saveArray(questionCreate));
-    localStorage.setItem('questionUpdate', QBMsysUtils.saveArray(questionUpdate));
-    localStorage.setItem('questionFinished', QBMsysUtils.saveArray(questionFinished));
-    localStorage.setItem('paperCreate', QBMsysUtils.saveArray(paperCreate));
-    localStorage.setItem('paperUpdate', QBMsysUtils.saveArray(paperUpdate));
-    localStorage.setItem('paperUpdate', QBMsysUtils.saveArray(paperUpdate));
-    localStorage.setItem('paperFinished', QBMsysUtils.saveArray(paperFinished));
-})()
-var question = {
-    id:'时间戳',
-    lastUpdate:"修改提交的时间--新建提交、修改提交、审核提交",
-    title:"",
-    type:"",
-    descripe:"",
-    options:"",//以下五个字符串转数组
-    answer:""
-}
-var paper = {
-    id:'时间戳',
-    lastUpdate:"修改提交的时间--新建提交、修改提交、审核提交",
-    title:"",
-    descripe:"",
-    choiceQuestion:"",  //以下五个字符串转数组
-    fillblankQuestion:"",
-    judgementQuestion:"",
-    explanQuestion:"",
-    shortanswerQuestion:""
-}

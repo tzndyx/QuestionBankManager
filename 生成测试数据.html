@@ -1,5 +1,14 @@
-(function () {
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Title</title>
+</head>
+<body onload="addData()">
 
+</body>
+<script>
+function addData() {
     localStorage.clear()
 // 添加试题    选择题-01 填空题-02 判断题-03 名词解释题-04 简答题-05
     var data = [];
@@ -33,5 +42,7 @@
     localStorage.setItem("paperCreate", paperCreate);
     localStorage.setItem("paperUpdate", paperUpdate);
     localStorage.setItem("paperFinished", paperFinished);
-
-})()
+    alert("测试数据插入成功")
+}
+</script>
+</html>

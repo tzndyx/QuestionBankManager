@@ -13,9 +13,10 @@
     </div>
     <p>详细信息</p>
     <div>
-        <p title="点击保存" style="cursor: pointer">保存</p>
+        <p title="点击保存" style="cursor: pointer" ng-click="submit()">保存</p>
     </div>
 </div>
+
 <div class="questiondetail_main">
     <div class="questiondetail_main_item">
         <p>题目名称</p>
@@ -26,24 +27,24 @@
     <div class="questiondetail_main_item">
         <p>题目类型</p>
         <div>
-            <span ng-click="changeEditType('选择题')">
-                <img ng-src="../../img/common/{{nowEdited.type == '选择题' ? 'checked.jpg':'unchecked.jpg' }}">
+            <span ng-click="changeEditType('01')">
+                <img ng-src="../../img/common/{{nowEdited.type == '01' ? 'checked.jpg':'unchecked.jpg' }}">
                 选择题
             </span>
-            <span ng-click="changeEditType('填空题')">
-                <img ng-src="../../img/common/{{nowEdited.type == '填空题' ? 'checked.jpg':'unchecked.jpg' }}">
+            <span ng-click="changeEditType('02')">
+                <img ng-src="../../img/common/{{nowEdited.type == '02' ? 'checked.jpg':'unchecked.jpg' }}">
                 填空题
             </span>
-            <span ng-click="changeEditType('判断题')">
-                <img ng-src="../../img/common/{{nowEdited.type == '判断题' ? 'checked.jpg':'unchecked.jpg' }}">
+            <span ng-click="changeEditType('03')">
+                <img ng-src="../../img/common/{{nowEdited.type == '03' ? 'checked.jpg':'unchecked.jpg' }}">
                 判断题
             </span>
-            <span ng-click="changeEditType('名词解释题')">
-                <img ng-src="../../img/common/{{nowEdited.type == '名词解释题' ? 'checked.jpg':'unchecked.jpg' }}">
+            <span ng-click="changeEditType('04')">
+                <img ng-src="../../img/common/{{nowEdited.type == '04' ? 'checked.jpg':'unchecked.jpg' }}">
                 名词解释题
             </span>
-            <span ng-click="changeEditType('简答题')">
-                <img ng-src="../../img/common/{{nowEdited.type == '简答题' ? 'checked.jpg':'unchecked.jpg' }}">
+            <span ng-click="changeEditType('05')">
+                <img ng-src="../../img/common/{{nowEdited.type == '05' ? 'checked.jpg':'unchecked.jpg' }}">
                 简答题
             </span>
         </div>
@@ -57,25 +58,25 @@
     <div class="questiondetail_main_item" ng-repeat="option in nowEdited.options track by $index">
         <p>选项{{$index + 1}}</p>
         <div>
-            <input type="text" ng-model="option" placeholder="请输入选项" ng-change="getInputVal(nowEdited.options,$index,option)">
-            <img ng-if="nowEdited.type == '选择题' || nowEdited.type == '填空题'" src="../../img/common/delete.jpg" style="height: 0.26rem;margin-left: 0.5rem;cursor: pointer" ng-click="delItem(option)">
+            <input type="text" ng-model="option" placeholder="请输入选项" ng-readonly="nowEdited.type == '03'" ng-change="getInputVal(nowEdited.options,$index,option)">
+            <img ng-if="nowEdited.type == '01' || nowEdited.type == '02'" src="../../img/common/delete.jpg" style="height: 0.26rem;margin-left: 0.5rem;cursor: pointer" ng-click="delItem(option)">
         </div>
     </div>
-    <div class="questiondetail_main_item" ng-if="nowEdited.type == '填空题'" ng-repeat="answer in nowEdited.answer track by $index">
+    <div class="questiondetail_main_item" ng-if="nowEdited.type == '02'" ng-repeat="answer in nowEdited.answer track by $index">
         <p>第{{$index + 1}}空</p>
         <div>
             <input type="text" ng-model="answer" placeholder="请输入答案" ng-change="getInputVal(nowEdited.answer,$index,answer)">
             <img src="../../img/common/delete.jpg" style="height: 0.26rem;margin-left: 0.5rem;cursor: pointer" ng-click="delItem(answer)">
         </div>
     </div>
-    <div class="questiondetail_main_item_add" ng-if="nowEdited.type == '选择题' || nowEdited.type == '填空题'">
+    <div class="questiondetail_main_item_add" ng-if="nowEdited.type == '01' || nowEdited.type == '02'">
         <img src="../../img/common/add.jpg" ng-click="addItem()">
     </div>
-    <div class="questiondetail_main_item" ng-if="nowEdited.type != '填空题'">
+    <div class="questiondetail_main_item" ng-if="nowEdited.type != '02'">
         <p>题目答案</p>
         <div>
-            <input ng-if="nowEdited.type == '简答题' || nowEdited.type == '名词解释题'" type="text" ng-model="nowEdited.answer" placeholder="请输入参考答案">
-            <select style="margin-left: 0.45rem" ng-if="nowEdited.type == '选择题' || nowEdited.type == '判断题'" ng-model="nowEdited.answer" ng-options="option for option in nowEdited.options"></select>
+            <input ng-if="nowEdited.type == '05' || nowEdited.type == '04'" type="text" ng-model="nowEdited.answer[0]" placeholder="请输入参考答案">
+            <select style="margin-left: 0.45rem" ng-if="nowEdited.type == '01' || nowEdited.type == '03'" ng-model="nowEdited.answer[0]" ng-options="option for option in nowEdited.options"></select>
         </div>
     </div>
 </div>
