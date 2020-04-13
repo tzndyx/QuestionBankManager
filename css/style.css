@@ -413,6 +413,37 @@
     align-items: center;
 }
 
+.paper_main{
+    position: relative;
+    width: 100vw;
+    padding-top: 2.1rem;
+    padding-bottom: 1.1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.paper_main p{
+    margin: 0;
+    width: 18vw;
+    height: 0.5rem;
+    line-height: 0.5rem;
+    text-indent: 0.2rem;
+    padding-right: 0.2rem;
+    border: 0.01rem solid #c1dad7;
+    border-collapse:collapse;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    word-break: break-all;
+}
+.paper_main p span{
+    margin: 0;
+    display: inline-block;
+    width: 5vw;
+    height: 0.5rem;
+    line-height: 0.5rem;
+    text-align: center;
+}
 /*详情页*/
 .questiondetail_main{
     margin-top: 1.2rem;
@@ -497,4 +528,30 @@
     font-size: 0.16rem;
     line-height: 0.3rem;
     background-color: white;
+}
+
+/*试卷*/
+.paperDetail_main{
+    width: 80vw;
+    height: calc(100vh - 1.75rem);
+    margin-top: 0.9rem;
+    margin-left: 10vw;
+    overflow-y: scroll;
+    padding: 0.1rem 0;
+    border: 0.01rem solid dodgerblue;
+    border-radius: 0.05rem;
+}
+.paperDetail_main::-webkit-scrollbar {
+    width: 0;
+}
+.paperDetail_main_tab{
+}
+.paperDetail_main_tab_title{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+.paperDetail_main_tab_title img{
+    width: 0.3rem;
+    cursor: pointer;
 }

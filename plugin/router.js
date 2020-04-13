@@ -12,6 +12,7 @@ const router = {
     'userInfo':{
         url: 'html/user/userInfo.html'
     },
+    //试题
     'questionMain':{
         url: 'html/question/main.html'
     },
@@ -20,6 +21,16 @@ const router = {
     },
     'addQuestion':{
         url: 'html/question/addQuestion.html'
+    },
+    // 试卷
+    'paperMain':{
+        url: 'html/paper/main.html'
+    },
+    'paperDetails':{
+        url: 'html/paper/paperDetails.html'
+    },
+    'addPaper':{
+        url: 'html/paper/addPaper.html'
     },
 
 

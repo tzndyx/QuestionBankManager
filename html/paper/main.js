@@ -7,6 +7,7 @@ QBMsys.controller("mianCtrl", mianCtrl);
 
 function mianCtrl($scope) {
     injectCommon($scope)
+    $scope.paperList = [1,2,3,4];return
     var resultList;
     $scope.init = function () {
         $scope.searchParams = {

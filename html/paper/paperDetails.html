@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>个人中心</title>
+    <script src="../../plugin/import.js"></script>
+    <script src="paperDetails.js"></script>
+</head>
+<body ng-app="QBMsys" class="selectNone" ng-controller="paperDetailCtrl" ng-init="init()">
+<div class="common_titlebar">
+    <div>
+        <img ng-click="goback()" src="../../img/teacher/back.jpg" alt="">
+    </div>
+    <p>详细信息</p>
+    <div ng-click="uncompileable = false">
+        <img title="点击编辑" ng-show="uncompileable" src="../../img/teacher/compile.jpg">
+        <p title="点击保存" ng-hide="uncompileable" ng-click="submit()" style="cursor: pointer">保存</p>
+    </div>
+</div>
+
+<div class="questiondetail_main">
+    <div class="questiondetail_main_item">
+        <p>题目名称</p>
+        <div>
+            <input type="text" ng-model="nowEdited.title" ng-readonly="uncompileable" placeholder="请输入题目名称">
+        </div>
+    </div>
+    <div class="questiondetail_main_item">
+        <p>题目类型</p>
+        <div>
+            <span style="margin-left: 0.3rem">{{nowEdited.type|questionType}}</span>
+        </div>
+    </div>
+    <div class="questiondetail_main_item">
+        <p>题目描述</p>
+        <div>
+            <input type="text" ng-model="nowEdited.descripe" ng-readonly="uncompileable" placeholder="请输入题目描述内容">
+        </div>
+    </div>
+    <div class="questiondetail_main_item" ng-repeat="option in nowEdited.options track by $index">
+        <p>选项{{$index + 1}}</p>
+        <div>
+            <input type="text" ng-model="option" placeholder="请输入选项" ng-readonly="nowEdited.type == '03' || uncompileable" ng-change="getInputVal(nowEdited.options,$index,option)">
+            <img ng-if="!uncompileable && (nowEdited.type == '01' || nowEdited.type == '02')" src="../../img/common/delete.jpg" style="height: 0.26rem;margin-left: 0.5rem;cursor: pointer" ng-click="delItem(option)">
+        </div>
+    </div>
+    <div class="questiondetail_main_item" ng-if="nowEdited.type == '02'" ng-repeat="answer in nowEdited.answer track by $index">
+        <p>第{{$index + 1}}空</p>
+        <div>
+            <input type="text" ng-model="answer" placeholder="请输入答案" ng-readonly="uncompileable" ng-change="getInputVal(nowEdited.answer,$index,answer)">
+            <img ng-if="!uncompileable" src="../../img/common/delete.jpg" style="height: 0.26rem;margin-left: 0.5rem;cursor: pointer" ng-click="delItem(answer)">
+        </div>
+    </div>
+    <div class="questiondetail_main_item_add" ng-if="!uncompileable && (nowEdited.type == '01' || nowEdited.type == '02')">
+        <img src="../../img/common/add.jpg" ng-click="addItem()">
+    </div>
+    <div class="questiondetail_main_item" ng-if="nowEdited.type != '02'">
+        <p>题目答案</p>
+        <div>
+            <input ng-if="nowEdited.type == '05' || nowEdited.type == '04'" type="text" ng-readonly="uncompileable" ng-model="nowEdited.answer[0]" placeholder="请输入参考答案">
+            <select style="margin-left: 0.45rem" ng-if="nowEdited.type == '01' || nowEdited.type == '03'" ng-model="nowEdited.answer[0]" ng-options="option for option in nowEdited.options"></select>
+        </div>
+    </div>
+</div>
+
+<div class="questiondetail_tips">
+    <p ng-show="uncompileable">当前状态：不可编辑。如要编辑请点击右上角的编辑按钮。</p>
+    <p ng-hide="uncompileable">当前状态：可编辑。</p>
+</div>
+<div class="common_shortcuts" ng-mouseover="commonShowcomplete()" ng-mouseleave="commonHidecomplete()">
+    <div ng-click="goTohome()">
+        <img src="../../img/common/home.jpg" alt="">
+        <p>回到首页</p>
+    </div>
+    <div ng-click="goToMsg()">
+        <img src="../../img/common/suggest.jpg" alt="">
+        <p>我要留言</p>
+    </div>
+    <div class="borderNone" ng-click="backTOtop()">
+        <img src="../../img/common/backtop.jpg" alt="">
+        <p>回到顶部</p>
+    </div>
+</div>
+</body>
+</html>

@@ -4,41 +4,51 @@
     <meta charset="UTF-8">
     <title>个人中心</title>
     <script src="../../plugin/import.js"></script>
-    <script src="main.js"></script>
+    <script src="addPaper.js"></script>
 </head>
-<body ng-app="QBMsys" class="selectNone" ng-controller="mianCtrl" ng-init="init()">
-<div id="bar_common_header" class="common_header">
-    <div class="common_header_logo">
-        <img src="../../img/common/logo.png" alt="">
-        <p>题库管理系统</p>
+<body ng-app="QBMsys" class="selectNone" ng-controller="addPaperCtrl" ng-init="init()">
+<div class="common_titlebar">
+    <div>
+        <img ng-click="goback()" src="../../img/teacher/back.jpg" alt="">
     </div>
-    <div class="common_header_menu">
-        <div class="common_header_menu_float common_header_menu_float1"
-             ng-mouseover="commonToggleMenu('#common_header_menu_float1',true)"
-             ng-mouseleave="commonToggleMenu('#common_header_menu_float1',false)">
-            <p>题库管理</p>
-            <div id="common_header_menu_float1">
-                <p ng-click="goto('addQuestion')">题目添加</p>
-                <p>题目维护</p>
-            </div>
-        </div>
-        <div class="common_header_menu_float common_header_menu_float2"
-             ng-mouseover="commonToggleMenu('#common_header_menu_float2',true)"
-             ng-mouseleave="commonToggleMenu('#common_header_menu_float2',false)">
-            <p>试卷管理</p>
-            <div id="common_header_menu_float2">
-                <p ng-click="goto('addPaper')">试卷添加</p>
-                <p ng-click="goto('paperMain')">试卷维护</p>
-            </div>
-        </div>
-    </div>
-
-    <div class="common_header_btn">
-        <span ng-click="goto('userInfo')">个人中心</span>|<span>修改密码</span>|<span ng-click="goto('login')">退出登录</span>
+    <p>详细信息</p>
+    <div>
+        <p title="点击保存" style="cursor: pointer" ng-click="submit()">保存</p>
     </div>
 </div>
 
-<div class="teacher_main">
+<div class="paperDetail_main">
+    <div class="paperDetail_main_tab">
+        <div class="paperDetail_main_tab_title">
+            <p>试卷名称</p>
+            <input type="text" placeholder="请输入试卷名称">
+        </div>
+        <div class="paperDetail_main_tab_title">
+            <img ng-src="../../img/common/{{searchParams.descFlag ? 'add.jpg':'delete.jpg' }}" alt="">
+            <p>选择题 <span>5</span> </p>
+        </div>
+        <div class="paperDetail_main_tab_body">
+            <p>12222222222222222222</p>
+            <p>12222222222222222222</p>
+            <p>12222222222222222222</p>
+            <p>12222222222222222222</p>
+        </div>
+        <div class="paperDetail_main_tab_title">
+            <img ng-src="../../img/common/{{searchParams.descFlag ? 'add.jpg':'delete.jpg' }}" alt="">
+            <p>填空题 <span>5</span> </p>
+        </div>
+        <div class="paperDetail_main_tab_body">
+            <p>12222222222222222222</p>
+            <p>12222222222222222222</p>
+            <p>12222222222222222222</p>
+            <p>12222222222222222222</p>
+        </div>
+    </div>
+    <div style="height: 0.1rem;">&nbsp;</div>
+</div>
+
+
+<div ng-show="showQuestion" class="teacher_main">
     <div class="teacher_main_Q_title">
         <div>
             <p style="background-color: #e6eae9;width: 5vw">{{questionList.length}}</p>
@@ -66,26 +76,13 @@
 
 </div>
 
-<footer id="bar_common_footer" class="common_footer">
-    <div class="common_footer_left">
-        <div>
-            <p class="common_clickHover">网站声明</p>
-            <span>|</span>
-            <p class="common_clickHover">服务网点</p>
-            <span>|</span>
-            <p class="common_clickHover">联系我们</p>
-            <span>|</span>
-            <p class="common_clickHover">客服热线</p>
-        </div>
-        <div>版权所有©太原科技大学版权所有 晋公网安备14010002001548号</div>
-        <div>地址：中国·山西省·太原市万柏林区窊流路66号</div>
-    </div>
-    <div class="common_footer_right">
 
-    </div>
-</footer>
+<div class="questiondetail_tips" ng-click="test()">
+    <p ng-show="uncompileable">当前状态：不可编辑。如要编辑请点击右上角的编辑按钮。</p>
+    <p ng-hide="uncompileable">当前状态：可编辑。</p>
+</div>
 <div class="common_shortcuts" ng-mouseover="commonShowcomplete()" ng-mouseleave="commonHidecomplete()">
-    <div ng-click="goToHome()">
+    <div ng-click="goTohome()">
         <img src="../../img/common/home.jpg" alt="">
         <p>回到首页</p>
     </div>
