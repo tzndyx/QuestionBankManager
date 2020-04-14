@@ -21,27 +21,77 @@
     <div class="paperDetail_main_tab">
         <div class="paperDetail_main_tab_title">
             <p>试卷名称</p>
-            <input type="text" placeholder="请输入试卷名称">
+            <input type="text" ng-model="paper.title" placeholder="请输入试卷名称">
         </div>
         <div class="paperDetail_main_tab_title">
-            <img ng-src="../../img/common/{{searchParams.descFlag ? 'add.jpg':'delete.jpg' }}" alt="">
-            <p>选择题 <span>5</span> </p>
+            <img ng-click="togleShow('#choiceBody')" ng-src="../../img/common/{{choiceShowFlag ? 'delete.jpg':'add.jpg' }}" alt="">
+            <p>选择题 <span>{{choiceQuestion.length}}</span> </p>
         </div>
-        <div class="paperDetail_main_tab_body">
-            <p>12222222222222222222</p>
-            <p>12222222222222222222</p>
-            <p>12222222222222222222</p>
-            <p>12222222222222222222</p>
+        <div id="choiceBody" class="paperDetail_main_tab_body">
+            <div ng-repeat="item in choiceQuestion track by $index">
+                <span ng-class-even="'common_bg_f5'">{{item.title}}1</span>
+                <span ng-class-even="'common_bg_f5'">{{item.descripe}}2</span>
+                <p><img src="../../img/common/delete.jpg" alt=""></p>
+            </div>
+            <div class="paperDetail_main_tab_body_addbtn">
+                <img src="../../img/common/add.jpg" alt="">
+            </div>
         </div>
         <div class="paperDetail_main_tab_title">
-            <img ng-src="../../img/common/{{searchParams.descFlag ? 'add.jpg':'delete.jpg' }}" alt="">
-            <p>填空题 <span>5</span> </p>
+            <img ng-click="togleShow('#fillblankBody')" ng-src="../../img/common/{{fillblankShowFlag ? 'delete.jpg':'add.jpg' }}" alt="">
+            <p>填空题 <span>{{fillblankQuestion.length}}</span> </p>
         </div>
-        <div class="paperDetail_main_tab_body">
-            <p>12222222222222222222</p>
-            <p>12222222222222222222</p>
-            <p>12222222222222222222</p>
-            <p>12222222222222222222</p>
+        <div id="fillblankBody" class="paperDetail_main_tab_body">
+            <div ng-repeat="item in fillblankQuestion track by $index">
+                <span ng-class-even="'common_bg_f5'">{{item.title}}1</span>
+                <span ng-class-even="'common_bg_f5'">{{item.descripe}}2</span>
+                <p><img src="../../img/common/delete.jpg" alt=""></p>
+            </div>
+            <div class="paperDetail_main_tab_body_addbtn">
+                <img src="../../img/common/add.jpg" alt="">
+            </div>
+        </div>
+        <div class="paperDetail_main_tab_title">
+            <img ng-click="togleShow('#judgementBody')" ng-src="../../img/common/{{judgementShowFlag ? 'delete.jpg':'add.jpg' }}" alt="">
+            <p>判断题 <span>{{judgementQuestion.length}}</span> </p>
+        </div>
+        <div id="judgementBody" class="paperDetail_main_tab_body">
+            <div ng-repeat="item in judgementQuestion track by $index">
+                <span ng-class-even="'common_bg_f5'">{{item.title}}1</span>
+                <span ng-class-even="'common_bg_f5'">{{item.descripe}}2</span>
+                <p><img src="../../img/common/delete.jpg" alt=""></p>
+            </div>
+            <div class="paperDetail_main_tab_body_addbtn">
+                <img src="../../img/common/add.jpg" alt="">
+            </div>
+        </div>
+        <div class="paperDetail_main_tab_title">
+            <img ng-click="togleShow('#explanBody')" ng-src="../../img/common/{{explanShowFlag ? 'delete.jpg':'add.jpg' }}" alt="">
+            <p>名词解释题 <span>{{explanQuestion.length}}</span> </p>
+        </div>
+        <div id="explanBody" class="paperDetail_main_tab_body">
+            <div ng-repeat="item in explanQuestion track by $index">
+                <span ng-class-even="'common_bg_f5'">{{item.title}}1</span>
+                <span ng-class-even="'common_bg_f5'">{{item.descripe}}2</span>
+                <p><img src="../../img/common/delete.jpg" alt=""></p>
+            </div>
+            <div class="paperDetail_main_tab_body_addbtn">
+                <img src="../../img/common/add.jpg" alt="">
+            </div>
+        </div>
+        <div class="paperDetail_main_tab_title">
+            <img ng-click="togleShow('#shortanswerBody')" ng-src="../../img/common/{{shortanswerShowFlag ? 'delete.jpg':'add.jpg' }}" alt="">
+            <p>简答题 <span>{{shortanswerQuestion.length}}</span> </p>
+        </div>
+        <div id="shortanswerBody" class="paperDetail_main_tab_body">
+            <div ng-repeat="item in shortanswerQuestion track by $index">
+                <span ng-class-even="'common_bg_f5'">{{item.title}}1</span>
+                <span ng-class-even="'common_bg_f5'">{{item.descripe}}2</span>
+                <p><img src="../../img/common/delete.jpg" alt=""></p>
+            </div>
+            <div class="paperDetail_main_tab_body_addbtn">
+                <img src="../../img/common/add.jpg" alt="">
+            </div>
         </div>
     </div>
     <div style="height: 0.1rem;">&nbsp;</div>
