@@ -17,7 +17,7 @@
     </div>
 </div>
 
-<div class="paperDetail_main">
+<div ng-hide="showQuestion" class="paperDetail_main">
     <div class="paperDetail_main_tab">
         <div class="paperDetail_main_tab_title">
             <p>试卷名称</p>
@@ -31,10 +31,10 @@
             <div ng-repeat="item in choiceQuestion track by $index">
                 <span ng-class-even="'common_bg_f5'">{{item.title}}1</span>
                 <span ng-class-even="'common_bg_f5'">{{item.descripe}}2</span>
-                <p><img src="../../img/common/delete.jpg" alt=""></p>
+                <p><img src="../../img/common/delete.jpg" alt="" ng-click="delQuestionItem(item,$index)"></p>
             </div>
             <div class="paperDetail_main_tab_body_addbtn">
-                <img src="../../img/common/add.jpg" alt="">
+                <img src="../../img/common/add.jpg" alt="" ng-click="toAddQuestion('01')">
             </div>
         </div>
         <div class="paperDetail_main_tab_title">
@@ -45,10 +45,10 @@
             <div ng-repeat="item in fillblankQuestion track by $index">
                 <span ng-class-even="'common_bg_f5'">{{item.title}}1</span>
                 <span ng-class-even="'common_bg_f5'">{{item.descripe}}2</span>
-                <p><img src="../../img/common/delete.jpg" alt=""></p>
+                <p><img src="../../img/common/delete.jpg" alt="" ng-click="delQuestionItem(item,$index)"></p>
             </div>
             <div class="paperDetail_main_tab_body_addbtn">
-                <img src="../../img/common/add.jpg" alt="">
+                <img src="../../img/common/add.jpg" alt="" ng-click="toAddQuestion('02')">
             </div>
         </div>
         <div class="paperDetail_main_tab_title">
@@ -59,10 +59,10 @@
             <div ng-repeat="item in judgementQuestion track by $index">
                 <span ng-class-even="'common_bg_f5'">{{item.title}}1</span>
                 <span ng-class-even="'common_bg_f5'">{{item.descripe}}2</span>
-                <p><img src="../../img/common/delete.jpg" alt=""></p>
+                <p><img src="../../img/common/delete.jpg" alt="" ng-click="delQuestionItem(item,$index)"></p>
             </div>
             <div class="paperDetail_main_tab_body_addbtn">
-                <img src="../../img/common/add.jpg" alt="">
+                <img src="../../img/common/add.jpg" alt="" ng-click="toAddQuestion('03')">
             </div>
         </div>
         <div class="paperDetail_main_tab_title">
@@ -73,10 +73,10 @@
             <div ng-repeat="item in explanQuestion track by $index">
                 <span ng-class-even="'common_bg_f5'">{{item.title}}1</span>
                 <span ng-class-even="'common_bg_f5'">{{item.descripe}}2</span>
-                <p><img src="../../img/common/delete.jpg" alt=""></p>
+                <p><img src="../../img/common/delete.jpg" alt="" ng-click="delQuestionItem(item,$index)"></p>
             </div>
             <div class="paperDetail_main_tab_body_addbtn">
-                <img src="../../img/common/add.jpg" alt="">
+                <img src="../../img/common/add.jpg" alt="" ng-click="toAddQuestion('04')">
             </div>
         </div>
         <div class="paperDetail_main_tab_title">
@@ -87,10 +87,10 @@
             <div ng-repeat="item in shortanswerQuestion track by $index">
                 <span ng-class-even="'common_bg_f5'">{{item.title}}1</span>
                 <span ng-class-even="'common_bg_f5'">{{item.descripe}}2</span>
-                <p><img src="../../img/common/delete.jpg" alt=""></p>
+                <p><img src="../../img/common/delete.jpg" alt="" ng-click="delQuestionItem(item,$index)"></p>
             </div>
             <div class="paperDetail_main_tab_body_addbtn">
-                <img src="../../img/common/add.jpg" alt="">
+                <img src="../../img/common/add.jpg" alt="" ng-click="toAddQuestion('05')">
             </div>
         </div>
     </div>
@@ -103,24 +103,22 @@
         <div>
             <p style="background-color: #e6eae9;width: 5vw">{{questionList.length}}</p>
             <p><span>题目名称</span> <input class="teacher_main_Q_title_other" ng-model="searchParams.title" placeholder="按回车键搜索" type="text"></p>
-            <p><span>题目类型</span> <select class="teacher_main_Q_title_other" ng-model="searchParams.type" ng-click="search()"
-                                         ng-options="k as v for (k,v) in questionType"></select></p>
+            <p><span>题目类型</span></p>
             <p><span>添加时间</span> <img
                     ng-src="../../img/teacher/{{searchParams.descFlag ? 'desc.jpg':'asc.jpg' }}"
                     ng-click="search('time')"></p>
             <p><span>添加人</span> <input class="teacher_main_Q_title_other" ng-model="searchParams.author" placeholder="按回车键搜索" type="text"></p>
             <p style="justify-content: center">操作</p>
+            <img class="paperDetail_main_tab_body_close" ng-click="showQuestion = false" src="../../img/teacher/pull.jpg" alt="">
         </div>
-        <img class="teacher_main_img1" ng-click="togleMaxed()" ng-show="maxed" src="../../img/teacher/pull.jpg" alt="">
-        <img class="teacher_main_img2" ng-click="togleMaxed()" ng-hide="maxed" src="../../img/teacher/push.jpg" alt="">
     </div>
     <div class="teacher_main_Q_body" ng-class-even="'common_bg_f5'" ng-repeat="item in questionList track by $index">
         <p style="width: 5vw">{{$index + 1}}</p>
-        <p title="{{item.name}}" ng-click="goto('questiondetails',{uncompileable:true,question:item})" class="common_clickHover">{{item.title}}</p>
+        <p title="{{item.name}}" >{{item.title}}</p>
         <p>{{item.type | questionType}}</p>
         <p>{{item.lastUpdate | updateTime}}</p>
-        <p class="common_clickHover">{{item.author}}</p>
-        <p><span ng-click="goto('questiondetails',{uncompileable:false,question:item})" class="common_clickHover">修改</span><span class="common_clickHover" ng-click="deleteQuestion(item)">删除</span></p>
+        <p>{{item.author}}</p>
+        <p ng-click="addQuestionItem(item)" class="common_clickHover">添加</p>
     </div>
 
 

@@ -18,50 +18,114 @@
     </div>
 </div>
 
-<div class="questiondetail_main">
-    <div class="questiondetail_main_item">
-        <p>题目名称</p>
-        <div>
-            <input type="text" ng-model="nowEdited.title" ng-readonly="uncompileable" placeholder="请输入题目名称">
+
+<div ng-hide="showQuestion" class="paperDetail_main">
+    <div class="paperDetail_main_tab">
+        <div class="paperDetail_main_tab_title">
+            <p>试卷名称</p>
+            <input type="text" ng-model="paper.title" placeholder="请输入试卷名称" ng-readonly="uncompileable">
+        </div>
+        <div class="paperDetail_main_tab_title">
+            <img ng-click="togleShow('#choiceBody')" ng-src="../../img/common/{{choiceShowFlag ? 'delete.jpg':'add.jpg' }}" alt="">
+            <p>选择题 <span>{{choiceQuestion.length}}</span> </p>
+        </div>
+        <div id="choiceBody" class="paperDetail_main_tab_body">
+            <div ng-repeat="item in choiceQuestion track by $index">
+                <span ng-class-even="'common_bg_f5'">{{item.title}}1</span>
+                <span ng-class-even="'common_bg_f5'">{{item.descripe}}2</span>
+                <p><img src="../../img/common/delete.jpg" alt="" ng-click="delQuestionItem(item,$index)" ng-hide="uncompileable"></p>
+            </div>
+            <div class="paperDetail_main_tab_body_addbtn" ng-hide="uncompileable">
+                <img src="../../img/common/add.jpg" alt="" ng-click="toAddQuestion('01')">
+            </div>
+        </div>
+        <div class="paperDetail_main_tab_title">
+            <img ng-click="togleShow('#fillblankBody')" ng-src="../../img/common/{{fillblankShowFlag ? 'delete.jpg':'add.jpg' }}" alt="">
+            <p>填空题 <span>{{fillblankQuestion.length}}</span> </p>
+        </div>
+        <div id="fillblankBody" class="paperDetail_main_tab_body">
+            <div ng-repeat="item in fillblankQuestion track by $index">
+                <span ng-class-even="'common_bg_f5'">{{item.title}}1</span>
+                <span ng-class-even="'common_bg_f5'">{{item.descripe}}2</span>
+                <p><img src="../../img/common/delete.jpg" alt="" ng-click="delQuestionItem(item,$index)" ng-hide="uncompileable"></p>
+            </div>
+            <div class="paperDetail_main_tab_body_addbtn" ng-hide="uncompileable">
+                <img src="../../img/common/add.jpg" alt="" ng-click="toAddQuestion('02')">
+            </div>
+        </div>
+        <div class="paperDetail_main_tab_title">
+            <img ng-click="togleShow('#judgementBody')" ng-src="../../img/common/{{judgementShowFlag ? 'delete.jpg':'add.jpg' }}" alt="">
+            <p>判断题 <span>{{judgementQuestion.length}}</span> </p>
+        </div>
+        <div id="judgementBody" class="paperDetail_main_tab_body">
+            <div ng-repeat="item in judgementQuestion track by $index">
+                <span ng-class-even="'common_bg_f5'">{{item.title}}1</span>
+                <span ng-class-even="'common_bg_f5'">{{item.descripe}}2</span>
+                <p><img src="../../img/common/delete.jpg" alt="" ng-click="delQuestionItem(item,$index)" ng-hide="uncompileable"></p>
+            </div>
+            <div class="paperDetail_main_tab_body_addbtn" ng-hide="uncompileable">
+                <img src="../../img/common/add.jpg" alt="" ng-click="toAddQuestion('03')">
+            </div>
+        </div>
+        <div class="paperDetail_main_tab_title">
+            <img ng-click="togleShow('#explanBody')" ng-src="../../img/common/{{explanShowFlag ? 'delete.jpg':'add.jpg' }}" alt="">
+            <p>名词解释题 <span>{{explanQuestion.length}}</span> </p>
+        </div>
+        <div id="explanBody" class="paperDetail_main_tab_body">
+            <div ng-repeat="item in explanQuestion track by $index">
+                <span ng-class-even="'common_bg_f5'">{{item.title}}1</span>
+                <span ng-class-even="'common_bg_f5'">{{item.descripe}}2</span>
+                <p><img src="../../img/common/delete.jpg" alt="" ng-click="delQuestionItem(item,$index)" ng-hide="uncompileable"></p>
+            </div>
+            <div class="paperDetail_main_tab_body_addbtn" ng-hide="uncompileable">
+                <img src="../../img/common/add.jpg" alt="" ng-click="toAddQuestion('04')">
+            </div>
+        </div>
+        <div class="paperDetail_main_tab_title">
+            <img ng-click="togleShow('#shortanswerBody')" ng-src="../../img/common/{{shortanswerShowFlag ? 'delete.jpg':'add.jpg' }}" alt="">
+            <p>简答题 <span>{{shortanswerQuestion.length}}</span> </p>
+        </div>
+        <div id="shortanswerBody" class="paperDetail_main_tab_body">
+            <div ng-repeat="item in shortanswerQuestion track by $index">
+                <span ng-class-even="'common_bg_f5'">{{item.title}}1</span>
+                <span ng-class-even="'common_bg_f5'">{{item.descripe}}2</span>
+                <p><img src="../../img/common/delete.jpg" alt="" ng-click="delQuestionItem(item,$index)" ng-hide="uncompileable"></p>
+            </div>
+            <div class="paperDetail_main_tab_body_addbtn" ng-hide="uncompileable">
+                <img src="../../img/common/add.jpg" alt="" ng-click="toAddQuestion('05')">
+            </div>
         </div>
     </div>
-    <div class="questiondetail_main_item">
-        <p>题目类型</p>
-        <div>
-            <span style="margin-left: 0.3rem">{{nowEdited.type|questionType}}</span>
-        </div>
-    </div>
-    <div class="questiondetail_main_item">
-        <p>题目描述</p>
-        <div>
-            <input type="text" ng-model="nowEdited.descripe" ng-readonly="uncompileable" placeholder="请输入题目描述内容">
-        </div>
-    </div>
-    <div class="questiondetail_main_item" ng-repeat="option in nowEdited.options track by $index">
-        <p>选项{{$index + 1}}</p>
-        <div>
-            <input type="text" ng-model="option" placeholder="请输入选项" ng-readonly="nowEdited.type == '03' || uncompileable" ng-change="getInputVal(nowEdited.options,$index,option)">
-            <img ng-if="!uncompileable && (nowEdited.type == '01' || nowEdited.type == '02')" src="../../img/common/delete.jpg" style="height: 0.26rem;margin-left: 0.5rem;cursor: pointer" ng-click="delItem(option)">
-        </div>
-    </div>
-    <div class="questiondetail_main_item" ng-if="nowEdited.type == '02'" ng-repeat="answer in nowEdited.answer track by $index">
-        <p>第{{$index + 1}}空</p>
-        <div>
-            <input type="text" ng-model="answer" placeholder="请输入答案" ng-readonly="uncompileable" ng-change="getInputVal(nowEdited.answer,$index,answer)">
-            <img ng-if="!uncompileable" src="../../img/common/delete.jpg" style="height: 0.26rem;margin-left: 0.5rem;cursor: pointer" ng-click="delItem(answer)">
-        </div>
-    </div>
-    <div class="questiondetail_main_item_add" ng-if="!uncompileable && (nowEdited.type == '01' || nowEdited.type == '02')">
-        <img src="../../img/common/add.jpg" ng-click="addItem()">
-    </div>
-    <div class="questiondetail_main_item" ng-if="nowEdited.type != '02'">
-        <p>题目答案</p>
-        <div>
-            <input ng-if="nowEdited.type == '05' || nowEdited.type == '04'" type="text" ng-readonly="uncompileable" ng-model="nowEdited.answer[0]" placeholder="请输入参考答案">
-            <select style="margin-left: 0.45rem" ng-if="nowEdited.type == '01' || nowEdited.type == '03'" ng-model="nowEdited.answer[0]" ng-options="option for option in nowEdited.options"></select>
-        </div>
-    </div>
+    <div style="height: 0.1rem;">&nbsp;</div>
 </div>
+
+
+<div ng-show="showQuestion" class="teacher_main">
+    <div class="teacher_main_Q_title">
+        <div>
+            <p style="background-color: #e6eae9;width: 5vw">{{questionList.length}}</p>
+            <p><span>题目名称</span> <input class="teacher_main_Q_title_other" ng-model="searchParams.title" placeholder="按回车键搜索" type="text"></p>
+            <p><span>题目类型</span></p>
+            <p><span>添加时间</span> <img
+                    ng-src="../../img/teacher/{{searchParams.descFlag ? 'desc.jpg':'asc.jpg' }}"
+                    ng-click="search('time')"></p>
+            <p><span>添加人</span> <input class="teacher_main_Q_title_other" ng-model="searchParams.author" placeholder="按回车键搜索" type="text"></p>
+            <p style="justify-content: center">操作</p>
+            <img class="paperDetail_main_tab_body_close" ng-click="showQuestion = false" src="../../img/teacher/pull.jpg" alt="">
+        </div>
+    </div>
+    <div class="teacher_main_Q_body" ng-class-even="'common_bg_f5'" ng-repeat="item in questionList track by $index">
+        <p style="width: 5vw">{{$index + 1}}</p>
+        <p title="{{item.name}}" >{{item.title}}</p>
+        <p>{{item.type | questionType}}</p>
+        <p>{{item.lastUpdate | updateTime}}</p>
+        <p>{{item.author}}</p>
+        <p ng-click="addQuestionItem(item)" class="common_clickHover">添加</p>
+    </div>
+
+
+</div>
+
 
 <div class="questiondetail_tips">
     <p ng-show="uncompileable">当前状态：不可编辑。如要编辑请点击右上角的编辑按钮。</p>

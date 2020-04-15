@@ -105,7 +105,7 @@ const QBMsysUtils = {
     'saveArray': (arr) => {
         switch (arr.length) {
             case 0:return '';break;
-            case 1:return arr[0];break;
+            case 1:return '' + arr[0];break;
             default :return arr.join(';');
         }
     },
@@ -273,8 +273,8 @@ const operateQuestion = {
             case '02': tabName= 'questionUpdate';break;
             case '03': tabName= 'questionFinished';break;
         }
-        // localStorage.setItem('questionUpdate',localStorage.getItem('questionCreate'))
-        // localStorage.setItem('questionFinished',localStorage.getItem('questionCreate'))
+        localStorage.setItem('questionUpdate',localStorage.getItem('questionCreate'))
+        localStorage.setItem('questionFinished',localStorage.getItem('questionCreate'))
         arr = QBMsysUtils.getArray(localStorage.getItem(tabName));
         for (i in arr){
             questionData.push(operateQuestion.query(arr[i]))
@@ -288,11 +288,11 @@ const operateQuestion = {
 const operatePaper = {
     'create': (paper) => {
         // 保存对象到本地--试卷对象不会保存试题，只会以字符串形式保存试题的id
-        paper.choiceQuestion && (paper.choiceQuestion = QBMsysUtils.getIdArray(paper.choiceQuestion))
-        paper.fillblankQuestion && (paper.fillblankQuestion = QBMsysUtils.getIdArray(paper.fillblankQuestion))
-        paper.judgementQuestion && (paper.judgementQuestion = QBMsysUtils.getIdArray(paper.judgementQuestion))
-        paper.explanQuestion && (paper.explanQuestion = QBMsysUtils.getIdArray(paper.explanQuestion))
-        paper.shortanswerQuestion && (paper.shortanswerQuestion = QBMsysUtils.getIdArray(paper.shortanswerQuestion))
+        paper.choiceQuestion && (paper.choiceQuestion = QBMsysUtils.saveArray(paper.choiceQuestion))
+        paper.fillblankQuestion && (paper.fillblankQuestion = QBMsysUtils.saveArray(paper.fillblankQuestion))
+        paper.judgementQuestion && (paper.judgementQuestion = QBMsysUtils.saveArray(paper.judgementQuestion))
+        paper.explanQuestion && (paper.explanQuestion = QBMsysUtils.saveArray(paper.explanQuestion))
+        paper.shortanswerQuestion && (paper.shortanswerQuestion = QBMsysUtils.saveArray(paper.shortanswerQuestion))
         paper.id = QBMsysUtils.getTimeStamp()
         paper.lastUpdate = QBMsysUtils.getTimeStamp();
         paper.author = QBMsysUtils.getUserInfo().userName;
@@ -311,11 +311,11 @@ const operatePaper = {
     },
     'update': (id, paper) => {
         // 保存对象到本地--试卷对象不会保存试题，只会以字符串形式保存试题的id
-        paper.choiceQuestion && (paper.choiceQuestion = QBMsysUtils.getIdArray(paper.choiceQuestion))
-        paper.fillblankQuestion && (paper.fillblankQuestion = QBMsysUtils.getIdArray(paper.fillblankQuestion))
-        paper.judgementQuestion && (paper.judgementQuestion = QBMsysUtils.getIdArray(paper.judgementQuestion))
-        paper.explanQuestion && (paper.explanQuestion = QBMsysUtils.getIdArray(paper.explanQuestion))
-        paper.shortanswerQuestion && (paper.shortanswerQuestion = QBMsysUtils.getIdArray(paper.shortanswerQuestion))
+        paper.choiceQuestion && (paper.choiceQuestion = QBMsysUtils.saveArray(paper.choiceQuestion))
+        paper.fillblankQuestion && (paper.fillblankQuestion = QBMsysUtils.saveArray(paper.fillblankQuestion))
+        paper.judgementQuestion && (paper.judgementQuestion = QBMsysUtils.saveArray(paper.judgementQuestion))
+        paper.explanQuestion && (paper.explanQuestion = QBMsysUtils.saveArray(paper.explanQuestion))
+        paper.shortanswerQuestion && (paper.shortanswerQuestion = QBMsysUtils.saveArray(paper.shortanswerQuestion))
         paper.id = id + "-1";
         paper.lastUpdate = QBMsysUtils.getTimeStamp();
         paper.author = QBMsysUtils.getUserInfo().userName;
@@ -393,12 +393,12 @@ const operatePaper = {
         }
 
         try {
-            let paper = localStorage.getItem(id);
-            paper.choiceQuestion = getJsonById(paper.choiceQuestion);
-            paper.fillblankQuestion = getJsonById(paper.fillblankQuestion);
-            paper.judgementQuestion = getJsonById(paper.judgementQuestion);
-            paper.explanQuestion = getJsonById(paper.explanQuestion);
-            paper.shortanswerQuestion = getJsonById(paper.shortanswerQuestion);
+            let paper = JSON.parse(localStorage.getItem(id));
+            paper.choiceQuestion = QBMsysUtils.getArray(paper.choiceQuestion);
+            paper.fillblankQuestion = QBMsysUtils.getArray(paper.fillblankQuestion);
+            paper.judgementQuestion = QBMsysUtils.getArray(paper.judgementQuestion);
+            paper.explanQuestion = QBMsysUtils.getArray(paper.explanQuestion);
+            paper.shortanswerQuestion = QBMsysUtils.getArray(paper.shortanswerQuestion);
             return paper
         } catch (e) {
             console.error('QBMsys logInfo >> 试卷：' + id + ' 查询失败')
@@ -414,6 +414,8 @@ const operatePaper = {
             case '02': tabName= 'paperUpdate';break;
             case '03': tabName= 'paperFinished';break;
         }
+        localStorage.setItem('paperUpdate',localStorage.getItem('paperCreate'))
+        localStorage.setItem('paperFinished',localStorage.getItem('paperCreate'))
         arr = QBMsysUtils.getArray(localStorage.getItem(tabName));
         for (i in arr){
             paperData.push(operatePaper.query(arr[i]))
