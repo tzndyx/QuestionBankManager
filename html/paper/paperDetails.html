@@ -31,8 +31,8 @@
         </div>
         <div id="choiceBody" class="paperDetail_main_tab_body">
             <div ng-repeat="item in choiceQuestion track by $index">
-                <span ng-class-even="'common_bg_f5'">{{item.title}}1</span>
-                <span ng-class-even="'common_bg_f5'">{{item.descripe}}2</span>
+                <span ng-class-even="'common_bg_f5'">{{item.title}}</span>
+                <span ng-class-even="'common_bg_f5'">{{item.descripe}}</span>
                 <p><img src="../../img/common/delete.jpg" alt="" ng-click="delQuestionItem(item,$index)" ng-hide="uncompileable"></p>
             </div>
             <div class="paperDetail_main_tab_body_addbtn" ng-hide="uncompileable">
@@ -45,8 +45,8 @@
         </div>
         <div id="fillblankBody" class="paperDetail_main_tab_body">
             <div ng-repeat="item in fillblankQuestion track by $index">
-                <span ng-class-even="'common_bg_f5'">{{item.title}}1</span>
-                <span ng-class-even="'common_bg_f5'">{{item.descripe}}2</span>
+                <span ng-class-even="'common_bg_f5'">{{item.title}}</span>
+                <span ng-class-even="'common_bg_f5'">{{item.descripe}}</span>
                 <p><img src="../../img/common/delete.jpg" alt="" ng-click="delQuestionItem(item,$index)" ng-hide="uncompileable"></p>
             </div>
             <div class="paperDetail_main_tab_body_addbtn" ng-hide="uncompileable">
@@ -59,8 +59,8 @@
         </div>
         <div id="judgementBody" class="paperDetail_main_tab_body">
             <div ng-repeat="item in judgementQuestion track by $index">
-                <span ng-class-even="'common_bg_f5'">{{item.title}}1</span>
-                <span ng-class-even="'common_bg_f5'">{{item.descripe}}2</span>
+                <span ng-class-even="'common_bg_f5'">{{item.title}}</span>
+                <span ng-class-even="'common_bg_f5'">{{item.descripe}}</span>
                 <p><img src="../../img/common/delete.jpg" alt="" ng-click="delQuestionItem(item,$index)" ng-hide="uncompileable"></p>
             </div>
             <div class="paperDetail_main_tab_body_addbtn" ng-hide="uncompileable">
@@ -73,8 +73,8 @@
         </div>
         <div id="explanBody" class="paperDetail_main_tab_body">
             <div ng-repeat="item in explanQuestion track by $index">
-                <span ng-class-even="'common_bg_f5'">{{item.title}}1</span>
-                <span ng-class-even="'common_bg_f5'">{{item.descripe}}2</span>
+                <span ng-class-even="'common_bg_f5'">{{item.title}}</span>
+                <span ng-class-even="'common_bg_f5'">{{item.descripe}}</span>
                 <p><img src="../../img/common/delete.jpg" alt="" ng-click="delQuestionItem(item,$index)" ng-hide="uncompileable"></p>
             </div>
             <div class="paperDetail_main_tab_body_addbtn" ng-hide="uncompileable">
@@ -87,8 +87,8 @@
         </div>
         <div id="shortanswerBody" class="paperDetail_main_tab_body">
             <div ng-repeat="item in shortanswerQuestion track by $index">
-                <span ng-class-even="'common_bg_f5'">{{item.title}}1</span>
-                <span ng-class-even="'common_bg_f5'">{{item.descripe}}2</span>
+                <span ng-class-even="'common_bg_f5'">{{item.title}}</span>
+                <span ng-class-even="'common_bg_f5'">{{item.descripe}}</span>
                 <p><img src="../../img/common/delete.jpg" alt="" ng-click="delQuestionItem(item,$index)" ng-hide="uncompileable"></p>
             </div>
             <div class="paperDetail_main_tab_body_addbtn" ng-hide="uncompileable">
@@ -116,7 +116,7 @@
     </div>
     <div class="teacher_main_Q_body" ng-class-even="'common_bg_f5'" ng-repeat="item in questionList track by $index">
         <p style="width: 5vw">{{$index + 1}}</p>
-        <p title="{{item.name}}" >{{item.title}}</p>
+        <p title="{{item.descripe}}" >{{item.title}}</p>
         <p>{{item.type | questionType}}</p>
         <p>{{item.lastUpdate | updateTime}}</p>
         <p>{{item.author}}</p>

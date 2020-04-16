@@ -9,6 +9,9 @@ const router = {
     'accountApply':{
         url: 'html/user/accountApply.html'
     },
+    'selectFrame':{
+        url: 'html/main/main.html'
+    },
     'userInfo':{
         url: 'html/user/userInfo.html'
     },

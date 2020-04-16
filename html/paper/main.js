@@ -81,4 +81,7 @@ function mianCtrl($scope) {
             $scope.initData()
         }
     }
+    $scope.exportPaper = function (item) {
+
+    }
 }

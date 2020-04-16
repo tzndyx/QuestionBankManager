@@ -3,14 +3,33 @@
  * 公共的模块化的方法
  */
 function f() {
-    // 构造原型方法 尽量不要,会污染语法环境
-    Array.prototype.indexOf = function(val) {
+    // 构造原型方法 尽量不要,会污染语法环境(全部作用域的执行上下文)
+    Array.prototype.indexOf = function (val) {
         for (var i = 0; i < this.length; i++) {
             if (this[i] == val) return i;
         }
         return -1;
     };
+
+
+    localStorage.setItem('questionUpdate', localStorage.getItem('questionCreate'))
+    localStorage.setItem('questionFinished', localStorage.getItem('questionCreate'))
+    localStorage.setItem('paperUpdate', localStorage.getItem('paperCreate'))
+    localStorage.setItem('paperFinished', localStorage.getItem('paperCreate'))
+    localStorage.setItem('userFinished', "8144;0001")
+    let s = {
+        id:"8144",//职工号 （8位） or 学号（12位）
+        name:"张三",
+        authType:"01",//00-管理员 01-教师 02-学生
+        department:"01",//学院
+        subject:"0101",//专业
+        cuorseList:"01;02;03",//学生多门课程，教师一门课程  仅用于登录时展示
+        email:"tzndyx@qq.com",
+        pwd:"tkynzj888",
+    }
+    localStorage.setItem('8144',JSON.stringify(s))
 }
+
 f()
 
 const QBMsys = angular.module('QBMsys', []);
@@ -24,11 +43,83 @@ QBMsys.filter('updateTime', function () {
 QBMsys.filter('questionType', function () {
     return function (text) {
         switch (text) {
-            case '01':return '选择题';
-            case '02':return '填空题';
-            case '03':return '判断题';
-            case '04':return '名词解释题';
-            case '05':return '简答题';
+            case '01':
+                return '选择题';
+            case '02':
+                return '填空题';
+            case '03':
+                return '判断题';
+            case '04':
+                return '名词解释题';
+            case '05':
+                return '简答题';
+        }
+    }
+})
+// department 学院 01-机械工程 02-电子信息工程 03-经济管理 04-计算机科学与技术 05-材料科学与工程
+QBMsys.filter('questionType', function () {
+    return function (text) {
+        switch (text) {
+            case '01':
+                return '机械工程学院';
+            case '02':
+                return '电子信息工程学院';
+            case '03':
+                return '经济管理学院';
+            case '04':
+                return '计算机科学与技术学院';
+            case '05':
+                return '材料科学与工程学院';
+        }
+    }
+})
+// subject 专业
+QBMsys.filter('questionType', function () {
+    return function (text) {
+        switch (text) {
+            case '0101':
+                return '车辆工程专业';
+            case '0102':
+                return '工业设计专业';
+            case '0201':
+                return '通信工程专业';
+            case '0202':
+                return '电气自动化专业';
+            case '0301':
+                return '会计电算化专业';
+            case '0302':
+                return '市场营销专业';
+            case '0303':
+                return '电子商务专业';
+            case '0401':
+                return '计算机科学与技术专业';
+            case '0402':
+                return '软件工程专业';
+            case '0403':
+                return '物联网专业';
+            case '0501':
+                return '冶金工程专业';
+            case '0502':
+                return '材料物理专业';
+        }
+    }
+})
+// cuorseList 课程
+QBMsys.filter('questionType', function () {
+    return function (text) {
+        switch (text) {
+            case '01':
+                return '大学英语';
+            case '02':
+                return '高等数学';
+            case '03':
+                return '编译原理';
+            case '04':
+                return '计算机导论';
+            case '05':
+                return '计算机组成原理';
+            case '06':
+                return '计算机体系结构';
         }
     }
 })
@@ -82,6 +173,10 @@ const injectCommon = (obj) => {
         flag && $(selector).slideDown(400);
         flag || $(selector).slideUp(400);
     }
+    obj.logOut = function () {
+        operateUser.logout()
+    }
+    obj.userInfo = QBMsysUtils.getUserInfo();
     try {
         var params = JSON.parse(sessionStorage.getItem('urlparams'));
         for (let i in params) {
@@ -95,8 +190,14 @@ const injectCommon = (obj) => {
     // TODO 设置openList
     // 'login.html' != window.location.pathname.split('/').reverse()[0] && sessionStorage.getItem('loginFlag') == null && obj.goto('login')
 }
+function common_dealLogOut(){
+    if('login.html' != window.location.pathname.split('/').reverse()[0]){
+        alert("登录超时，请重新登录！")
+        window.location.href = '../../html/login/login.html';
+    }
+}
 //常用工具方法模块
-const QBMsysUtils = {
+var QBMsysUtils = {
     // 获取时间戳
     'getTimeStamp': () => {
         return Math.round(new Date() / 1000)
@@ -104,9 +205,14 @@ const QBMsysUtils = {
     // 转化需要保存和获取的数组跟JOSN对象  （都转为字符串）
     'saveArray': (arr) => {
         switch (arr.length) {
-            case 0:return '';break;
-            case 1:return '' + arr[0];break;
-            default :return arr.join(';');
+            case 0:
+                return '';
+                break;
+            case 1:
+                return '' + arr[0];
+                break;
+            default :
+                return arr.join(';');
         }
     },
     'getArray': (string) => {
@@ -151,10 +257,48 @@ const QBMsysUtils = {
             shortanswerQuestion: []
         }
     },
-    'getUserInfo':()=>{
+    'getUserTemplate': ()=>{
         return {
-            userName:'张三'
+            id:"",//职工号 （8位） or 学号（12位）
+            name:"",
+            authType:"",//00-管理员 01-教师 02-学生
+            department:"",//学院
+            subject:"",//专业
+            cuorseList:"",//学生多门课程，教师一门课程  仅用于登录时展示
+            email:"",
+            pwd:"",
         }
+    },
+    'getUserInfo': () => {
+        try {
+            let userInfo = QBMsysUtils.getJson(window.sessionStorage.getItem('currentUser'));
+            if(userInfo == null){
+                common_dealLogOut()
+            }
+            console.log('当前用户信息：'+JSON.stringify(userInfo))
+            return userInfo
+        }catch (e) {
+            common_dealLogOut()
+        }
+    },
+    //获取学院专业
+    'getCollegeMajor':()=>{
+        return [{
+            id:'01',
+            child:['0101','0102']
+        },{
+            id:'02',
+            child:['0201','0202']
+        },{
+            id:'03',
+            child:['0301','0302','0303']
+        },{
+            id:'04',
+            child:['0401','0402','0403']
+        },{
+            id:'05',
+            child:['0501','0502']
+        }]
     },
 
 }
@@ -167,7 +311,7 @@ const operateQuestion = {
         question.answer && (question.answer = QBMsysUtils.saveArray(question.answer))
         question.id = QBMsysUtils.getTimeStamp()
         question.lastUpdate = QBMsysUtils.getTimeStamp();
-        question.author = QBMsysUtils.getUserInfo().userName;
+        question.author = QBMsysUtils.getUserInfo().name;
         let key = question.id;
         let value = QBMsysUtils.saveJson(question)
         window.localStorage.setItem(key, value)
@@ -188,7 +332,7 @@ const operateQuestion = {
         question.answer && (question.answer = QBMsysUtils.saveArray(question.answer))
         question.id = id + "-1";
         question.lastUpdate = QBMsysUtils.getTimeStamp();
-        question.author = QBMsysUtils.getUserInfo().userName;
+        question.author = QBMsysUtils.getUserInfo().name;
         let key = question.id;
         let value = QBMsysUtils.saveJson(question)
         window.localStorage.setItem(key, value)
@@ -217,6 +361,7 @@ const operateQuestion = {
                     questionFinished = []
                 }
                 questionFinished.push(key)
+                window.localStorage.setItem('questionFinished', QBMsysUtils.saveArray(questionFinished))
                 // 更新本地存储的数据
                 window.localStorage.setItem(key, window.localStorage.getItem(id))
             }
@@ -234,6 +379,7 @@ const operateQuestion = {
                     questionFinished = []
                 }
                 questionFinished.push(key)
+                window.localStorage.setItem('questionFinished', QBMsysUtils.saveArray(questionFinished))
                 // 本地数据已存在，不需要更新
                 return
             }
@@ -249,14 +395,14 @@ const operateQuestion = {
         }
         questionFinished.splice(questionFinished.indexOf(id), 1);
         window.localStorage.removeItem(id);
-        window.localStorage.setItem('questionFinished',QBMsysUtils.saveArray(questionFinished));
+        window.localStorage.setItem('questionFinished', QBMsysUtils.saveArray(questionFinished));
     },
     // 根据id获取试题对象
     'query': (id) => {
         try {
             let question = QBMsysUtils.getJson(localStorage.getItem(id))
-            question.options && QBMsysUtils.getArray(question.options)
-            question.answer && QBMsysUtils.getArray(question.answer)
+            // question.options && QBMsysUtils.getArray(question.options)
+            // question.answer && QBMsysUtils.getArray(question.answer)
             return QBMsysUtils.getJson(localStorage.getItem(id))
         } catch (e) {
             console.error('QBMsys logInfo >> 试题：' + id + ' 查询失败')
@@ -264,22 +410,26 @@ const operateQuestion = {
         }
     },
     // 获取试题数据 01-新建表    02-更新表  03-完成表
-    'getData':(type)=>{
+    'getData': (type) => {
         let tabName = '';
         let questionData = [];
         let arr = [];
         switch (type) {
-            case '01': tabName= 'questionCreate';break;
-            case '02': tabName= 'questionUpdate';break;
-            case '03': tabName= 'questionFinished';break;
+            case '01':
+                tabName = 'questionCreate';
+                break;
+            case '02':
+                tabName = 'questionUpdate';
+                break;
+            case '03':
+                tabName = 'questionFinished';
+                break;
         }
-        localStorage.setItem('questionUpdate',localStorage.getItem('questionCreate'))
-        localStorage.setItem('questionFinished',localStorage.getItem('questionCreate'))
         arr = QBMsysUtils.getArray(localStorage.getItem(tabName));
-        for (i in arr){
+        for (i in arr) {
             questionData.push(operateQuestion.query(arr[i]))
         }
-        return questionData.filter((item)=>{
+        return questionData.filter((item) => {
             return (item != undefined)
         });
     }
@@ -295,7 +445,7 @@ const operatePaper = {
         paper.shortanswerQuestion && (paper.shortanswerQuestion = QBMsysUtils.saveArray(paper.shortanswerQuestion))
         paper.id = QBMsysUtils.getTimeStamp()
         paper.lastUpdate = QBMsysUtils.getTimeStamp();
-        paper.author = QBMsysUtils.getUserInfo().userName;
+        paper.author = QBMsysUtils.getUserInfo().name;
         let key = paper.id;
         let value = QBMsysUtils.saveJson(paper)
         window.localStorage.setItem(key, value)
@@ -318,7 +468,7 @@ const operatePaper = {
         paper.shortanswerQuestion && (paper.shortanswerQuestion = QBMsysUtils.saveArray(paper.shortanswerQuestion))
         paper.id = id + "-1";
         paper.lastUpdate = QBMsysUtils.getTimeStamp();
-        paper.author = QBMsysUtils.getUserInfo().userName;
+        paper.author = QBMsysUtils.getUserInfo().name;
         let key = paper.id;
         let value = QBMsysUtils.saveJson(paper)
         window.localStorage.setItem(key, value)
@@ -347,6 +497,7 @@ const operatePaper = {
                     paperFinished = []
                 }
                 paperFinished.push(key)
+                window.localStorage.setItem('paperFinished', QBMsysUtils.saveArray(paperFinished))
                 // 更新本地存储的数据
                 window.localStorage.setItem(key, window.localStorage.getItem(id))
             }
@@ -364,6 +515,7 @@ const operatePaper = {
                     paperFinished = []
                 }
                 paperFinished.push(key)
+                window.localStorage.setItem('paperFinished', QBMsysUtils.saveArray(paperFinished))
                 // 本地数据已存在，不需要更新
                 return
             }
@@ -379,7 +531,7 @@ const operatePaper = {
         }
         paperFinished.splice(paperFinished.indexOf(id), 1);
         window.localStorage.removeItem(id);
-        window.localStorage.setItem('paperFinished',QBMsysUtils.saveArray(paperFinished));
+        window.localStorage.setItem('paperFinished', QBMsysUtils.saveArray(paperFinished));
     },
     // 根据id获取试卷对象
     'query': (id) => {
@@ -405,22 +557,133 @@ const operatePaper = {
         }
     },
     // 获取试卷数据 01-新建表    02-更新表  03-完成表
-    'getData':(type)=>{
+    'getData': (type) => {
         let tabName = '';
         let paperData = [];
         let arr = [];
         switch (type) {
-            case '01': tabName= 'paperCreate';break;
-            case '02': tabName= 'paperUpdate';break;
-            case '03': tabName= 'paperFinished';break;
+            case '01':
+                tabName = 'paperCreate';
+                break;
+            case '02':
+                tabName = 'paperUpdate';
+                break;
+            case '03':
+                tabName = 'paperFinished';
+                break;
         }
-        localStorage.setItem('paperUpdate',localStorage.getItem('paperCreate'))
-        localStorage.setItem('paperFinished',localStorage.getItem('paperCreate'))
         arr = QBMsysUtils.getArray(localStorage.getItem(tabName));
-        for (i in arr){
+        for (i in arr) {
             paperData.push(operatePaper.query(arr[i]))
         }
         return paperData;
+    }
+}
+
+// 用户 两个 申请待审核  审核通过
+const operateUser = {
+    'create': (user) => {
+        let userCreate;
+        try {
+            userCreate = QBMsysUtils.getArray(window.localStorage.getItem('userCreate'))
+        } catch (e) {
+            userCreate = []
+        }
+        if(user.authType == '02'){
+            user.cuorseList = ['01','02','03','04','05','06']
+        }
+        let key = user.id;
+        let value = QBMsysUtils.saveJson(user)
+        if(-1 != userCreate.indexOf(key)){
+            alert('该用户的账号申请正在审核中，请耐心等待！')
+            return
+        }
+        userCreate.push(key);
+        window.localStorage.setItem(key, value)
+        window.localStorage.setItem('userCreate', QBMsysUtils.saveArray(userCreate));
+    },
+    'update': (user) => {
+        let key = user.id;
+        let value = QBMsysUtils.saveJson(user)
+        window.localStorage.setItem(key, value)
+    },
+    'examine': (id) => {
+        let userCreate = QBMsysUtils.getArray(window.localStorage.getItem('userCreate'))
+        userCreate.splice(userCreate.indexOf(id), 1);
+        let userFinished;
+        try {
+            userFinished = QBMsysUtils.getArray(window.localStorage.getItem('userFinished'))
+        } catch (e) {
+            userFinished = []
+        }
+        userFinished.push(id)
+        window.localStorage.setItem('userCreate', QBMsysUtils.saveArray(userCreate));
+        window.localStorage.setItem('userFinished', QBMsysUtils.saveArray(userFinished));
+    },
+    'delete': (id) => {
+        let userFinished;
+        try {
+            userFinished = QBMsysUtils.getArray(window.localStorage.getItem('userFinished'))
+        } catch (e) {
+            userFinished = []
+        }
+        userFinished.splice(userFinished.indexOf(id), 1);
+        window.localStorage.removeItem(id);
+        window.localStorage.setItem('userFinished', QBMsysUtils.saveArray(userFinished));
+    },
+    'query': (id) => {
+        try {
+            let user = QBMsysUtils.getJson(localStorage.getItem(id))
+            return user
+        } catch (e) {
+            console.error('QBMsys logInfo >> 用户：' + id + ' 查询失败')
+            return undefined
+        }
+    },
+    // 获取试题数据 01-新建表    02-完成表
+    'getData': (type) => {
+        let tabName = '';
+        let userData = [];
+        let arr = [];
+        switch (type) {
+            case '01':
+                tabName = 'userCreate';
+                break;
+            case '02':
+                tabName = 'userFinished';
+                break;
+        }
+        arr = QBMsysUtils.getArray(localStorage.getItem(tabName));
+        for (i in arr) {
+            userData.push(operateUser.query(arr[i]))
+        }
+        return userData.filter((item) => {
+            return (item != undefined)
+        });
+    },
+    'login':(id,pwd)=>{
+        let userFinished = QBMsysUtils.getArray(window.localStorage.getItem('userFinished'))
+        if(-1 != userFinished.indexOf(id)){
+            try {
+                let userInfo = QBMsysUtils.getJson(window.localStorage.getItem(id))
+                if(userInfo.pwd != pwd){
+                    alert('用户名或密码错误!')
+                }else{
+                    window.sessionStorage.setItem('currentUser',window.localStorage.getItem(id));
+                    window.location.href = '../../html/main/main.html';
+                }
+            }catch (e) {
+                alert('用户数据获取失败，请联系管理员!')
+            }
+        }else{
+            alert('用户名或密码错误!')
+        }
+    },
+    'logout':function(flag){
+        // if(flag) {
+            window.sessionStorage.removeItem('currentUser');
+            window.location.href = '../../html/login/login.html';
+        // }
     }
 }
 
@@ -476,4 +739,15 @@ const operatePaper = {
 *
 * 本地存储的key值和对象的id是同一个值  修改表中的key值和id都为 原值 加 字符串 ‘-1’
 *
+* 用户对象
+* {
+    id:"",//职工号 （8位） or 学号（12位）
+    name:"",
+    authType:"",//00-管理员 01-教师 02-学生
+    department:"",//学院
+    subject:"",//专业
+    cuorseList:"",//学生多门课程，教师一门课程  仅用于登录时展示
+    email:"",
+    pwd:"",
+}
 * */
