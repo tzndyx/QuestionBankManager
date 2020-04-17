@@ -14,7 +14,7 @@ function questiondetailCtrl($scope) {
             lastUpdate: "",
             title: "",
             type: "",
-            descripe: "",
+            describe: "",
             options: [],//以下五个字符串转数组
             answer: []//元素为 答案在options中的下标（仅对选择和判断题有效）
         }*/
@@ -89,7 +89,7 @@ function questiondetailCtrl($scope) {
             case $scope.nowEdited.type:
                 alert('请选择题目类型');
                 return;
-            case $scope.nowEdited.descripe:
+            case $scope.nowEdited.describe:
                 alert('请输入题目描述');
                 return;
         }

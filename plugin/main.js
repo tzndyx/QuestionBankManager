@@ -11,23 +11,22 @@ function f() {
         return -1;
     };
 
-
     localStorage.setItem('questionUpdate', localStorage.getItem('questionCreate'))
     localStorage.setItem('questionFinished', localStorage.getItem('questionCreate'))
     localStorage.setItem('paperUpdate', localStorage.getItem('paperCreate'))
     localStorage.setItem('paperFinished', localStorage.getItem('paperCreate'))
     localStorage.setItem('userFinished', "8144;0001")
     let s = {
-        id:"8144",//职工号 （8位） or 学号（12位）
-        name:"张三",
-        authType:"01",//00-管理员 01-教师 02-学生
-        department:"01",//学院
-        subject:"0101",//专业
-        cuorseList:"01;02;03",//学生多门课程，教师一门课程  仅用于登录时展示
-        email:"tzndyx@qq.com",
-        pwd:"tkynzj888",
+        id: "8144",//职工号 （8位） or 学号（12位）
+        name: "张三",
+        authType: "01",//00-管理员 01-教师 02-学生
+        department: "01",//学院
+        subject: "0101",//专业
+        cuorseList: "01;02;03",//学生多门课程，教师一门课程  仅用于登录时展示
+        email: "tzndyx@qq.com",
+        pwd: "tkynzj888",
     }
-    localStorage.setItem('8144',JSON.stringify(s))
+    localStorage.setItem('8144', JSON.stringify(s))
 }
 
 f()
@@ -39,6 +38,7 @@ QBMsys.filter('updateTime', function () {
         return new Date(parseInt(text) * 1000).toLocaleString().replace(/年|月/g, "-").replace(/日/g, " ")
     }
 })
+/*过滤器*/
 // 试题类型 选择题-01 填空题-02 判断题-03 名词解释题-04 简答题-05
 QBMsys.filter('questionType', function () {
     return function (text) {
@@ -123,6 +123,7 @@ QBMsys.filter('questionType', function () {
         }
     }
 })
+
 //注入公共方法，塞入路由传参
 const injectCommon = (obj) => {
     console.log('info>> inject started')
@@ -161,6 +162,7 @@ const injectCommon = (obj) => {
         $(".common_shortcuts").animate({'right': '-1.4rem'}, 300);
     }
     obj.backTOtop = function () {
+        // TODO 通过定位到锚点来实现
         document.body.scrollTop = document.documentElement.scrollTop = 0;
     }
     obj.goToHome = function () {
@@ -190,14 +192,17 @@ const injectCommon = (obj) => {
     // TODO 设置openList
     // 'login.html' != window.location.pathname.split('/').reverse()[0] && sessionStorage.getItem('loginFlag') == null && obj.goto('login')
 }
-function common_dealLogOut(){
-    if('login.html' != window.location.pathname.split('/').reverse()[0]){
+
+function common_dealLogOut() {
+    if ('login.html' != window.location.pathname.split('/').reverse()[0]) {
         alert("登录超时，请重新登录！")
         window.location.href = '../../html/login/login.html';
     }
 }
+
 //常用工具方法模块
 var QBMsysUtils = {
+    'userInfo':{},
     // 获取时间戳
     'getTimeStamp': () => {
         return Math.round(new Date() / 1000)
@@ -238,8 +243,9 @@ var QBMsysUtils = {
             id: '',
             lastUpdate: "",
             title: "",
+            cuorse: "",
             type: "",
-            descripe: "",
+            describe: "",
             options: [],//以下五个字符串转数组
             answer: []//元素为 答案在options中的下标（仅对选择和判断题有效）
         }
@@ -249,7 +255,8 @@ var QBMsysUtils = {
             id: '',
             lastUpdate: "",
             title: "",
-            descripe: "",
+            cuorse: "",
+            describe: "",
             choiceQuestion: [],  //以下五个字符串转数组
             fillblankQuestion: [],
             judgementQuestion: [],
@@ -257,47 +264,62 @@ var QBMsysUtils = {
             shortanswerQuestion: []
         }
     },
-    'getUserTemplate': ()=>{
+    'getUserTemplate': () => {
         return {
-            id:"",//职工号 （8位） or 学号（12位）
-            name:"",
-            authType:"",//00-管理员 01-教师 02-学生
-            department:"",//学院
-            subject:"",//专业
-            cuorseList:"",//学生多门课程，教师一门课程  仅用于登录时展示
-            email:"",
-            pwd:"",
+            id: "",//职工号 （8位） or 学号（12位）
+            name: "",
+            authType: "",//00-管理员 01-教师 02-学生
+            department: "",//学院
+            subject: "",//专业
+            cuorseList: "",//学生多门课程，教师一门课程  仅用于登录时展示
+            email: "",
+            pwd: "",
+        }
+    },
+    'getMessageTemplate': () => {
+        return {
+            id: '',//时间戳 也是创建时间
+            title: '',//标题
+            describe: '',//内容
+            author: '',//创建人
+            type: '',//00-给管理员（建议） 01-给老师 02-给学生 03-给学生和老师
         }
     },
     'getUserInfo': () => {
-        try {
-            let userInfo = QBMsysUtils.getJson(window.sessionStorage.getItem('currentUser'));
-            if(userInfo == null){
+        if(this.userInfo.id){
+            return this.userInfo
+        }else{
+            try {
+                let userInfo = QBMsysUtils.getJson(window.sessionStorage.getItem('currentUser'));
+                if (userInfo == null) {
+                    common_dealLogOut()
+                }
+                console.log('当前用户信息：' + JSON.stringify(userInfo))
+                this.userInfo = userInfo;
+                return this.userInfo
+            } catch (e) {
                 common_dealLogOut()
+                return
             }
-            console.log('当前用户信息：'+JSON.stringify(userInfo))
-            return userInfo
-        }catch (e) {
-            common_dealLogOut()
         }
     },
     //获取学院专业
-    'getCollegeMajor':()=>{
+    'getCollegeMajor': () => {
         return [{
-            id:'01',
-            child:['0101','0102']
-        },{
-            id:'02',
-            child:['0201','0202']
-        },{
-            id:'03',
-            child:['0301','0302','0303']
-        },{
-            id:'04',
-            child:['0401','0402','0403']
-        },{
-            id:'05',
-            child:['0501','0502']
+            id: '01',
+            child: ['0101', '0102']
+        }, {
+            id: '02',
+            child: ['0201', '0202']
+        }, {
+            id: '03',
+            child: ['0301', '0302', '0303']
+        }, {
+            id: '04',
+            child: ['0401', '0402', '0403']
+        }, {
+            id: '05',
+            child: ['0501', '0502']
         }]
     },
 
@@ -312,6 +334,7 @@ const operateQuestion = {
         question.id = QBMsysUtils.getTimeStamp()
         question.lastUpdate = QBMsysUtils.getTimeStamp();
         question.author = QBMsysUtils.getUserInfo().name;
+        question.cuorse = QBMsysUtils.getUserInfo().cuorse;
         let key = question.id;
         let value = QBMsysUtils.saveJson(question)
         window.localStorage.setItem(key, value)
@@ -429,8 +452,8 @@ const operateQuestion = {
         for (i in arr) {
             questionData.push(operateQuestion.query(arr[i]))
         }
-        return questionData.filter((item) => {
-            return (item != undefined)
+        return questionData.filter(function (item) {
+            return (item != undefined && item.cuorse == QBMsysUtils.getUserInfo().cuorse) //只返回当前科目的列表
         });
     }
 }
@@ -446,6 +469,7 @@ const operatePaper = {
         paper.id = QBMsysUtils.getTimeStamp()
         paper.lastUpdate = QBMsysUtils.getTimeStamp();
         paper.author = QBMsysUtils.getUserInfo().name;
+        paper.cuorse = QBMsysUtils.getUserInfo().cuorse;
         let key = paper.id;
         let value = QBMsysUtils.saveJson(paper)
         window.localStorage.setItem(key, value)
@@ -576,10 +600,11 @@ const operatePaper = {
         for (i in arr) {
             paperData.push(operatePaper.query(arr[i]))
         }
-        return paperData;
+        return paperData.filter(function (item) {
+            return (item != undefined && item.cuorse == QBMsysUtils.getUserInfo().cuorse) //只返回当前科目的列表
+        });
     }
 }
-
 // 用户 两个 申请待审核  审核通过
 const operateUser = {
     'create': (user) => {
@@ -589,12 +614,12 @@ const operateUser = {
         } catch (e) {
             userCreate = []
         }
-        if(user.authType == '02'){
-            user.cuorseList = ['01','02','03','04','05','06']
+        if (user.authType == '02') {
+            user.cuorseList = ['01', '02', '03', '04', '05', '06']
         }
         let key = user.id;
         let value = QBMsysUtils.saveJson(user)
-        if(-1 != userCreate.indexOf(key)){
+        if (-1 != userCreate.indexOf(key)) {
             alert('该用户的账号申请正在审核中，请耐心等待！')
             return
         }
@@ -661,32 +686,103 @@ const operateUser = {
             return (item != undefined)
         });
     },
-    'login':(id,pwd)=>{
+    'login': (id, pwd) => {
         let userFinished = QBMsysUtils.getArray(window.localStorage.getItem('userFinished'))
-        if(-1 != userFinished.indexOf(id)){
+        if (-1 != userFinished.indexOf(id)) {
             try {
                 let userInfo = QBMsysUtils.getJson(window.localStorage.getItem(id))
-                if(userInfo.pwd != pwd){
+                if (userInfo.pwd != pwd) {
                     alert('用户名或密码错误!')
-                }else{
-                    window.sessionStorage.setItem('currentUser',window.localStorage.getItem(id));
+                } else {
+                    window.sessionStorage.setItem('currentUser', window.localStorage.getItem(id));
                     window.location.href = '../../html/main/main.html';
                 }
-            }catch (e) {
+            } catch (e) {
                 alert('用户数据获取失败，请联系管理员!')
             }
-        }else{
+        } else {
             alert('用户名或密码错误!')
         }
     },
-    'logout':function(flag){
+    'logout': function (flag) {
         // if(flag) {
-            window.sessionStorage.removeItem('currentUser');
-            window.location.href = '../../html/login/login.html';
+        window.sessionStorage.removeItem('currentUser');
+        window.location.href = '../../html/login/login.html';
         // }
+    },
+    'setCuorse': (cuorse) => {
+        let user = QBMsysUtils.getUserInfo();
+        user.cuorse = cuorse;
+        window.sessionStorage.setItem('currentUser', user);
     }
 }
-
+const operateMessage = {
+    'create': (message) => {
+        message.id = QBMsysUtils.getTimeStamp()
+        message.author = QBMsysUtils.getUserInfo().name;
+        let key = message.id;
+        let value = QBMsysUtils.saveJson(message);
+        let messageFinished;
+        try {
+            messageFinished = window.localStorage.getItem('messageFinished')
+        } catch (e) {
+            messageFinished = [];
+        }
+        messageFinished.push(key);
+        window.localStorage.setItem(key, value);
+        window.localStorage.setItem('messageFinished', QBMsysUtils.saveArray(messageFinished));
+    },
+    'query': (id) => {
+        try {
+            let message = JSON.parse(localStorage.getItem(id));
+            return message
+        } catch (e) {
+            console.error('QBMsys logInfo >> 公告：' + id + ' 查询失败')
+        }
+    },
+    'delete': (id) => {
+        let messageFinished;
+        try {
+            messageFinished = QBMsysUtils.getArray(window.localStorage.getItem('messageFinished'))
+        } catch (e) {
+            messageFinished = []
+        }
+        messageFinished.splice(messageFinished.indexOf(id), 1);
+        window.localStorage.removeItem(id);
+        window.localStorage.setItem('messageFinished', QBMsysUtils.saveArray(messageFinished));
+    },
+    'getData': () => {
+        /*
+            * authType:"",//00-管理员 01-教师 02-学生
+            * type:'',//00-给管理员（建议） 01-给老师 02-给学生 03-给学生和老师
+            * 管理员得到全部 authType=='00'时返回全部，根据item的 type 来区分建议和公告
+            * 非管理员 得到 authType跟 type相同的 和 03 两类
+        */
+        function dealFilter(item){
+            if((item == undefined)){return false}
+            if (QBMsysUtils.getUserInfo().authType == '00'){
+                return true
+            }else if(item.type == QBMsysUtils.getUserInfo().authType || item.type == '03'){
+                return true
+            }
+        }
+        let messageData = [];
+        let arr = [];
+        arr = QBMsysUtils.getArray(localStorage.getItem('messageFinished'));
+        for (i in arr) {
+            messageData.push(operateMessage.query(arr[i]))
+        }
+        if (QBMsysUtils.getUserInfo().authType == '00'){
+            return messageData.filter((item) => {
+                return (item != undefined)
+            });
+        }else{
+            return messageData.filter((item) => {
+                return ((item != undefined) && (item.type == QBMsysUtils.getUserInfo().authType || item.type == '03'))
+            });
+        }
+    }
+}
 /*TODO
 *question对象
 * {
@@ -694,7 +790,8 @@ const operateUser = {
     lastUpdate："修改提交的时间--新建提交、修改提交、审核提交",
     title:"",
     type:"",
-    descripe:"",
+    cuorse:"",//科目
+    describe:"",
     options:"",//以下五个字符串转数组
     answer:""
 }
@@ -704,7 +801,8 @@ const operateUser = {
     id:'时间戳',
     lastUpdate："修改提交的时间--新建提交、修改提交、审核提交",
     title:"",
-    descripe:"",
+    cuorse:"",//科目
+    describe:"",
     choiceQuestion:"",  //以下五个字符串转数组
     fillblankQuestion:"",
     judgementQuestion:"",
@@ -749,5 +847,19 @@ const operateUser = {
     cuorseList:"",//学生多门课程，教师一门课程  仅用于登录时展示
     email:"",
     pwd:"",
+}
+*
+* authType:"",//00-管理员 01-教师 02-学生
+* type:'',//00-给管理员（建议） 01-给老师 02-给学生 03-给学生和老师
+* 管理员得到全部 authType=='00'时返回全部，根据item的 type 来区分建议和公告
+* 非管理员 得到 authType跟 type相同的 和 03 两类
+*
+* 消息对象
+* {
+    id:'',//时间戳 也是创建时间
+    title:'',//标题
+    describe:'',//内容
+    author:'',//创建人
+    type:'',//00-给管理员（建议） 01-给老师 02-给学生 03-给学生和老师
 }
 * */

@@ -16,7 +16,7 @@ function addPaperCtrl($scope) {
         $scope.shortanswerQuestion = [];
         // {
         //     title: "",
-        //     descripe: "",
+        //     describe: "",
         //     choiceQuestion: [],  //以下五个字符串转数组
         //     fillblankQuestion: [],
         //     judgementQuestion: [],
@@ -78,7 +78,7 @@ function addPaperCtrl($scope) {
     //     id: '',
     //     lastUpdate: "",
     //     title: "",
-    //     descripe: "",
+    //     describe: "",
     //     choiceQuestion: [],  //以下五个字符串转数组
     //     fillblankQuestion: [],
     //     judgementQuestion: [],

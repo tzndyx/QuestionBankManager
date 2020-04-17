@@ -57,7 +57,7 @@ function questiondetailCtrl($scope) {
             case $scope.nowEdited.type:
                 alert('请选择题目类型');
                 return;
-            case $scope.nowEdited.descripe:
+            case $scope.nowEdited.describe:
                 alert('请输入题目描述');
                 return;
         }

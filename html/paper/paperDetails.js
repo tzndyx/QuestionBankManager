@@ -77,7 +77,7 @@ function paperDetailCtrl($scope) {
     //     id: '',
     //     lastUpdate: "",
     //     title: "",
-    //     descripe: "",
+    //     describe: "",
     //     choiceQuestion: [],  //以下五个字符串转数组
     //     fillblankQuestion: [],
     //     judgementQuestion: [],
