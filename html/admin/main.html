@@ -13,9 +13,9 @@
         <p>题库管理系统</p>
     </div>
     <div class="examine_header_menu">
-        <p>待审核</p>
-        <p>用户管理</p>
-        <p>公告管理</p>
+        <p ng-click="changeMenu('01')">待审核</p>
+        <p ng-click="changeMenu('02')">用户管理</p>
+        <p ng-click="changeMenu('03')">公告管理</p>
     </div>
 
     <div class="common_header_btn">
@@ -23,11 +23,11 @@
     </div>
 </div>
 
-<div class="paper_main">
+<div class="paper_main" ng-show="searchParams.type == '01'">
     <div class="teacher_main_Q_title">
         <div>
-            <p style="background-color: #e6eae9;width: 5vw">{{paperList.length}}</p>
-            <p><span>审核类型</span><select class="teacher_main_Q_title_other" ng-model="searchParams.type" ng-click="search()"
+            <p style="background-color: #e6eae9;width: 5vw">{{resultList.length}}</p>
+            <p><span>审核类型</span><select class="teacher_main_Q_title_other" ng-model="searchParams.list" ng-click="search()"
                                         ng-options="k.type for k in examineType"></select></p>
             <p><span>申请时间</span> <img
                     ng-src="../../img/teacher/{{searchParams.descFlag ? 'desc.jpg':'asc.jpg' }}"
@@ -38,7 +38,7 @@
         <img class="teacher_main_img1" ng-click="togleMaxed()" ng-show="maxed" src="../../img/teacher/pull.jpg" alt="">
         <img class="teacher_main_img2" ng-click="togleMaxed()" ng-hide="maxed" src="../../img/teacher/push.jpg" alt="">
     </div>
-    <div class="teacher_main_Q_body" ng-class-even="'common_bg_f5'" ng-repeat="item in paperList track by $index">
+    <div class="teacher_main_Q_body" ng-class-even="'common_bg_f5'" ng-repeat="item in resultList track by $index">
         <p style="width: 5vw">{{$index + 1}}</p>
         <p ng-click="goto('paperDetails',{uncompileable:true,paper:item})" class="common_clickHover">{{item.title}}</p>
         <p>{{item.lastUpdate | updateTime}}</p>
@@ -49,7 +49,62 @@
             <span class="common_clickHover" ng-click="exportPaper(item)">拒绝</span>
         </p>
     </div>
+</div>
 
+<div class="paper_main" ng-show="searchParams.type == '02'">
+    <div class="teacher_main_Q_title">
+        <div>
+            <p style="background-color: #e6eae9;width: 5vw">{{resultList.length}}</p>
+            <p><span>用户类型</span><select class="teacher_main_Q_title_other" ng-model="searchParams.list" ng-click="search()"
+                                        ng-options="k.type for k in examineType"></select></p>
+            <p><span>更新时间</span> <img
+                    ng-src="../../img/teacher/{{searchParams.descFlag ? 'desc.jpg':'asc.jpg' }}"
+                    ng-click="search('time')"></p>
+            <p><span>用户名</span> <input class="teacher_main_Q_title_other" ng-model="searchParams.author" placeholder="按回车键搜索" type="text"></p>
+            <p style="justify-content: center">操作</p>
+        </div>
+        <img class="teacher_main_img1" ng-click="togleMaxed()" ng-show="maxed" src="../../img/teacher/pull.jpg" alt="">
+        <img class="teacher_main_img2" ng-click="togleMaxed()" ng-hide="maxed" src="../../img/teacher/push.jpg" alt="">
+    </div>
+    <div class="teacher_main_Q_body" ng-class-even="'common_bg_f5'" ng-repeat="item in resultList track by $index">
+        <p style="width: 5vw">{{$index + 1}}</p>
+        <p ng-click="goto('paperDetails',{uncompileable:true,paper:item})" class="common_clickHover">{{item.title}}</p>
+        <p>{{item.lastUpdate | updateTime}}</p>
+        <p class="common_clickHover">{{item.author}}</p>
+        <p class="paper_main_operate">
+            <span ng-click="goto('paperDetails',{uncompileable:false,paper:item})" class="common_clickHover">修改</span>
+            <span class="common_clickHover" ng-click="deletePaper(item)">同意</span>
+            <span class="common_clickHover" ng-click="exportPaper(item)">拒绝</span>
+        </p>
+    </div>
+</div>
+
+<div class="paper_main" ng-show="searchParams.type == '03'">
+    <div class="teacher_main_Q_title">
+        <div>
+            <p style="background-color: #e6eae9;width: 5vw">{{resultList.length}}</p>
+            <p><span>接收人类型</span><select class="teacher_main_Q_title_other" ng-model="searchParams.list" ng-click="search()"
+                                        ng-options="k.type for k in examineType"></select></p>
+            <p><span>更新时间</span> <img
+                    ng-src="../../img/teacher/{{searchParams.descFlag ? 'desc.jpg':'asc.jpg' }}"
+                    ng-click="search('time')"></p>
+            <p><span>公告标题</span> <input class="teacher_main_Q_title_other" ng-model="searchParams.author" placeholder="按回车键搜索" type="text"></p>
+            <p style="justify-content: center">操作</p>
+        </div>
+        <img class="teacher_main_img1" ng-click="togleMaxed()" ng-show="maxed" src="../../img/teacher/pull.jpg" alt="">
+        <img class="teacher_main_img2" ng-click="togleMaxed()" ng-hide="maxed" src="../../img/teacher/push.jpg" alt="">
+    </div>
+    <div class="teacher_main_Q_body" ng-class-even="'common_bg_f5'" ng-repeat="item in resultList track by $index">
+        <p style="width: 5vw">{{$index + 1}}</p>
+        <p ng-click="goto('paperDetails',{uncompileable:true,paper:item})" class="common_clickHover">{{item.title}}</p>
+        <p>{{item.lastUpdate | updateTime}}</p>
+        <p class="common_clickHover">{{item.author}}</p>
+        <p class="paper_main_operate">
+            <span ng-click="goto('paperDetails',{uncompileable:false,paper:item})" class="common_clickHover">修改</span>
+            <span class="common_clickHover" ng-click="deletePaper(item)">同意</span>
+            <span class="common_clickHover" ng-click="exportPaper(item)">拒绝</span>
+        </p>
+    </div>
 </div>
 
 <footer id="bar_common_footer" class="common_footer">

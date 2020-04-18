@@ -15,8 +15,7 @@ function mianCtrl($scope) {
 
     $scope.currenDealList = [];
     $scope.init = function () {
-        $scope.changeMenu('01');
-        $scope.initData();
+        $scope.changeMenu('01', true);
         // TODO 生成试卷用洗牌算法
         $scope.maxed = false;
 
@@ -44,18 +43,19 @@ function mianCtrl($scope) {
         }
     }
     $scope.search = function (changeTime) {
-
-        // var accountList = [];
-        // var questionList = [];
-        // var paperList = [];
-        // var userList = [];
-        // var noticeList = [];
-        let resultList = $scope.searchParams.type.list;
+        console.log($scope.searchParams)
+        let resultList = $scope.searchParams.list.list;
         $scope.resultList = [];
         changeTime && ($scope.searchParams.descFlag = !$scope.searchParams.descFlag)
         $scope.resultList = resultList.filter(function (item) {
-            return (-1 != item.author.indexOf($scope.searchParams.author))
-        })
+            if ($scope.searchParams.type == '01') {//审核 -- 提交者
+                return (-1 != item.author.indexOf($scope.searchParams.author) || -1 != item.name.indexOf($scope.searchParams.author))
+            } else if ($scope.searchParams.type == '02') {//用户管理 -- 用户名
+                return (-1 != item.author.indexOf($scope.searchParams.author) || -1 != item.name.indexOf($scope.searchParams.author))
+            } else {  //公告管理
+                return item
+            }
+        });
         $scope.resultList.sort(sortByTime)
 
         function sortByTime(a, b) {
@@ -95,6 +95,7 @@ function mianCtrl($scope) {
                 };
                 $scope.searchParams.list = $scope.examineType[0];
             }
+            console.error($scope.searchParams)
         } else if (type == '02') { //用户管理
             userList = operateUser.getData('02')
             if (initFlag) {
@@ -139,6 +140,7 @@ function mianCtrl($scope) {
                 $scope.searchParams.list = $scope.examineType[0];
             }
         }
+        $scope.searchParams.type = type;
         $scope.search()
     }
 }

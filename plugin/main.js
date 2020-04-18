@@ -237,13 +237,22 @@ var QBMsysUtils = {
         }
     },
     'getArray': (string) => {
-        return string.split(';');
+        if(string){
+            return string.split(';');
+        }
+        return []
     },
     'saveJson': (json) => {
-        return JSON.stringify(json);
+        if(json){
+            return JSON.stringify(json);
+        }
+        return "";
     },
     'getJson': (string) => {
-        return JSON.parse(string);
+        if(string){
+            return JSON.parse(string);
+        }
+        return {};
     },
     //根据JSON数组得到id的字符串
     'getIdString': (arr) => {
