@@ -4,36 +4,59 @@
 
 const router = {
     'login':{
-        url: 'html/login/login.html'
+        url: 'html/login/login.html',
+        auth_check:false
     },
     'accountApply':{
-        url: 'html/user/accountApply.html'
+        url: 'html/user/accountApply.html',
+        auth_check:false
     },
     'selectFrame':{
-        url: 'html/main/main.html'
+        url: 'html/main/main.html',
+        auth_check:true
+    },
+    'myInfo':{
+        url: 'html/user/myInfo.html',
+        auth_check:true
     },
     'userInfo':{
-        url: 'html/user/userInfo.html'
+        url: 'html/user/userInfo.html',
+        auth_check:true
+    },
+    'changePwd':{
+        url: 'html/user/changePwd.html',
+        auth_check:true
     },
     //试题
     'questionMain':{
-        url: 'html/question/main.html'
+        url: 'html/question/main.html',
+        auth_check:true
     },
     'questiondetails':{
-        url: 'html/question/questiondetails.html'
+        url: 'html/question/questiondetails.html',
+        auth_check:true
     },
     'addQuestion':{
-        url: 'html/question/addQuestion.html'
+        url: 'html/question/addQuestion.html',
+        auth_check:true
     },
     // 试卷
     'paperMain':{
-        url: 'html/paper/main.html'
+        url: 'html/paper/main.html',
+        auth_check:true
     },
     'paperDetails':{
-        url: 'html/paper/paperDetails.html'
+        url: 'html/paper/paperDetails.html',
+        auth_check:true
     },
     'addPaper':{
-        url: 'html/paper/addPaper.html'
+        url: 'html/paper/addPaper.html',
+        auth_check:true
+    },
+    // 管理员
+    'adminMain':{
+        url: 'html/admin/main.html',
+        auth_check:true
     },
 
 

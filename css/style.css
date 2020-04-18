@@ -225,7 +225,6 @@
     align-content: flex-start;
     width: 100vw;
     height: calc(100vh - 2rem);
-    background-color: #f6f6f6;
     overflow-y: scroll;
     padding-top: 2rem;
 }
@@ -253,7 +252,6 @@
     border-radius: 0.05rem;
     outline: none;
     font-size: 0.24rem;
-    background-color: #f6f6f6;
     text-indent: 0.2rem;
     box-shadow: none;
 }
@@ -283,7 +281,6 @@
     border-radius: 0.05rem;
     outline: none;
     font-size: 0.24rem;
-    background-color: #f6f6f6;
     text-indent: 0.2rem;
 }
 .user_info_list_textarea img{

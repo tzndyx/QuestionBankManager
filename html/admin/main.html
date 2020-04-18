@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>个人中心</title>
+    <title>管理中心</title>
     <script src="../../plugin/import.js"></script>
     <script src="main.js"></script>
 </head>
@@ -12,25 +12,10 @@
         <img src="../../img/common/logo.png" alt="">
         <p>题库管理系统</p>
     </div>
-    <div class="common_header_menu">
-        <div class="common_header_menu_float common_header_menu_float1"
-             ng-mouseover="commonToggleMenu('#common_header_menu_float1',true)"
-             ng-mouseleave="commonToggleMenu('#common_header_menu_float1',false)">
-            <p>题库管理</p>
-            <div id="common_header_menu_float1">
-                <p ng-click="goto('addQuestion')">题目添加</p>
-                <p ng-click="goto('questionMain')">题目维护</p>
-            </div>
-        </div>
-        <div class="common_header_menu_float common_header_menu_float2"
-             ng-mouseover="commonToggleMenu('#common_header_menu_float2',true)"
-             ng-mouseleave="commonToggleMenu('#common_header_menu_float2',false)">
-            <p>试卷管理</p>
-            <div id="common_header_menu_float2">
-                <p ng-click="goto('addPaper')">试卷添加</p>
-                <p>试卷维护</p>
-            </div>
-        </div>
+    <div class="examine_header_menu">
+        <p>待审核</p>
+        <p>用户管理</p>
+        <p>公告管理</p>
     </div>
 
     <div class="common_header_btn">
@@ -42,11 +27,12 @@
     <div class="teacher_main_Q_title">
         <div>
             <p style="background-color: #e6eae9;width: 5vw">{{paperList.length}}</p>
-            <p><span>试卷名称</span> <input class="teacher_main_Q_title_other" ng-model="searchParams.title" placeholder="按回车键搜索" type="text"></p>
-            <p><span>添加时间</span> <img
+            <p><span>审核类型</span><select class="teacher_main_Q_title_other" ng-model="searchParams.type" ng-click="search()"
+                                        ng-options="k.type for k in examineType"></select></p>
+            <p><span>申请时间</span> <img
                     ng-src="../../img/teacher/{{searchParams.descFlag ? 'desc.jpg':'asc.jpg' }}"
                     ng-click="search('time')"></p>
-            <p><span>添加人</span> <input class="teacher_main_Q_title_other" ng-model="searchParams.author" placeholder="按回车键搜索" type="text"></p>
+            <p><span>申请人</span> <input class="teacher_main_Q_title_other" ng-model="searchParams.author" placeholder="按回车键搜索" type="text"></p>
             <p style="justify-content: center">操作</p>
         </div>
         <img class="teacher_main_img1" ng-click="togleMaxed()" ng-show="maxed" src="../../img/teacher/pull.jpg" alt="">
@@ -59,8 +45,8 @@
         <p class="common_clickHover">{{item.author}}</p>
         <p class="paper_main_operate">
             <span ng-click="goto('paperDetails',{uncompileable:false,paper:item})" class="common_clickHover">修改</span>
-            <span class="common_clickHover" ng-click="deletePaper(item)">删除</span>
-            <span class="common_clickHover" ng-click="exportPaper(item)">导出</span>
+            <span class="common_clickHover" ng-click="deletePaper(item)">同意</span>
+            <span class="common_clickHover" ng-click="exportPaper(item)">拒绝</span>
         </p>
     </div>
 

@@ -10,11 +10,11 @@
 <div class="apply_top">
     <div class="apply_top_title">欢迎注册题库管理系统</div>
     <div class="apply_top_line">
-        <img class="apply_top_line_dot" src="{{titleLine[0]}}" alt="">
-        <img class="apply_top_line_line" src="{{titleLine[1]}}" alt="">
-        <img class="apply_top_line_dot" src="{{titleLine[2]}}" alt="">
-        <img class="apply_top_line_line" src="{{titleLine[3]}}" alt="">
-        <img class="apply_top_line_dot" src="{{titleLine[4]}}" alt="">
+        <img class="apply_top_line_dot" ng-src="{{titleLine[0]}}" alt="">
+        <img class="apply_top_line_line" ng-src="{{titleLine[1]}}" alt="">
+        <img class="apply_top_line_dot" ng-src="{{titleLine[2]}}" alt="">
+        <img class="apply_top_line_line" ng-src="{{titleLine[3]}}" alt="">
+        <img class="apply_top_line_dot" ng-src="{{titleLine[4]}}" alt="">
     </div>
     <div class="apply_top_txt">
         <p class="apply_top_txt_1">信息录入</p>
@@ -28,47 +28,54 @@
 <div class="apply_mid" ng-if="step == 1">
     <div class="apply_mid_form_list">
         <p>姓名</p>
-        <input type="text" ng-model="title" placeholder="请输入姓名" required="required">
+        <input type="text" ng-model="user.name" placeholder="请输入姓名">
     </div>
     <div class="apply_mid_form_list">
-        <p>职工号</p>
-        <input type="text" ng-model="title" placeholder="请输入职工号">
+        <p>注册类型</p>
+        <select class="teacher_main_Q_title_other" ng-model="authType" ng-click="deal(authType,'authType')"
+                ng-options="k.name for k in authList"></select>
+    </div>
+    <div class="apply_mid_form_list">
+        <p>{{authType.title}}</p>
+        <input type="tel" ng-model="user.id" placeholder="{{authType.placeholder}}" maxlength="{{authType.length}}" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')">
     </div>
     <div class="apply_mid_form_list">
         <p>所在院系</p>
-        <select name="" id=" ">
-            <option value='' disabled selected style='display:none;'>请选择所在院系</option>
-        </select>
+        <select class="teacher_main_Q_title_other" ng-model="department" ng-click="search()"
+                ng-options="k.name for k in departmentList"></select>
     </div>
-    <div class="apply_mid_form_list">
+    <div class="apply_mid_form_list" ng-show="authType.value == '02'">
+        <p>所学专业</p>
+        <select class="teacher_main_Q_title_other" ng-model="subject" ng-click="search()"
+                ng-options="k.name for k in subjectList"></select>
+    </div>
+    <div class="apply_mid_form_list" ng-show="authType.value == '01'">
         <p>所授课程</p>
-        <select name="" id="">
-            <option value='' disabled selected style='display:none;'>请选择所授课程</option>
-        </select>
+        <select class="teacher_main_Q_title_other" ng-model="cuorse" ng-click="search()"
+                ng-options="k.name for k in cuorseList"></select>
     </div>
     <div class="apply_mid_form_list">
         <p>邮箱</p>
-        <input type="email" placeholder="请输入邮箱">
+        <input type="email" ng-model="user.email" placeholder="请输入邮箱">
     </div>
-    <div class="apply_mid_btn" ng-click="goNext(2)">下一步</div>
+    <div class="apply_mid_btn" ng-click="toSetPwd()">下一步</div>
     <p class="apply_mid_err">{{errorMsg}}</p>
 </div>
 
 <div class="apply_mid" ng-if="step == 2">
     <div class="apply_mid_form_list">
         <p>密码</p>
-        <input type="password" style="text-align: right" ng-model="title" placeholder="请输入密码" required="required">
+        <input type="password" style="text-align: right" ng-model="pwd.pwd1" maxlength="12" placeholder="请输入密码">
     </div>
     <div class="apply_mid_form_list">
         <p>确认密码</p>
-        <input type="password" style="text-align: right" ng-model="title" placeholder="请再次输入密码">
+        <input type="password" style="text-align: right" ng-model="pwd.pwd2" maxlength="12" placeholder="请再次输入密码">
     </div>
     <div class="apply_mid_btn2">
         <div ng-click="goNext(1)">返回</div>
-        <div ng-click="goNext(3)">提交</div>
+        <div ng-click="toSubmit()">提交</div>
     </div>
     <p class="apply_mid_err">{{errorMsg}}</p>
-</div>
 </div>
 
 <div class="apply_mid" ng-if="step == 3">

@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <title>个人中心</title>
     <script src="../../plugin/import.js"></script>
-    <script src="main.js"></script>
+    <script src="user.js"></script>
 </head>
-<body ng-app="QBMsys" class="selectNone" ng-controller="mianCtrl" ng-init="init()">
+<body ng-app="QBMsys" class="selectNone" ng-controller="myInfoCtrl" ng-init="init()">
 <div id="bar_common_header" class="common_header">
     <div class="common_header_logo">
         <img src="../../img/common/logo.png" alt="">
@@ -27,7 +27,7 @@
              ng-mouseleave="commonToggleMenu('#common_header_menu_float2',false)">
             <p>试卷管理</p>
             <div id="common_header_menu_float2">
-                <p ng-click="goto('addPaper')">试卷添加</p>
+                <p>试卷添加</p>
                 <p>试卷维护</p>
             </div>
         </div>
@@ -38,32 +38,31 @@
     </div>
 </div>
 
-<div class="paper_main">
-    <div class="teacher_main_Q_title">
-        <div>
-            <p style="background-color: #e6eae9;width: 5vw">{{paperList.length}}</p>
-            <p><span>试卷名称</span> <input class="teacher_main_Q_title_other" ng-model="searchParams.title" placeholder="按回车键搜索" type="text"></p>
-            <p><span>添加时间</span> <img
-                    ng-src="../../img/teacher/{{searchParams.descFlag ? 'desc.jpg':'asc.jpg' }}"
-                    ng-click="search('time')"></p>
-            <p><span>添加人</span> <input class="teacher_main_Q_title_other" ng-model="searchParams.author" placeholder="按回车键搜索" type="text"></p>
-            <p style="justify-content: center">操作</p>
-        </div>
-        <img class="teacher_main_img1" ng-click="togleMaxed()" ng-show="maxed" src="../../img/teacher/pull.jpg" alt="">
-        <img class="teacher_main_img2" ng-click="togleMaxed()" ng-hide="maxed" src="../../img/teacher/push.jpg" alt="">
+<div class="user_info">
+    <div class="user_info_list">
+        <span>姓名</span>
+        <input type="text" ng-model="user.name" id="user_info_input1">
+        <img src="../../img/common/pencil.jpg" ng-click="doFocus('user_info_input1')">
     </div>
-    <div class="teacher_main_Q_body" ng-class-even="'common_bg_f5'" ng-repeat="item in paperList track by $index">
-        <p style="width: 5vw">{{$index + 1}}</p>
-        <p ng-click="goto('paperDetails',{uncompileable:true,paper:item})" class="common_clickHover">{{item.title}}</p>
-        <p>{{item.lastUpdate | updateTime}}</p>
-        <p class="common_clickHover">{{item.author}}</p>
-        <p class="paper_main_operate">
-            <span ng-click="goto('paperDetails',{uncompileable:false,paper:item})" class="common_clickHover">修改</span>
-            <span class="common_clickHover" ng-click="deletePaper(item)">删除</span>
-            <span class="common_clickHover" ng-click="exportPaper(item)">导出</span>
-        </p>
+    <div class="user_info_list">
+        <span>{{user.authType=='01'?'职工号':'学号'}}</span>
+        <input type="text" ng-value="user.id" readonly="readonly">
+    </div>
+    <div class="user_info_list">
+        <span>用户类型</span>
+        <input type="text" ng-value="user.authType" readonly="readonly">
+    </div>
+    <div class="user_info_list">
+        <span>学院</span>
+        <input type="text" ng-value="user.department|departmentType" readonly="readonly">
+    </div>
+    <div class="user_info_list">
+        <span>邮箱</span>
+        <input type="email" ng-model="user.email" id="user_info_input2">
+        <img src="../../img/common/pencil.jpg" ng-click="doFocus('user_info_input2')">
     </div>
 
+    <button class="user_info_btn" ng-click="submit()">提交修改</button>
 </div>
 
 <footer id="bar_common_footer" class="common_footer">

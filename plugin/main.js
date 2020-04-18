@@ -10,12 +10,12 @@ function f() {
         }
         return -1;
     };
-
+    return
     localStorage.setItem('questionUpdate', localStorage.getItem('questionCreate'))
     localStorage.setItem('questionFinished', localStorage.getItem('questionCreate'))
     localStorage.setItem('paperUpdate', localStorage.getItem('paperCreate'))
     localStorage.setItem('paperFinished', localStorage.getItem('paperCreate'))
-    localStorage.setItem('userFinished', "8144;0001")
+    localStorage.setItem('userFinished', "8144;system")
     let s = {
         id: "8144",//职工号 （8位） or 学号（12位）
         name: "张三",
@@ -26,7 +26,17 @@ function f() {
         email: "tzndyx@qq.com",
         pwd: "tkynzj888",
     }
-    localStorage.setItem('8144', JSON.stringify(s))
+    let s2 = {
+        id: "system",//职工号 （8位） or 学号（12位）
+        name: "管理员",
+        authType: "00",//00-管理员 01-教师 02-学生
+        department: "",//学院
+        subject: "",//专业
+        cuorseList: "",//学生多门课程，教师一门课程  仅用于登录时展示
+        email: "",
+        pwd: "p@ssw0rd",
+    }
+    localStorage.setItem('system', JSON.stringify(s2))
 }
 
 f()
@@ -57,7 +67,7 @@ QBMsys.filter('questionType', function () {
     }
 })
 // department 学院 01-机械工程 02-电子信息工程 03-经济管理 04-计算机科学与技术 05-材料科学与工程
-QBMsys.filter('questionType', function () {
+QBMsys.filter('departmentType', function () {
     return function (text) {
         switch (text) {
             case '01':
@@ -74,7 +84,7 @@ QBMsys.filter('questionType', function () {
     }
 })
 // subject 专业
-QBMsys.filter('questionType', function () {
+QBMsys.filter('subjectType', function () {
     return function (text) {
         switch (text) {
             case '0101':
@@ -105,7 +115,7 @@ QBMsys.filter('questionType', function () {
     }
 })
 // cuorseList 课程
-QBMsys.filter('questionType', function () {
+QBMsys.filter('cuorseType', function () {
     return function (text) {
         switch (text) {
             case '01':
@@ -194,15 +204,21 @@ const injectCommon = (obj) => {
 }
 
 function common_dealLogOut() {
-    if ('login.html' != window.location.pathname.split('/').reverse()[0]) {
+    let currentRoute = window.location.pathname.split('QuestionBankManager/').reverse()[0]
+    let openRoutes = [];
+    for(i in router){
+        if(!router[i].auth_check){
+            openRoutes.push(router[i].url)
+        }
+    }
+    if(-1 == openRoutes.indexOf(currentRoute)){
         alert("登录超时，请重新登录！")
         window.location.href = '../../html/login/login.html';
     }
 }
-
+var common_userInfo = {};
 //常用工具方法模块
 var QBMsysUtils = {
-    'userInfo':{},
     // 获取时间戳
     'getTimeStamp': () => {
         return Math.round(new Date() / 1000)
@@ -286,17 +302,17 @@ var QBMsysUtils = {
         }
     },
     'getUserInfo': () => {
-        if(this.userInfo.id){
-            return this.userInfo
-        }else{
+        if (common_userInfo.id) {
+            return common_userInfo
+        } else {
             try {
                 let userInfo = QBMsysUtils.getJson(window.sessionStorage.getItem('currentUser'));
                 if (userInfo == null) {
                     common_dealLogOut()
                 }
                 console.log('当前用户信息：' + JSON.stringify(userInfo))
-                this.userInfo = userInfo;
-                return this.userInfo
+                common_userInfo = userInfo;
+                return common_userInfo
             } catch (e) {
                 common_dealLogOut()
                 return
@@ -334,6 +350,7 @@ const operateQuestion = {
         question.id = QBMsysUtils.getTimeStamp()
         question.lastUpdate = QBMsysUtils.getTimeStamp();
         question.author = QBMsysUtils.getUserInfo().name;
+        question.authorId = QBMsysUtils.getUserInfo().id;
         question.cuorse = QBMsysUtils.getUserInfo().cuorse;
         let key = question.id;
         let value = QBMsysUtils.saveJson(question)
@@ -356,6 +373,7 @@ const operateQuestion = {
         question.id = id + "-1";
         question.lastUpdate = QBMsysUtils.getTimeStamp();
         question.author = QBMsysUtils.getUserInfo().name;
+        question.authorId = QBMsysUtils.getUserInfo().id;
         let key = question.id;
         let value = QBMsysUtils.saveJson(question)
         window.localStorage.setItem(key, value)
@@ -469,6 +487,7 @@ const operatePaper = {
         paper.id = QBMsysUtils.getTimeStamp()
         paper.lastUpdate = QBMsysUtils.getTimeStamp();
         paper.author = QBMsysUtils.getUserInfo().name;
+        paper.authorId = QBMsysUtils.getUserInfo().id;
         paper.cuorse = QBMsysUtils.getUserInfo().cuorse;
         let key = paper.id;
         let value = QBMsysUtils.saveJson(paper)
@@ -493,6 +512,7 @@ const operatePaper = {
         paper.id = id + "-1";
         paper.lastUpdate = QBMsysUtils.getTimeStamp();
         paper.author = QBMsysUtils.getUserInfo().name;
+        paper.authorId = QBMsysUtils.getUserInfo().id;
         let key = paper.id;
         let value = QBMsysUtils.saveJson(paper)
         window.localStorage.setItem(key, value)
@@ -617,6 +637,7 @@ const operateUser = {
         if (user.authType == '02') {
             user.cuorseList = ['01', '02', '03', '04', '05', '06']
         }
+        user.lastUpdate = QBMsysUtils.getTimeStamp();
         let key = user.id;
         let value = QBMsysUtils.saveJson(user)
         if (-1 != userCreate.indexOf(key)) {
@@ -628,9 +649,16 @@ const operateUser = {
         window.localStorage.setItem('userCreate', QBMsysUtils.saveArray(userCreate));
     },
     'update': (user) => {
-        let key = user.id;
-        let value = QBMsysUtils.saveJson(user)
-        window.localStorage.setItem(key, value)
+        common_userInfo = user;
+        window.sessionStorage.setItem('currentUser',QBMsysUtils.saveJson(user))
+
+        let userInfo = QBMsysUtils.getJson(window.localStorage.getItem(user.id));
+        userInfo.name = user.name;
+        userInfo.email = user.email;
+        userInfo.lastUpdate = QBMsysUtils.getTimeStamp();
+        window.sessionStorage.setItem(userInfo.id,QBMsysUtils.saveJson(userInfo))
+        alert('修改成功！')
+        window.history.back()
     },
     'examine': (id) => {
         let userCreate = QBMsysUtils.getArray(window.localStorage.getItem('userCreate'))
@@ -665,7 +693,7 @@ const operateUser = {
             return undefined
         }
     },
-    // 获取试题数据 01-新建表    02-完成表
+    // 获取用户数据 01-新建表    02-完成表
     'getData': (type) => {
         let tabName = '';
         let userData = [];
@@ -704,22 +732,42 @@ const operateUser = {
             alert('用户名或密码错误!')
         }
     },
-    'logout': function (flag) {
-        // if(flag) {
+    'logout': function () {
         window.sessionStorage.removeItem('currentUser');
         window.location.href = '../../html/login/login.html';
-        // }
     },
-    'setCuorse': (cuorse) => {
+    'setCuorse': (cuorseId) => {
         let user = QBMsysUtils.getUserInfo();
-        user.cuorse = cuorse;
-        window.sessionStorage.setItem('currentUser', user);
+        user.cuorse = cuorseId;
+        common_userInfo = user
+        window.sessionStorage.setItem('currentUser', QBMsysUtils.saveJson(user));
+    },
+    'changePwd': (oldPwd,newPwd) => {
+        try {
+            let userInfo2 = QBMsysUtils.getUserInfo()
+            if(oldPwd != userInfo2.pwd){
+                alert('原密码错误!')
+                return
+            }
+            let userInfo = QBMsysUtils.getJson(window.localStorage.getItem(userInfo2.id));
+            userInfo.pwd = newPwd;
+            userInfo2.pwd = newPwd;
+            window.sessionStorage.setItem('currentUser',QBMsysUtils.saveJson(userInfo2))
+            common_userInfo = userInfo2;
+            userInfo2.lastUpdate = QBMsysUtils.getTimeStamp();
+            window.localStorage.setItem(userInfo.id,QBMsysUtils.saveJson(userInfo))
+            alert('密码修改成功')
+            window.history.back()
+        } catch (e) {
+            alert('密码修改失败，请稍后再试!')
+        }
     }
 }
 const operateMessage = {
     'create': (message) => {
         message.id = QBMsysUtils.getTimeStamp()
         message.author = QBMsysUtils.getUserInfo().name;
+        message.authorId = QBMsysUtils.getUserInfo().id;
         let key = message.id;
         let value = QBMsysUtils.saveJson(message);
         let messageFinished;
@@ -758,25 +806,28 @@ const operateMessage = {
             * 管理员得到全部 authType=='00'时返回全部，根据item的 type 来区分建议和公告
             * 非管理员 得到 authType跟 type相同的 和 03 两类
         */
-        function dealFilter(item){
-            if((item == undefined)){return false}
-            if (QBMsysUtils.getUserInfo().authType == '00'){
+        function dealFilter(item) {
+            if ((item == undefined)) {
+                return false
+            }
+            if (QBMsysUtils.getUserInfo().authType == '00') {
                 return true
-            }else if(item.type == QBMsysUtils.getUserInfo().authType || item.type == '03'){
+            } else if (item.type == QBMsysUtils.getUserInfo().authType || item.type == '03') {
                 return true
             }
         }
+
         let messageData = [];
         let arr = [];
         arr = QBMsysUtils.getArray(localStorage.getItem('messageFinished'));
         for (i in arr) {
             messageData.push(operateMessage.query(arr[i]))
         }
-        if (QBMsysUtils.getUserInfo().authType == '00'){
+        if (QBMsysUtils.getUserInfo().authType == '00') {
             return messageData.filter((item) => {
                 return (item != undefined)
             });
-        }else{
+        } else {
             return messageData.filter((item) => {
                 return ((item != undefined) && (item.type == QBMsysUtils.getUserInfo().authType || item.type == '03'))
             });
@@ -793,7 +844,9 @@ const operateMessage = {
     cuorse:"",//科目
     describe:"",
     options:"",//以下五个字符串转数组
-    answer:""
+    answer:"",
+    author:"",
+    authorId:""
 }
 *
 *paper对象
@@ -807,7 +860,9 @@ const operateMessage = {
     fillblankQuestion:"",
     judgementQuestion:"",
     explanQuestion:"",
-    shortanswerQuestion:""
+    shortanswerQuestion:"",
+    author:"",
+    authorId:""
 }
 *
 * question表--新建--questionCreate
@@ -845,8 +900,11 @@ const operateMessage = {
     department:"",//学院
     subject:"",//专业
     cuorseList:"",//学生多门课程，教师一门课程  仅用于登录时展示
+    lastUpdate："",
     email:"",
     pwd:"",
+    author:"",
+    authorId:""
 }
 *
 * authType:"",//00-管理员 01-教师 02-学生

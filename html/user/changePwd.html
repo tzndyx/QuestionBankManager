@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>个人中心</title>
+    <script src="../../plugin/import.js"></script>
+    <script src="user.js"></script>
+</head>
+<body ng-app="QBMsys" class="selectNone" ng-controller="changePwdCtrl" ng-init="init()">
+<div class="common_titlebar">
+    <div>
+        <img ng-click="goback()" src="../../img/teacher/back.jpg" alt="">
+    </div>
+    <p>详细信息</p>
+    <div style="width: 0.6rem;"></div>
+</div>
+
+<div class="apply_mid">
+    <div class="user_info_list" style="margin-left: 0;width:7rem;margin-top: 1rem">
+        <span>原密码</span>
+        <input type="password" ng-model="pwd.pwd" placeholder="请输入原密码" id="changepwd_input1">
+        <img src="../../img/common/pencil.jpg" ng-click="doFocus('changepwd_input1')">
+    </div>
+    <div class="user_info_list" style="margin-left: 0;width:7rem">
+        <span>新密码</span>
+        <input type="password" ng-model="pwd.pwd1" placeholder="请输入新密码" id="changepwd_input2">
+        <img src="../../img/common/pencil.jpg" ng-click="doFocus('changepwd_input2')">
+    </div>
+    <div class="user_info_list" style="margin-left: 0;width:7rem">
+        <span>确认密码</span>
+        <input type="password" ng-model="pwd.pwd2" placeholder="请再次输入新密码" id="changepwd_input3">
+        <img src="../../img/common/pencil.jpg" ng-click="doFocus('changepwd_input3')">
+    </div>
+    <p class="apply_mid_err">{{errorMsg}}</p>
+</div>
+<button class="user_info_btn" style="margin-top: 1rem" ng-click="submit()">提交修改</button>
+
+<div class="questiondetail_tips">
+    <p>当前状态：可编辑。</p>
+</div>
+<div class="common_shortcuts" ng-mouseover="commonShowcomplete()" ng-mouseleave="commonHidecomplete()">
+    <div ng-click="goTohome()">
+        <img src="../../img/common/home.jpg" alt="">
+        <p>回到首页</p>
+    </div>
+    <div ng-click="goToMsg()">
+        <img src="../../img/common/suggest.jpg" alt="">
+        <p>我要留言</p>
+    </div>
+    <div class="borderNone" ng-click="backTOtop()">
+        <img src="../../img/common/backtop.jpg" alt="">
+        <p>回到顶部</p>
+    </div>
+</div>
+</body>
+</html>
