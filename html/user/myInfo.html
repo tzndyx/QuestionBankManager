@@ -7,35 +7,12 @@
     <script src="user.js"></script>
 </head>
 <body ng-app="QBMsys" class="selectNone" ng-controller="myInfoCtrl" ng-init="init()">
-<div id="bar_common_header" class="common_header">
-    <div class="common_header_logo">
-        <img src="../../img/common/logo.png" alt="">
-        <p>题库管理系统</p>
+<div class="common_titlebar">
+    <div>
+        <img ng-click="close()" src="../../img/teacher/back.jpg" alt="">
     </div>
-    <div class="common_header_menu">
-        <div class="common_header_menu_float common_header_menu_float1"
-             ng-mouseover="commonToggleMenu('#common_header_menu_float1',true)"
-             ng-mouseleave="commonToggleMenu('#common_header_menu_float1',false)">
-            <p>题库管理</p>
-            <div id="common_header_menu_float1">
-                <p ng-click="goto('addQuestion')">题目添加</p>
-                <p ng-click="goto('questionMain')">题目维护</p>
-            </div>
-        </div>
-        <div class="common_header_menu_float common_header_menu_float2"
-             ng-mouseover="commonToggleMenu('#common_header_menu_float2',true)"
-             ng-mouseleave="commonToggleMenu('#common_header_menu_float2',false)">
-            <p>试卷管理</p>
-            <div id="common_header_menu_float2">
-                <p>试卷添加</p>
-                <p>试卷维护</p>
-            </div>
-        </div>
-    </div>
-
-    <div class="common_header_btn">
-        <span ng-click="goto('myInfo')">个人中心</span>|<span>修改密码</span>|<span ng-click="goto('login')">退出登录</span>
-    </div>
+    <p>详细信息</p>
+    <div style="width: 0.6rem;"></div>
 </div>
 
 <div class="user_info">
@@ -50,7 +27,7 @@
     </div>
     <div class="user_info_list">
         <span>用户类型</span>
-        <input type="text" ng-value="user.authType" readonly="readonly">
+        <input type="text" ng-value="user.authType | authorType" readonly="readonly">
     </div>
     <div class="user_info_list">
         <span>学院</span>

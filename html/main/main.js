@@ -12,6 +12,7 @@ function mianCtrl($scope) {
         if($scope.user.authType == '00'){
             $scope.goreplace('adminMain');
         }else if($scope.user.authType == '01'){
+            operateUser.setCuorse($scope.user.cuorseList)
             $scope.goreplace('questionMain');
         }else{
             $scope.cuorseList = [

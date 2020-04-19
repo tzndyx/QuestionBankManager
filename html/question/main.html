@@ -12,13 +12,13 @@
         <img src="../../img/common/logo.png" alt="">
         <p>题库管理系统</p>
     </div>
-    <div class="common_header_menu">
+    <div ng-show="user.authType == '01'" class="common_header_menu">
         <div class="common_header_menu_float common_header_menu_float1"
              ng-mouseover="commonToggleMenu('#common_header_menu_float1',true)"
              ng-mouseleave="commonToggleMenu('#common_header_menu_float1',false)">
             <p>题库管理</p>
             <div id="common_header_menu_float1">
-                <p ng-click="goto('addQuestion')">题目添加</p>
+                <p ng-click="gotoNew('addQuestion')">题目添加</p>
                 <p>题目维护</p>
             </div>
         </div>
@@ -27,14 +27,19 @@
              ng-mouseleave="commonToggleMenu('#common_header_menu_float2',false)">
             <p>试卷管理</p>
             <div id="common_header_menu_float2">
-                <p ng-click="goto('addPaper')">试卷添加</p>
+                <p ng-click="gotoNew('addPaper')">试卷添加</p>
                 <p ng-click="goto('paperMain')">试卷维护</p>
             </div>
         </div>
     </div>
 
+    <div ng-hide="user.authType == '01'" class="examine_header_menu">
+        <p class="examine_header_menu_p">试题浏览</p>
+        <p ng-click="goto('paperMain')">试卷浏览</p>
+    </div>
     <div class="common_header_btn">
-        <span ng-click="goto('myInfo')">个人中心</span>|<span>修改密码</span>|<span ng-click="goto('login')">退出登录</span>
+        <span ng-click="gotoNew('myInfo')">个人中心</span>|<span ng-click="gotoNew('changePwd')">修改密码</span>|<span
+            ng-click="goto('login')">退出登录</span>
     </div>
 </div>
 
@@ -42,13 +47,16 @@
     <div class="teacher_main_Q_title">
         <div>
             <p style="background-color: #e6eae9;width: 5vw">{{questionList.length}}</p>
-            <p><span>题目名称</span> <input class="teacher_main_Q_title_other" ng-model="searchParams.title" placeholder="按回车键搜索" type="text"></p>
-            <p><span>题目类型</span> <select class="teacher_main_Q_title_other" ng-model="searchParams.type" ng-click="search()"
+            <p><span>题目名称</span> <input class="teacher_main_Q_title_other" ng-model="searchParams.title"
+                                        placeholder="按回车键搜索" type="text"></p>
+            <p><span>题目类型</span> <select class="teacher_main_Q_title_other" ng-model="searchParams.type"
+                                         ng-click="search()"
                                          ng-options="k as v for (k,v) in questionType"></select></p>
             <p><span>添加时间</span> <img
                     ng-src="../../img/teacher/{{searchParams.descFlag ? 'desc.jpg':'asc.jpg' }}"
                     ng-click="search('time')"></p>
-            <p><span>添加人</span> <input class="teacher_main_Q_title_other" ng-model="searchParams.author" placeholder="按回车键搜索" type="text"></p>
+            <p><span>添加人</span> <input class="teacher_main_Q_title_other" ng-model="searchParams.author"
+                                       placeholder="按回车键搜索" type="text"></p>
             <p style="justify-content: center">操作</p>
         </div>
         <img class="teacher_main_img1" ng-click="togleMaxed()" ng-show="maxed" src="../../img/teacher/pull.jpg" alt="">
@@ -56,11 +64,17 @@
     </div>
     <div class="teacher_main_Q_body" ng-class-even="'common_bg_f5'" ng-repeat="item in questionList track by $index">
         <p style="width: 5vw">{{$index + 1}}</p>
-        <p title="{{item.name}}" ng-click="goto('questiondetails',{uncompileable:true,question:item})" class="common_clickHover">{{item.title}}</p>
+        <p title="{{item.name}}" ng-click="goQuestionDetail(item)" class="common_clickHover">{{item.title}}</p>
         <p>{{item.type | questionType}}</p>
         <p>{{item.lastUpdate | updateTime}}</p>
-        <p class="common_clickHover">{{item.author}}</p>
-        <p><span ng-click="goto('questiondetails',{uncompileable:false,question:item})" class="common_clickHover">修改</span><span class="common_clickHover" ng-click="deleteQuestion(item)">删除</span></p>
+        <p class="common_clickHover" ng-click="gotoNew('readOnlyUser',{id:item.authorId})">{{item.author}}</p>
+        <p ng-show="user.authType == '01'">
+            <span ng-click="gotoNew('questiondetails',{uncompileable:false,question:item})" class="common_clickHover">修改</span>
+            <span class="common_clickHover" ng-click="deleteQuestion(item)">删除</span>
+        </p>
+        <p class="paper_main_operate" ng-hide="user.authType == '01'">
+            <span>--</span>
+        </p>
     </div>
 
 

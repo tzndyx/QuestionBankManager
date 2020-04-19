@@ -10,6 +10,7 @@ function mianCtrl($scope) {
     $scope.paperList = []
     var resultList;
     $scope.init = function () {
+        $scope.user = QBMsysUtils.getUserInfo();
         $scope.searchParams = {
             title: '',
             descFlag: true,
@@ -64,12 +65,10 @@ function mianCtrl($scope) {
             }
         })
         $scope.paperList.sort(sortByTime)
-
         function sortByTime(a, b) {
             if ($scope.searchParams.descFlag) return (Number(a.lastUpdate) - Number(b.lastUpdate))
             else return (Number(b.lastUpdate) - Number(a.lastUpdate))
         }
-
         setTimeout(function () {
             $scope.$apply();//更新视图
         },10)
@@ -83,5 +82,12 @@ function mianCtrl($scope) {
     }
     $scope.exportPaper = function (item) {
 
+    }
+    $scope.goPaperDetail = function (item) {
+        if($scope.user.authType == '01'){
+            $scope.gotoNew('paperDetails',{uncompileable:true,paper:item})
+        }else{
+            $scope.gotoNew('readOnlyPaper',{paper:item})
+        }
     }
 }

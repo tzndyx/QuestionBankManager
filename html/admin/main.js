@@ -81,7 +81,6 @@ function mianCtrl($scope) {
             if ($scope.searchParams.descFlag) return (Number(a.lastUpdate) - Number(b.lastUpdate))
             else return (Number(b.lastUpdate) - Number(a.lastUpdate))
         }
-
         setTimeout(function () {
             $scope.$apply();//更新视图
         }, 10);
@@ -117,6 +116,7 @@ function mianCtrl($scope) {
         if ($scope.searchParams && $scope.searchParams.type == type) {
             return
         }
+        $scope.initData(type);
         if (type == '01') { //审核管理
             $scope.examineType = [
                 {
@@ -220,4 +220,14 @@ function mianCtrl($scope) {
     }
 
     /*查看详情-试题、试卷、用户（新增和存量）、公告*/
+    $scope.toDetails = function (item) {
+        let itemList = $scope.searchParams.list.list;
+        switch (itemList) {
+            case 'accountList':
+            case 'userList': $scope.gotoNew('readOnlyUser',{id:item.id});break;//用户详情
+            case 'questionList': $scope.gotoNew('readOnlyQuestion',{question:item});break;//试题详情
+            case 'paperList': $scope.gotoNew('readOnlyPaper',{paper:item});break;//试卷详情
+            case 'noticeList': ;break;//公告详情
+        }
+    }
 }

@@ -9,6 +9,7 @@ function mianCtrl($scope) {
     injectCommon($scope)
     var resultList;
     $scope.init = function () {
+        $scope.user = QBMsysUtils.getUserInfo();
         $scope.searchParams = {
             title: '',
             type: '',
@@ -86,7 +87,6 @@ function mianCtrl($scope) {
             if ($scope.searchParams.descFlag) return (Number(a.lastUpdate) - Number(b.lastUpdate))
             else return (Number(b.lastUpdate) - Number(a.lastUpdate))
         }
-
         setTimeout(function () {
             $scope.$apply();//更新视图
         },10)
@@ -96,6 +96,13 @@ function mianCtrl($scope) {
             operateQuestion.delete(item.id)
             alert("删除成功")
             $scope.initData()
+        }
+    }
+    $scope.goQuestionDetail = function (item) {
+        if($scope.user.authType == '01'){
+            $scope.gotoNew('questiondetails',{uncompileable:true,question:item})
+        }else{
+            $scope.gotoNew('readOnlyQuestion',{question:item})
         }
     }
 }

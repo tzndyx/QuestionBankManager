@@ -4,12 +4,12 @@
     <meta charset="UTF-8">
     <title>个人中心</title>
     <script src="../../plugin/import.js"></script>
-    <script src="user.js"></script>
+    <script src="controllers.js"></script>
 </head>
-<body ng-app="QBMsys" class="selectNone" ng-controller="userInfoCtrl" ng-init="init()">
+<body ng-app="QBMsys" class="selectNone" ng-controller="userDetailsCtrl" ng-init="init()">
 <div class="common_titlebar">
     <div>
-        <img ng-click="goback()" src="../../img/teacher/back.jpg" alt="">
+        <img ng-click="close()" src="../../img/teacher/back.jpg" alt="">
     </div>
     <p>详细信息</p>
     <div style="width: 0.6rem;"></div>
@@ -34,8 +34,20 @@
             <span style="margin-left: 0.3rem">{{user.department | departmentType}}</span>
         </div>
     </div>
+    <div class="questiondetail_main_item" ng-show="user.authType=='02'">
+        <p>专业</p>
+        <div>
+            <span style="margin-left: 0.3rem">{{user.subject | subjectType}}</span>
+        </div>
+    </div>
+    <div class="questiondetail_main_item" ng-show="user.authType=='01'">
+        <p>所授课程</p>
+        <div>
+            <span style="margin-left: 0.3rem">{{user.cuorseList | cuorseType}}</span>
+        </div>
+    </div>
     <div class="questiondetail_main_item">
-        <p>学院</p>
+        <p>邮箱</p>
         <div>
             <span style="margin-left: 0.3rem">{{user.email}}</span>
         </div>

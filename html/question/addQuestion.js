@@ -106,6 +106,7 @@ function questiondetailCtrl($scope) {
             return
         }
         operateQuestion.create($scope.nowEdited);
+        alert('保存成功')
         $scope.nowEdited = QBMsysUtils.getQuestionTemplate();
     }
 

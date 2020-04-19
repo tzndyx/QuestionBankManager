@@ -19,7 +19,7 @@
     </div>
 
     <div class="common_header_btn">
-        <span ng-click="goto('myInfo')">个人中心</span>|<span>修改密码</span>|<span ng-click="goto('login')">退出登录</span>
+        <span ng-click="gotoNew('changePwd')">修改密码</span>|<span ng-click="goto('login')">退出登录</span>
     </div>
 </div>
 
@@ -42,10 +42,10 @@
     </div>
     <div class="teacher_main_Q_body" ng-class-even="'common_bg_f5'" ng-repeat="item in resultList track by $index">
         <p style="width: 5vw">{{$index + 1}}</p>
-        <p ng-click="goto('paperDetails',{uncompileable:true,paper:item})" class="common_clickHover">{{item.title ||
+        <p ng-click="toDetails(item)" class="common_clickHover">{{item.title ||
             (item.authType | authorType)}}</p>
         <p>{{item.lastUpdate | updateTime}}</p>
-        <p class="common_clickHover">{{item.author || item.name}}</p>
+        <p class="common_clickHover" ng-click="gotoNew('readOnlyUser',{id:item.authorId})">{{item.author || item.name}}</p>
         <p class="examine_main_operate">
             <span class="common_clickHover" ng-click="doExamine(item,true)">同意</span>
             <span class="common_clickHover" ng-click="doExamine(item,false)">拒绝</span>
@@ -72,9 +72,9 @@
     </div>
     <div class="teacher_main_Q_body" ng-class-even="'common_bg_f5'" ng-repeat="item in resultList track by $index">
         <p style="width: 5vw">{{$index + 1}}</p>
-        <p ng-click="goto('paperDetails',{uncompileable:true,paper:item})" class="common_clickHover">{{item.id}}</p>
+        <p ng-click="toDetails(item)" class="common_clickHover">{{item.id}}</p>
         <p>{{item.lastUpdate | updateTime}}</p>
-        <p class="common_clickHover">{{item.name}}</p>
+        <p class="common_clickHover" ng-click="toDetails(item)">{{item.name}}</p>
         <p class="examine_main_operate">
             <span class="common_clickHover" ng-click="deleteUser(item)">删除</span>
         </p>
@@ -100,9 +100,9 @@
     </div>
     <div class="teacher_main_Q_body" ng-class-even="'common_bg_f5'" ng-repeat="item in resultList track by $index">
         <p style="width: 5vw">{{$index + 1}}</p>
-        <p ng-click="goto('paperDetails',{uncompileable:true,paper:item})" class="common_clickHover">{{item.title}}</p>
+        <p ng-click="toDetails(item)" class="common_clickHover">{{item.title}}</p>
         <p>{{item.lastUpdate | updateTime}}</p>
-        <p class="common_clickHover">{{item.author}}</p>
+        <p class="common_clickHover" ng-click="toDetails(item)">{{item.author}}</p>
         <p class="examine_main_operate">
             <span class="common_clickHover" ng-click="deletePaper(item)">修改</span>
             <span class="common_clickHover" ng-click="deleteNotice(item)">删除</span>

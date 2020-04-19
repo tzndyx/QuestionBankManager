@@ -74,6 +74,7 @@ function questiondetailCtrl($scope) {
             return
         }
         operateQuestion.create($scope.nowEdited);
-        $scope.goback()
+        alert('保存成功')
+        $scope.close()
     }
 }

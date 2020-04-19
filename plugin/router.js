@@ -59,6 +59,22 @@ const router = {
         auth_check:true
     },
 
+    /*只读详情页*/
+    //试卷
+    'readOnlyPaper':{
+        url: 'html/readOnlyDetails/paperDetails.html',
+        auth_check:true
+    },
+    //试题
+    'readOnlyQuestion':{
+        url: 'html/readOnlyDetails/questionDetails.html',
+        auth_check:true
+    },
+    //用户
+    'readOnlyUser':{
+        url: 'html/readOnlyDetails/userDetails.html',
+        auth_check:true
+    },
 
     //启动时的默认路由
     '/': 'login'

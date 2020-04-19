@@ -131,7 +131,7 @@ function paperDetailCtrl($scope) {
             if($scope.paper.shortanswerQuestion == ''){alert('简答题不能为空');return}
             operatePaper.update($scope.paper.id,$scope.paper)
             alert('保存成功')
-            $scope.goback();
+            $scope.close();
         }
     }
 

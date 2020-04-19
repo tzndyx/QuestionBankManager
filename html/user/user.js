@@ -232,17 +232,6 @@ function myInfoCtrl($scope) {
     }
 }
 
-// 用户信息
-QBMsys.controller("userInfoCtrl", userInfoCtrl);
-
-function userInfoCtrl($scope) {
-    injectCommon($scope)
-    $scope.init = function () {
-        $scope.id = '8144';
-        $scope.user = operateUser.query($scope.id)
-    }
-}
-
 //修改密码
 QBMsys.controller("changePwdCtrl", changePwdCtrl);
 

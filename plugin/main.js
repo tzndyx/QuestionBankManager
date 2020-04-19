@@ -10,33 +10,6 @@ function f() {
         }
         return -1;
     };
-    return
-    localStorage.setItem('questionUpdate', localStorage.getItem('questionCreate'))
-    localStorage.setItem('questionFinished', localStorage.getItem('questionCreate'))
-    localStorage.setItem('paperUpdate', localStorage.getItem('paperCreate'))
-    localStorage.setItem('paperFinished', localStorage.getItem('paperCreate'))
-    localStorage.setItem('userFinished', "8144;system")
-    let s = {
-        id: "8144",//职工号 （8位） or 学号（12位）
-        name: "张三",
-        authType: "01",//00-管理员 01-教师 02-学生
-        department: "01",//学院
-        subject: "0101",//专业
-        cuorseList: "01;02;03",//学生多门课程，教师一门课程  仅用于登录时展示
-        email: "tzndyx@qq.com",
-        pwd: "tkynzj888",
-    }
-    let s2 = {
-        id: "system",//职工号 （8位） or 学号（12位）
-        name: "管理员",
-        authType: "00",//00-管理员 01-教师 02-学生
-        department: "",//学院
-        subject: "",//专业
-        cuorseList: "",//学生多门课程，教师一门课程  仅用于登录时展示
-        email: "",
-        pwd: "p@ssw0rd",
-    }
-    localStorage.setItem('system', JSON.stringify(s2))
 }
 
 f()
@@ -54,15 +27,20 @@ QBMsys.filter('questionType', function () {
     return function (text) {
         switch (text) {
             case '01':
-                return '选择题';break;
+                return '选择题';
+                break;
             case '02':
-                return '填空题';break;
+                return '填空题';
+                break;
             case '03':
-                return '判断题';break;
+                return '判断题';
+                break;
             case '04':
-                return '名词解释题';break;
+                return '名词解释题';
+                break;
             case '05':
-                return '简答题';break;
+                return '简答题';
+                break;
         }
     }
 })
@@ -71,15 +49,20 @@ QBMsys.filter('departmentType', function () {
     return function (text) {
         switch (text) {
             case '01':
-                return '机械工程学院';break;
+                return '机械工程学院';
+                break;
             case '02':
-                return '电子信息工程学院';break;
+                return '电子信息工程学院';
+                break;
             case '03':
-                return '经济管理学院';break;
+                return '经济管理学院';
+                break;
             case '04':
-                return '计算机科学与技术学院';break;
+                return '计算机科学与技术学院';
+                break;
             case '05':
-                return '材料科学与工程学院';break;
+                return '材料科学与工程学院';
+                break;
         }
     }
 })
@@ -88,29 +71,41 @@ QBMsys.filter('subjectType', function () {
     return function (text) {
         switch (text) {
             case '0101':
-                return '车辆工程专业';break;
+                return '车辆工程专业';
+                break;
             case '0102':
-                return '工业设计专业';break;
+                return '工业设计专业';
+                break;
             case '0201':
-                return '通信工程专业';break;
+                return '通信工程专业';
+                break;
             case '0202':
-                return '电气自动化专业';break;
+                return '电气自动化专业';
+                break;
             case '0301':
-                return '会计电算化专业';break;
+                return '会计电算化专业';
+                break;
             case '0302':
-                return '市场营销专业';break;
+                return '市场营销专业';
+                break;
             case '0303':
-                return '电子商务专业';break;
+                return '电子商务专业';
+                break;
             case '0401':
-                return '计算机科学与技术专业';break;
+                return '计算机科学与技术专业';
+                break;
             case '0402':
-                return '软件工程专业';break;
+                return '软件工程专业';
+                break;
             case '0403':
-                return '物联网专业';break;
+                return '物联网专业';
+                break;
             case '0501':
-                return '冶金工程专业';break;
+                return '冶金工程专业';
+                break;
             case '0502':
-                return '材料物理专业';break;
+                return '材料物理专业';
+                break;
         }
     }
 })
@@ -119,17 +114,23 @@ QBMsys.filter('cuorseType', function () {
     return function (text) {
         switch (text) {
             case '01':
-                return '大学英语';break;
+                return '大学英语';
+                break;
             case '02':
-                return '高等数学';break;
+                return '高等数学';
+                break;
             case '03':
-                return '编译原理';break;
+                return '编译原理';
+                break;
             case '04':
-                return '计算机导论';break;
+                return '计算机导论';
+                break;
             case '05':
-                return '计算机组成原理';break;
+                return '计算机组成原理';
+                break;
             case '06':
-                return '计算机体系结构';break;
+                return '计算机体系结构';
+                break;
         }
     }
 })
@@ -138,12 +139,16 @@ QBMsys.filter('authorType', function () {
     return function (text) {
         switch (text) {
             case '00':
-                return '管理员';break;
+                return '管理员';
+                break;
             case '01':
-                return '教师';break;
+                return '教师';
+                break;
             case '02':
-                return '学生';break;
-            default: '--'
+                return '学生';
+                break;
+            default:
+                '--'
         }
     }
 })
@@ -158,6 +163,11 @@ const injectCommon = (obj) => {
         params && sessionStorage.setItem('urlparams', JSON.stringify(params));
         window.location.href = baseUrl + route.url;
     }
+    obj.gotoNew = function (target, params) {
+        let route = router[target];
+        params && sessionStorage.setItem('urlparams', JSON.stringify(params));
+        window.open(baseUrl + route.url,"_blank")
+    }
     obj.goreplace = function (target, params) {
         let route = router[target];
         params && sessionStorage.setItem('urlparams', JSON.stringify(params));
@@ -166,6 +176,9 @@ const injectCommon = (obj) => {
     obj.goback = function (steps) {
         let step = steps || 0;
         window.history.back(step);
+    }
+    obj.close = function () {
+        window.close();
     }
     obj.goreturn = function (steps) {
         let step = steps || 0;
@@ -190,7 +203,7 @@ const injectCommon = (obj) => {
         document.body.scrollTop = document.documentElement.scrollTop = 0;
     }
     obj.goToHome = function () {
-        obj.goto('questionMain')
+        obj.goto('selectFrame')
     }
     obj.goToMsg = function () {
 
@@ -220,16 +233,17 @@ const injectCommon = (obj) => {
 function common_dealLogOut() {
     let currentRoute = window.location.pathname.split('QuestionBankManager/').reverse()[0]
     let openRoutes = [];
-    for(i in router){
-        if(!router[i].auth_check){
+    for (i in router) {
+        if (!router[i].auth_check) {
             openRoutes.push(router[i].url)
         }
     }
-    if(-1 == openRoutes.indexOf(currentRoute)){
+    if (-1 == openRoutes.indexOf(currentRoute)) {
         alert("登录超时，请重新登录！")
         window.location.href = '../../html/login/login.html';
     }
 }
+
 var common_userInfo = {};
 //常用工具方法模块
 var QBMsysUtils = {
@@ -251,19 +265,19 @@ var QBMsysUtils = {
         }
     },
     'getArray': (string) => {
-        if(string){
+        if (string) {
             return string.split(';');
         }
         return []
     },
     'saveJson': (json) => {
-        if(json){
+        if (json) {
             return JSON.stringify(json);
         }
         return "";
     },
     'getJson': (string) => {
-        if(string){
+        if (string) {
             return JSON.parse(string);
         }
         return {};
@@ -387,7 +401,6 @@ const operateQuestion = {
         }
         questionCreate.push(key);
         window.localStorage.setItem('questionCreate', QBMsysUtils.saveArray(questionCreate));
-        alert('保存成功')
     },
     'update': (id, question) => {
         // 保存对象到本地
@@ -496,14 +509,21 @@ const operateQuestion = {
         }
         arr = QBMsysUtils.getArray(localStorage.getItem(tabName));
         for (i in arr) {
-            try{
+            try {
                 let question = operateQuestion.query(arr[i]);
                 question.title && questionData.push(operateQuestion.query(arr[i]))
-            }catch (e) {}
+            } catch (e) {
+            }
         }
-        return questionData.filter(function (item) {
-            return (item != undefined && item.cuorse == QBMsysUtils.getUserInfo().cuorse) //只返回当前科目的列表
-        });
+        if (type == '03') { //只返回当前科目的列表
+            return questionData.filter(function (item) {
+                return (item != undefined && item.cuorse == QBMsysUtils.getUserInfo().cuorse)
+            });
+        } else {
+            return questionData.filter(function (item) {
+                return (item != undefined)
+            });
+        }
     }
 }
 // 操作试卷的模块：新建试卷保存   修改试卷保存  审核试卷保存  删除试卷    查询试卷
@@ -592,7 +612,7 @@ const operatePaper = {
                 } catch (e) {
                     paperFinished = []
                 }
-                paperFinished.push(key)
+                paperFinished.push(id)
                 window.localStorage.setItem('paperFinished', QBMsysUtils.saveArray(paperFinished))
                 // 本地数据已存在，不需要更新
                 return
@@ -615,6 +635,7 @@ const operatePaper = {
     // 根据id获取试卷对象
     'query': (id) => {
         id += '';
+
         function getJsonById(attribute) {
             let arr = QBMsysUtils.getArray(attribute)
             let arr2 = [];
@@ -656,9 +677,15 @@ const operatePaper = {
         for (i in arr) {
             paperData.push(operatePaper.query(arr[i]))
         }
-        return paperData.filter(function (item) {
-            return (item != undefined && item.cuorse == QBMsysUtils.getUserInfo().cuorse) //只返回当前科目的列表
-        });
+        if (type == '03') { //只返回当前科目的列表
+            return paperData.filter(function (item) {
+                return (item != undefined && item.cuorse == QBMsysUtils.getUserInfo().cuorse)
+            });
+        } else {
+            return paperData.filter(function (item) {
+                return (item != undefined)
+            });
+        }
     }
 }
 // 用户 两个 申请待审核  审核通过
@@ -686,13 +713,13 @@ const operateUser = {
     },
     'update': (user) => {
         common_userInfo = user;
-        window.sessionStorage.setItem('currentUser',QBMsysUtils.saveJson(user))
+        window.sessionStorage.setItem('currentUser', QBMsysUtils.saveJson(user))
 
         let userInfo = QBMsysUtils.getJson(window.localStorage.getItem(user.id));
         userInfo.name = user.name;
         userInfo.email = user.email;
         userInfo.lastUpdate = QBMsysUtils.getTimeStamp();
-        window.sessionStorage.setItem(userInfo.id,QBMsysUtils.saveJson(userInfo))
+        window.sessionStorage.setItem(userInfo.id, QBMsysUtils.saveJson(userInfo))
         alert('修改成功！')
         window.history.back()
     },
@@ -700,7 +727,7 @@ const operateUser = {
         id += '';
         let userCreate = QBMsysUtils.getArray(window.localStorage.getItem('userCreate'))
         userCreate.splice(userCreate.indexOf(id), 1);
-        if(flag) { //如果通过用户id塞入完成队列
+        if (flag) { //如果通过用户id塞入完成队列
             let userFinished;
             try {
                 userFinished = QBMsysUtils.getArray(window.localStorage.getItem('userFinished'))
@@ -709,7 +736,7 @@ const operateUser = {
             }
             userFinished.push(id)
             window.localStorage.setItem('userFinished', QBMsysUtils.saveArray(userFinished));
-        }else{//拒绝 删除用户数据
+        } else {//拒绝 删除用户数据
             window.localStorage.removeItem(id)
         }
         //审核完成后从新建队列中删除
@@ -788,20 +815,20 @@ const operateUser = {
         common_userInfo = user
         window.sessionStorage.setItem('currentUser', QBMsysUtils.saveJson(user));
     },
-    'changePwd': (oldPwd,newPwd) => {
+    'changePwd': (oldPwd, newPwd) => {
         try {
             let userInfo2 = QBMsysUtils.getUserInfo()
-            if(oldPwd != userInfo2.pwd){
+            if (oldPwd != userInfo2.pwd) {
                 alert('原密码错误!')
                 return
             }
             let userInfo = QBMsysUtils.getJson(window.localStorage.getItem(userInfo2.id));
             userInfo.pwd = newPwd;
             userInfo2.pwd = newPwd;
-            window.sessionStorage.setItem('currentUser',QBMsysUtils.saveJson(userInfo2))
+            window.sessionStorage.setItem('currentUser', QBMsysUtils.saveJson(userInfo2))
             common_userInfo = userInfo2;
             userInfo2.lastUpdate = QBMsysUtils.getTimeStamp();
-            window.localStorage.setItem(userInfo.id,QBMsysUtils.saveJson(userInfo))
+            window.localStorage.setItem(userInfo.id, QBMsysUtils.saveJson(userInfo))
             alert('密码修改成功')
             window.history.back()
         } catch (e) {
