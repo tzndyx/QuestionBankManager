@@ -662,3 +662,12 @@
 .examine_header_menu p:hover {
     background-color: #244285;
 }
+.examine_header_menu_p {
+    background-color: #244285;
+}
+.examine_main_operate{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+}

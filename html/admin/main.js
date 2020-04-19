@@ -7,15 +7,16 @@ QBMsys.controller("mianCtrl", mianCtrl);
 
 function mianCtrl($scope) {
     injectCommon($scope);
-    var accountList = [];
-    var questionList = [];
-    var paperList = [];
-    var userList = [];
-    var noticeList = [];
+    $scope.accountList = [];
+    $scope.questionList = [];
+    $scope.paperList = [];
+    $scope.userList = [];
+    $scope.noticeList = [];
 
     $scope.currenDealList = [];
     $scope.init = function () {
-        $scope.changeMenu('01', true);
+        $scope.initData('01',true)
+        $scope.changeMenu('01');
         // TODO 生成试卷用洗牌算法
         $scope.maxed = false;
 
@@ -43,17 +44,35 @@ function mianCtrl($scope) {
         }
     }
     $scope.search = function (changeTime) {
-        console.log($scope.searchParams)
-        let resultList = $scope.searchParams.list.list;
+        let resultList = $scope[$scope.searchParams.list.list];
+
+        console.log('$scope.questionList>>'+$scope.searchParams.list.list)
+        console.log(resultList)
         $scope.resultList = [];
         changeTime && ($scope.searchParams.descFlag = !$scope.searchParams.descFlag)
         $scope.resultList = resultList.filter(function (item) {
             if ($scope.searchParams.type == '01') {//审核 -- 提交者
-                return (-1 != item.author.indexOf($scope.searchParams.author) || -1 != item.name.indexOf($scope.searchParams.author))
+                try {
+                    return (-1 != item.author.indexOf($scope.searchParams.author))
+                } catch (e) {
+                    return (-1 != item.name.indexOf($scope.searchParams.author))
+                }
             } else if ($scope.searchParams.type == '02') {//用户管理 -- 用户名
-                return (-1 != item.author.indexOf($scope.searchParams.author) || -1 != item.name.indexOf($scope.searchParams.author))
-            } else {  //公告管理
-                return item
+                if ($scope.searchParams.list.type == '教师') {
+                    return (-1 != item.name.indexOf($scope.searchParams.author) && item.authType == '01')
+                } else if ($scope.searchParams.list.type == '学生') {
+                    return (-1 != item.name.indexOf($scope.searchParams.author) && item.authType == '02')
+                } else {
+                    return (-1 != item.name.indexOf($scope.searchParams.author))
+                }
+            } else {  //公告管理 //00-给管理员（建议） 01-给老师 02-给学生 03-给学生和老师
+                if ($scope.searchParams.list.type == '教师') {
+                    return (item.type != '00' && item.type != '02')
+                } else if ($scope.searchParams.list.type == '学生') {
+                    return (item.type != '00' && item.type != '01')
+                } else {
+                    return (item.type != '00')
+                }
             }
         });
         $scope.resultList.sort(sortByTime)
@@ -65,82 +84,140 @@ function mianCtrl($scope) {
 
         setTimeout(function () {
             $scope.$apply();//更新视图
-        }, 10)
+        }, 10);
+        console.log($scope.resultList)
     }
-    $scope.changeMenu = function (type, initFlag) {
+
+    $scope.initData = function (type, refershAll) {
+        if (refershAll) {
+            $scope.accountList = operateUser.getData('01');
+            $scope.paperList = operatePaper.getData('01');
+            $scope.paperList = $scope.paperList.concat(operatePaper.getData('02'));
+            $scope.questionList = operateQuestion.getData('01');
+            $scope.questionList = $scope.questionList.concat(operateQuestion.getData('02'));
+            $scope.userList = operateUser.getData('02');
+            $scope.noticeList = operateMessage.getData();
+        } else {
+            if (type == '01') { //审核管理
+                $scope.accountList = operateUser.getData('01');
+                $scope.paperList = operatePaper.getData('01');
+                $scope.paperList = $scope.paperList.concat(operatePaper.getData('02'));
+                $scope.questionList = operateQuestion.getData('01');
+                $scope.questionList = $scope.questionList.concat(operateQuestion.getData('02'));
+            } else if (type == '02') { //用户管理
+                $scope.userList = operateUser.getData('02')
+            } else { //公告管理
+                $scope.noticeList = operateMessage.getData()
+            }
+        }
+        console.log('$scope.questionList>>')
+        console.log($scope.questionList)
+    }
+    $scope.changeMenu = function (type) {
+        if ($scope.searchParams && $scope.searchParams.type == type) {
+            return
+        }
         if (type == '01') { //审核管理
-            accountList = operateUser.getData('01');
-            paperList = operatePaper.getData('01');
-            paperList.concat(operatePaper.getData('02'));
-            questionList = operateQuestion.getData('01');
-            questionList.concat(operateQuestion.getData('02'));
-            if (initFlag) {
-                $scope.examineType = [
-                    {
-                        type: '账号申请',
-                        list: accountList
-                    }, {
-                        type: '试题变更',
-                        list: questionList
-                    }, {
-                        type: '试卷变更',
-                        list: paperList
-                    }
-                ];
-                $scope.searchParams = {
-                    type: type,
-                    list: {},
-                    descFlag: true,
-                    author: ''
-                };
-                $scope.searchParams.list = $scope.examineType[0];
-            }
-            console.error($scope.searchParams)
+            $scope.examineType = [
+                {
+                    type: '账号申请',
+                    list: 'accountList'
+                }, {
+                    type: '试题变更',
+                    list: 'questionList'
+                }, {
+                    type: '试卷变更',
+                    list: 'paperList'
+                }
+            ];
+            $scope.searchParams = {
+                type: type,
+                list: {},
+                descFlag: true,
+                author: ''
+            };
+            $scope.searchParams.list = $scope.examineType[0];
         } else if (type == '02') { //用户管理
-            userList = operateUser.getData('02')
-            if (initFlag) {
-                $scope.examineType = [
-                    {
-                        type: '学生',
-                        list: userList
-                    }, {
-                        type: '教师',
-                        list: userList
-                    }
-                ];
-                $scope.searchParams = {
-                    type: type,
-                    list: {},
-                    descFlag: true,
-                    author: ''
-                };
-                $scope.searchParams.list = $scope.examineType[0];
-            }
+            $scope.examineType = [
+                {
+                    type: '学生',
+                    list: 'userList'
+                }, {
+                    type: '教师',
+                    list: 'userList'
+                }
+            ];
+            $scope.searchParams = {
+                type: type,
+                list: {},
+                descFlag: true,
+                author: ''
+            };
+            $scope.searchParams.list = $scope.examineType[0];
         } else { //公告管理
-            noticeList = operateMessage.getData()
-            if (initFlag) {
-                $scope.examineType = [
-                    {
-                        type: '全部',
-                        list: noticeList
-                    }, {
-                        type: '仅教师',
-                        list: noticeList
-                    }, {
-                        type: '仅学生',
-                        list: noticeList
-                    }
-                ];
-                $scope.searchParams = {
-                    type: type,
-                    list: {},
-                    descFlag: true,
-                    author: ''
-                };
-                $scope.searchParams.list = $scope.examineType[0];
-            }
+            $scope.examineType = [
+                {
+                    type: '全部',
+                    list: 'noticeList'
+                }, {
+                    type: '教师',
+                    list: 'noticeList'
+                }, {
+                    type: '学生',
+                    list: 'noticeList'
+                }
+            ];
+            $scope.searchParams = {
+                type: type,
+                list: {},
+                descFlag: true,
+                author: ''
+            };
+            $scope.searchParams.list = $scope.examineType[0];
         }
         $scope.searchParams.type = type;
         $scope.search()
     }
+    /*审核*/
+    $scope.doExamine = function (item, flag) {
+        // 'examine': (id, flag) => { //审核对象id   审核通过 true     OR     拒绝 false
+        // 试题、试卷、用户
+        if ($scope.searchParams.list.type == "账号申请") {//用户
+            operateUser.examine(item.id, flag)
+        } else if ($scope.searchParams.list.type == "试题变更") {//试题
+            operateQuestion.examine(item.id, flag)
+        } else {//试卷
+            operatePaper.examine(item.id, flag)
+        }
+        alert("审核成功！");
+        $scope.initData($scope.searchParams.type);
+        $scope.search()
+    }
+
+    /*用户管理-删除*/
+    $scope.deleteUser = function (item) {
+        if (confirm("是否删除用户") + item.name) {
+            operateUser.delete(item.id)
+        }
+        alert("删除成功！");
+        $scope.initData($scope.searchParams.type);
+        $scope.search()
+    }
+
+    /*公告管理*/
+    //添加
+    $scope.toAddNotice = function () {
+
+    }
+    //删除
+    $scope.deleteNotice = function (item) {
+        if (confirm("是否删除公告") + item.title) {
+            operateMessage.delete(item.id)
+        }
+        alert("删除成功！");
+        $scope.initData($scope.searchParams.type);
+        $scope.search()
+    }
+
+    /*查看详情-试题、试卷、用户（新增和存量）、公告*/
 }

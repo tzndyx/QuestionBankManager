@@ -209,8 +209,7 @@ function acctapplyCtrl($scope) {
         }else{//学生 不用cuorseList（全部） subject一个
             $scope.user.subject = $scope.subject.value;
         }
-
-        alert(JSON.stringify($scope.user))
+        operateUser.create($scope.user)
 
         $scope.goNext(3)
     }
