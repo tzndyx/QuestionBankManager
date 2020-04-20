@@ -11,7 +11,7 @@
     <div>
         <img ng-click="close()" src="../../img/teacher/back.jpg" alt="">
     </div>
-    <p>留言</p>
+    <p>{{(user.authType == '00' || !uncompileable)?'留言':'公告'}}</p>
     <div ng-hide="uncompileable">
         <p title="点击保存" style="cursor: pointer" ng-click="submit()">保存</p>
     </div>

@@ -11,32 +11,22 @@
     <div>
         <img ng-click="close()" src="../../img/teacher/back.jpg" alt="">
     </div>
-    <p>详细信息</p>
-    <div style="width: 0.6rem;"></div>
+    <p>我的消息</p>
+    <div>共{{messageList.length}}条</div>
 </div>
 
-<div class="apply_mid">
-    <div class="user_info_list" style="margin-left: 0;width:7rem;margin-top: 1rem">
-        <span>原密码</span>
-        <input type="password" ng-model="pwd.pwd" placeholder="请输入原密码" id="changepwd_input1">
-        <img src="../../img/common/pencil.jpg" ng-click="doFocus('changepwd_input1')">
+<div class="messageList_body">
+    <div class="messageList_body_item" ng-class-even="'common_bg_f5'" ng-repeat="item in messageList track by $index">
+        <div style="width: 3vw;font-weight: bold">{{$index + 1}}</div>
+        <div title="{{item.title}}" style="width: 15vw;">{{item.title}}</div>
+        <div title="{{item.describe}}" style="width: 40vw;">{{item.describe}}</div>
+        <div style="width: 15vw;">{{item.id | updateTime}}</div>
+        <div style="width: 7vw;" class="common_tec common_clickHover" ng-click="gotoNew('addMessage',{uncompileable:true,message:item})">查看</div>
     </div>
-    <div class="user_info_list" style="margin-left: 0;width:7rem">
-        <span>新密码</span>
-        <input type="password" ng-model="pwd.pwd1" placeholder="请输入新密码" id="changepwd_input2">
-        <img src="../../img/common/pencil.jpg" ng-click="doFocus('changepwd_input2')">
-    </div>
-    <div class="user_info_list" style="margin-left: 0;width:7rem">
-        <span>确认密码</span>
-        <input type="password" ng-model="pwd.pwd2" placeholder="请再次输入新密码" id="changepwd_input3">
-        <img src="../../img/common/pencil.jpg" ng-click="doFocus('changepwd_input3')">
-    </div>
-    <p class="apply_mid_err">{{errorMsg}}</p>
 </div>
-<button class="user_info_btn" style="margin-top: 1rem" ng-click="submit()">提交修改</button>
 
 <div class="questiondetail_tips">
-    <p>当前状态：可编辑。</p>
+
 </div>
 <div class="common_shortcuts" ng-mouseover="commonShowcomplete()" ng-mouseleave="commonHidecomplete()">
     <div ng-click="goTohome()">

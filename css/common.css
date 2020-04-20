@@ -347,3 +347,9 @@ body::-webkit-scrollbar {
     text-decoration:underline;
     font-size: 100%;
 }
+
+/*文字*/
+.common_tec{
+    text-align: center;
+    text-indent: 0!important;
+}

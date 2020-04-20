@@ -67,6 +67,14 @@ QBMsys.controller("messageListCtrl", messageListCtrl);
 function messageListCtrl($scope) {
     injectCommon($scope)
     $scope.init = function () {
-        $scope.user = QBMsysUtils.getUserInfo()
+        $scope.user = QBMsysUtils.getUserInfo();
+        $scope.messageList = operateMessage.getData();
+        $scope.messageList.sort(sortByTime)
+        function sortByTime(a, b) {
+            return (Number(a.id) - Number(b.id))
+        }
+        setTimeout(function () {
+            $scope.$apply();//更新视图
+        },10)
     }
 }

@@ -724,3 +724,27 @@
     text-indent: 0.36rem;
     outline: none;
 }
+.messageList_body{
+    width: 80vw;
+    margin-left: 10vw;
+    margin-top: 1.2rem;
+    margin-bottom: 0.55rem;
+}
+.messageList_body::-webkit-scrollbar {
+    width: 0;
+}
+.messageList_body_item{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+.messageList_body_item div{
+    border: 0.01rem solid #c1dad7;
+    font-size: 0.18rem;
+    line-height: 0.3rem;
+    padding: 0.05rem 0;
+    text-indent: 0.1rem;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
