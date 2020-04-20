@@ -12,8 +12,8 @@
         <img ng-click="close()" src="../../img/teacher/back.jpg" alt="">
     </div>
     <p>详细信息</p>
-    <div ng-click="uncompileable = false">
-        <img title="点击编辑" ng-show="uncompileable" src="../../img/teacher/compile.jpg">
+    <div>
+        <img title="点击编辑" ng-show="uncompileable" ng-click="uncompileable = false" src="../../img/teacher/compile.jpg">
         <p title="点击保存" ng-hide="uncompileable" ng-click="submit()" style="cursor: pointer">保存</p>
     </div>
 </div>
@@ -68,7 +68,7 @@
     <p ng-hide="uncompileable">当前状态：可编辑。</p>
 </div>
 <div class="common_shortcuts" ng-mouseover="commonShowcomplete()" ng-mouseleave="commonHidecomplete()">
-    <div ng-click="goTohome()">
+    <div ng-click="goToHome()">
         <img src="../../img/common/home.jpg" alt="">
         <p>回到首页</p>
     </div>

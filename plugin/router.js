@@ -76,6 +76,24 @@ const router = {
         auth_check:true
     },
 
+    /*消息管理*/
+    //消息列表
+    'messageList':{
+        url: 'html/messages/messageList.html',
+        auth_check:true
+    },
+    //新增留言  留言详情
+    'addMessage':{
+        url: 'html/messages/addMessage.html',
+        auth_check:true
+    },
+    //编辑（增改）公告  公告详情
+    'compileNotice':{
+        url: 'html/messages/compileNotice.html',
+        auth_check:true
+    },
+
+
     //启动时的默认路由
     '/': 'login'
 }

@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <title>个人中心</title>
     <script src="../../plugin/import.js"></script>
-    <script src="user.js"></script>
+    <script src="message.js"></script>
 </head>
-<body ng-app="QBMsys" class="selectNone" ng-controller="changePwdCtrl" ng-init="init()">
+<body ng-app="QBMsys" class="selectNone" ng-controller="messageListCtrl" ng-init="init()">
 <div class="common_titlebar">
     <div>
         <img ng-click="close()" src="../../img/teacher/back.jpg" alt="">
@@ -39,7 +39,7 @@
     <p>当前状态：可编辑。</p>
 </div>
 <div class="common_shortcuts" ng-mouseover="commonShowcomplete()" ng-mouseleave="commonHidecomplete()">
-    <div ng-click="goToHome()">
+    <div ng-click="goTohome()">
         <img src="../../img/common/home.jpg" alt="">
         <p>回到首页</p>
     </div>

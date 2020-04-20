@@ -11,7 +11,6 @@ function f() {
         return -1;
     };
 }
-
 f()
 
 const QBMsys = angular.module('QBMsys', []);
@@ -178,7 +177,7 @@ const injectCommon = (obj) => {
         window.history.back(step);
     }
     obj.close = function () {
-        window.close();
+        window.close() || window.history.back();
     }
     obj.goreturn = function (steps) {
         let step = steps || 0;
@@ -215,7 +214,6 @@ const injectCommon = (obj) => {
     obj.logOut = function () {
         operateUser.logout()
     }
-    obj.userInfo = QBMsysUtils.getUserInfo();
     try {
         var params = JSON.parse(sessionStorage.getItem('urlparams'));
         for (let i in params) {
@@ -241,6 +239,7 @@ function common_dealLogOut() {
     if (-1 == openRoutes.indexOf(currentRoute)) {
         alert("登录超时，请重新登录！")
         window.location.href = '../../html/login/login.html';
+        return
     }
 }
 
@@ -335,7 +334,8 @@ var QBMsysUtils = {
             title: '',//标题
             describe: '',//内容
             author: '',//创建人
-            type: '',//00-给管理员（建议） 01-给老师 02-给学生 03-给学生和老师
+            authorId: '',//创建人id
+            type: '',//00-给管理员（建议） 01-给学生 02-给老师 03-给学生和老师
         }
     },
     'getUserInfo': () => {
@@ -343,12 +343,12 @@ var QBMsysUtils = {
             return common_userInfo
         } else {
             try {
-                let userInfo = QBMsysUtils.getJson(window.sessionStorage.getItem('currentUser'));
-                if (userInfo == null) {
+                let userInfo = window.sessionStorage.getItem('currentUser');
+                if (userInfo == null || userInfo.id == '') {
                     common_dealLogOut()
                 }
-                console.log('当前用户信息：' + JSON.stringify(userInfo))
-                common_userInfo = userInfo;
+                console.log('当前用户信息：' + userInfo)
+                common_userInfo = QBMsysUtils.getJson(userInfo);
                 return common_userInfo
             } catch (e) {
                 common_dealLogOut()
@@ -845,7 +845,7 @@ const operateMessage = {
         let value = QBMsysUtils.saveJson(message);
         let messageFinished;
         try {
-            messageFinished = window.localStorage.getItem('messageFinished')
+            messageFinished = QBMsysUtils.getArray(window.localStorage.getItem('messageFinished'))
         } catch (e) {
             messageFinished = [];
         }
@@ -993,6 +993,7 @@ const operateMessage = {
     title:'',//标题
     describe:'',//内容
     author:'',//创建人
+    authorId:'',//创建人
     type:'',//00-给管理员（建议） 01-给老师 02-给学生 03-给学生和老师
 }
 * */

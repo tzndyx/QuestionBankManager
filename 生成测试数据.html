@@ -9,6 +9,7 @@
 </body>
 <script>
 function addData() {
+    return;
     localStorage.clear()
     localStorage.setItem('userFinished', "system")
     let s  = {
@@ -21,6 +22,7 @@ function addData() {
         email: "",
         pwd: "p@ssw0rd",
     }
+    localStorage.setItem('system', JSON.stringify(s))
     alert("管理员数据插入成功")
 }
 </script>

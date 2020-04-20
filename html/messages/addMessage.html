@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>账号申请</title>
+    <script src="../../plugin/import.js"></script>
+    <script src="message.js"></script>
+</head>
+<body ng-app="QBMsys" class="selectNone" ng-controller="addMessageCtrl" ng-init="init()">
+<div class="common_titlebar">
+    <div>
+        <img ng-click="close()" src="../../img/teacher/back.jpg" alt="">
+    </div>
+    <p>留言</p>
+    <div ng-hide="uncompileable">
+        <p title="点击保存" style="cursor: pointer" ng-click="submit()">保存</p>
+    </div>
+    <div ng-show="uncompileable" style="width: 0.6rem;"></div>
+</div>
+
+<div class="message_body">
+    <div class="message_body_them">
+        <p>主题</p>
+        <input type="text" placeholder="请输入留言主题" ng-model="message.title" maxlength="40" ng-readonly="uncompileable">
+    </div>
+    <textarea placeholder="请在此输入您的意见或建议（400字以内）" ng-model="message.describe" maxlength="900" ng-readonly="uncompileable"></textarea>
+</div>
+
+
+<div class="questiondetail_tips">
+    <p>当前状态：可编辑。</p>
+</div>
+
+<div class="common_shortcuts" ng-mouseover="commonShowcomplete()" ng-mouseleave="commonHidecomplete()">
+    <div ng-click="goToHome()">
+        <img src="../../img/common/home.jpg" alt="">
+        <p>回到首页</p>
+    </div>
+    <div>
+        <img src="../../img/common/suggest.jpg" alt="">
+        <p>我要留言</p>
+    </div>
+    <div class="borderNone" ng-click="backTOtop()">
+        <img src="../../img/common/backtop.jpg" alt="">
+        <p>回到顶部</p>
+    </div>
+</div>
+</body>
+</html>
