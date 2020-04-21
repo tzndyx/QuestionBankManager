@@ -32,11 +32,25 @@ function addMessageCtrl($scope) {
 QBMsys.controller("compileNoticeCtrl", compileNoticeCtrl);
 function compileNoticeCtrl($scope) {
     injectCommon($scope)
-    $scope.init = function () {
+    $scope.init = function () {sessionStorage.setItem('noticeRefershFlag','03');
         $scope.user = QBMsysUtils.getUserInfo();
         $scope.receiver1 = 1;
         $scope.receiver2 = 0;
-        $scope.message = QBMsysUtils.getMessageTemplate();
+        try {
+            $scope.message.id != '';
+            if($scope.message.type == '03'){
+                $scope.receiver1 = 1;
+                $scope.receiver2 = 2;
+            }else if($scope.message.type == '02'){
+                $scope.receiver1 = 0;
+                $scope.receiver2 = 2;
+            }else{
+                $scope.receiver1 = 1;
+                $scope.receiver2 = 0;
+            }
+        }catch (e) {
+            $scope.message = QBMsysUtils.getMessageTemplate();
+        }
     }
     $scope.submit = function () {
         $scope.message.type = $scope.receiver1 + $scope.receiver2;
@@ -53,12 +67,23 @@ function compileNoticeCtrl($scope) {
             return
         }
         $scope.message.type = '0' + $scope.message.type.toString();
+        if($scope.message.id != ''){
+            operateMessage.delete($scope.message.id);
+        }
         operateMessage.create($scope.message);
         alert('保存成功');
         $scope.message.title = '';
         $scope.message.describe = '';
         $scope.receiver1 = 1;
         $scope.receiver2 = 0;
+        if($scope.reBackFlag){
+            localStorage.setItem('noticeRefershFlag','02');
+            $scope.close();
+        }
+    }
+    $scope.returnback = function () {
+        localStorage.setItem('noticeRefershFlag','03');
+        $scope.close();
     }
 }
 
@@ -71,7 +96,7 @@ function messageListCtrl($scope) {
         $scope.messageList = operateMessage.getData();
         $scope.messageList.sort(sortByTime)
         function sortByTime(a, b) {
-            return (Number(a.id) - Number(b.id))
+            return (Number(b.id) - Number(a.id))
         }
         setTimeout(function () {
             $scope.$apply();//更新视图

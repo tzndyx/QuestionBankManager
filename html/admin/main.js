@@ -66,20 +66,27 @@ function mianCtrl($scope) {
                     return (-1 != item.name.indexOf($scope.searchParams.author))
                 }
             } else {  //公告管理 //00-给管理员（建议） 01-给老师 02-给学生 03-给学生和老师
-                if ($scope.searchParams.list.type == '教师') {
-                    return (item.type != '00' && item.type != '02')
-                } else if ($scope.searchParams.list.type == '学生') {
-                    return (item.type != '00' && item.type != '01')
+                if ($scope.searchParams.list.type == '学生') {
+                    return (-1 != item.title.indexOf($scope.searchParams.author) && item.type != '00' && item.type != '01')
+                } else if ($scope.searchParams.list.type == '教师') {
+                    return (-1 != item.title.indexOf($scope.searchParams.author) && item.type != '00' && item.type != '02')
                 } else {
-                    return (item.type != '00')
+                    return (-1 != item.title.indexOf($scope.searchParams.author) && item.type != '00')
                 }
             }
         });
-        $scope.resultList.sort(sortByTime)
-
+        if($scope.searchParams.type == '03'){
+            $scope.resultList.sort(sortById)
+        }else{
+            $scope.resultList.sort(sortByTime)
+        }
         function sortByTime(a, b) {
             if ($scope.searchParams.descFlag) return (Number(a.lastUpdate) - Number(b.lastUpdate))
             else return (Number(b.lastUpdate) - Number(a.lastUpdate))
+        }
+        function sortById(a, b) {
+            if ($scope.searchParams.descFlag) return (Number(a.id) - Number(b.id))
+            else return (Number(b.id) - Number(a.id))
         }
         setTimeout(function () {
             $scope.$apply();//更新视图
@@ -209,14 +216,54 @@ function mianCtrl($scope) {
     $scope.toAddNotice = function () {
 
     }
+    //编辑
+    $scope.compileNotice = function(item){
+        if('01' == localStorage.getItem('noticeRefershFlag')){
+            $scope.gotoNew('compileNotice',{compileable:true,message:item,reBackFlag:true})
+            return
+        }
+        localStorage.setItem('noticeRefershFlag','01');
+        var timer = setInterval(function () {
+            if('01' == localStorage.getItem('noticeRefershFlag')){
+                return
+            }else{
+                clearInterval(timer)
+                if('02' == localStorage.getItem('noticeRefershFlag')){
+                    $scope.initData($scope.searchParams.type);
+                    $scope.search()
+                }
+            }
+        },1000)
+        $scope.gotoNew('compileNotice',{compileable:true,message:item,reBackFlag:true})
+    }
+    //发布
+    $scope.toNotice = function(){
+        if('01' == localStorage.getItem('noticeRefershFlag')){
+            $scope.gotoNew('compileNotice',{compileable:true,message:item,reBackFlag:true})
+            return
+        }
+        localStorage.setItem('noticeRefershFlag','01');
+        var timer = setInterval(function () {
+            if('01' == localStorage.getItem('noticeRefershFlag')){
+                return
+            }else{
+                clearInterval(timer)
+                if('02' == localStorage.getItem('noticeRefershFlag')){
+                    $scope.initData($scope.searchParams.type);
+                    $scope.search()
+                }
+            }
+        },1000)
+        $scope.gotoNew('compileNotice',{compileable:true,reBackFlag:true})
+    }
     //删除
     $scope.deleteNotice = function (item) {
-        if (confirm("是否删除公告") + item.title) {
+        if (confirm("是否删除公告" + item.title)) {
             operateMessage.delete(item.id)
+            alert("删除成功！");
+            $scope.initData($scope.searchParams.type);
+            $scope.search()
         }
-        alert("删除成功！");
-        $scope.initData($scope.searchParams.type);
-        $scope.search()
     }
 
     /*查看详情-试题、试卷、用户（新增和存量）、公告*/
@@ -227,7 +274,14 @@ function mianCtrl($scope) {
             case 'userList': $scope.gotoNew('readOnlyUser',{id:item.id});break;//用户详情
             case 'questionList': $scope.gotoNew('readOnlyQuestion',{question:item});break;//试题详情
             case 'paperList': $scope.gotoNew('readOnlyPaper',{paper:item});break;//试卷详情
-            case 'noticeList': ;break;//公告详情
+            case 'noticeList': $scope.gotoNew('compileNotice',{compileable:false,message:item,reBackFlag:false});break;//公告详情
+        }
+    }
+    $scope.receiverType = function (type) {
+        switch (type) {
+            case '01':return '教师';break;
+            case '02':return '学生';break;
+            case '03':return '教师和学生';break;
         }
     }
 }

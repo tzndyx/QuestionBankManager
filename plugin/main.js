@@ -205,7 +205,7 @@ const injectCommon = (obj) => {
         obj.goto('selectFrame')
     }
     obj.goToMsg = function () {
-
+        obj.gotoNew('addMessage')
     }
     obj.commonToggleMenu = function (selector, flag) {
         flag && $(selector).slideDown(400);

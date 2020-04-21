@@ -19,7 +19,7 @@
     </div>
 
     <div class="common_header_btn">
-        <span ng-click="gotoNew('changePwd')">修改密码</span>|<span ng-click="goto('login')">退出登录</span>
+        <span ng-click="gotoNew('messageList')">消息中心</span>|<span ng-click="gotoNew('changePwd')">修改密码</span>|<span ng-click="goto('login')">退出登录</span>
     </div>
 </div>
 
@@ -100,11 +100,11 @@
     </div>
     <div class="teacher_main_Q_body" ng-class-even="'common_bg_f5'" ng-repeat="item in resultList track by $index">
         <p style="width: 5vw">{{$index + 1}}</p>
-        <p ng-click="toDetails(item)" class="common_clickHover">{{item.title}}</p>
-        <p>{{item.lastUpdate | updateTime}}</p>
-        <p class="common_clickHover" ng-click="toDetails(item)">{{item.author}}</p>
+        <p>{{receiverType(item.type)}}</p>
+        <p>{{item.id | updateTime}}</p>
+        <p class="common_clickHover" ng-click="toDetails(item)">{{item.title}}</p>
         <p class="examine_main_operate">
-            <span class="common_clickHover" ng-click="deletePaper(item)">修改</span>
+            <span class="common_clickHover" ng-click="compileNotice(item)">修改</span>
             <span class="common_clickHover" ng-click="deleteNotice(item)">删除</span>
         </p>
     </div>
@@ -133,9 +133,9 @@
         <img src="../../img/common/home.jpg" alt="">
         <p>回到首页</p>
     </div>
-    <div ng-click="goToMsg()">
+    <div ng-click="toNotice()">
         <img src="../../img/common/suggest.jpg" alt="">
-        <p>我要留言</p>
+        <p>发布公告</p>
     </div>
     <div class="borderNone" ng-click="backTOtop()">
         <img src="../../img/common/backtop.jpg" alt="">

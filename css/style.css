@@ -11,6 +11,13 @@
     user-select: none;
     color: #333333;
 }
+.logTxt{
+    width: 8rem;
+    position: absolute;
+    top: 1.2rem;
+    left: 1rem;
+    opacity: 0.7;
+}
 .login_bg{
     width: 3.6rem;
     height: 4.4rem;

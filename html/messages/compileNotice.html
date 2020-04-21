@@ -9,53 +9,40 @@
 <body ng-app="QBMsys" class="selectNone" ng-controller="compileNoticeCtrl" ng-init="init()">
 <div class="common_titlebar">
     <div>
-        <img ng-click="close()" src="../../img/teacher/back.jpg" alt="">
+        <img ng-click="returnback()" src="../../img/teacher/back.jpg" alt="">
     </div>
     <p>公告</p>
     <div>
-        <img title="点击编辑" ng-show="uncompileable" ng-click="uncompileable = false" src="../../img/teacher/compile.jpg">
-        <p title="点击保存" ng-hide="uncompileable" ng-click="submit()" style="cursor: pointer">保存</p>
+        <img title="点击编辑" ng-hide="compileable" ng-click="compileable = true" src="../../img/teacher/compile.jpg">
+        <p title="点击保存" ng-show="compileable" ng-click="submit()" style="cursor: pointer">保存</p>
     </div>
 </div>
 
 <div class="message_body">
     <div class="message_body_them" style="line-height: 0.3rem;margin-top: 0.1rem">
         <p>主题</p>
-        <input type="text" placeholder="请输入公告主题" ng-model="message.title" maxlength="40" ng-readonly="uncompileable">
+        <input type="text" placeholder="请输入公告主题" ng-model="message.title" maxlength="40" ng-readonly="!compileable">
     </div>
     <div class="message_body_them" style="width: 9.02rem;margin-bottom: 0.1rem">
         <div>接收对象</div>
-        <span ng-click="(!uncompileable) && (receiver1=(receiver1==0?1:0))">
+        <span ng-click="(compileable) && (receiver1=(receiver1==0?1:0))">
             <img ng-src="../../img/common/{{receiver1 == 1 ? 'checked.jpg':'unchecked.jpg' }}">
-            学生
+            老师
         </span>
-        <span ng-click="(!uncompileable) && (receiver2=(receiver2==0?2:0))">
+        <span ng-click="(compileable) && (receiver2=(receiver2==0?2:0))">
             <img ng-src="../../img/common/{{receiver2 == 2 ? 'checked.jpg':'unchecked.jpg' }}">
-            教师
+            学生
         </span>
     </div>
     <textarea placeholder="请在此输入要发布的公告（400字以内）" ng-model="message.describe" maxlength="900"
-              ng-readonly="uncompileable"></textarea>
+              ng-readonly="!compileable"></textarea>
 </div>
+
 
 
 <div class="questiondetail_tips">
-    <p>当前状态：可编辑。</p>
-</div>
-
-<div class="common_shortcuts" ng-mouseover="commonShowcomplete()" ng-mouseleave="commonHidecomplete()">
-    <div ng-click="goToHome()">
-        <img src="../../img/common/home.jpg" alt="">
-        <p>回到首页</p>
-    </div>
-    <div>
-        <img src="../../img/common/suggest.jpg" alt="">
-        <p>我要留言</p>
-    </div>
-    <div class="borderNone" ng-click="backTOtop()">
-        <img src="../../img/common/backtop.jpg" alt="">
-        <p>回到顶部</p>
-    </div>
+    <p ng-hide="compileable">当前状态：不可编辑。如要编辑请点击右上角的编辑按钮。</p>
+    <p ng-show="compileable">当前状态：可编辑。</p>
 </div>
 </body>
 </html>

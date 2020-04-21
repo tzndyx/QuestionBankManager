@@ -185,6 +185,12 @@ function acctapplyCtrl($scope) {
         if ($scope.user.email == '') {
             $scope.errorMsg = '邮箱不能为空！';
             return
+        }else{
+            var re=/^\w+@[a-z0-9]+\.[a-z]+$/i;
+            if(!re.test($scope.user.email)) {
+                $scope.errorMsg = '请输入有效邮箱！'
+                return
+            }
         }
         $scope.goNext(2)
     }
@@ -228,6 +234,20 @@ function myInfoCtrl($scope) {
         document.getElementById(id).focus()
     }
     $scope.submit = function () {
+        if ($scope.user.name == '') {
+            alert('用户名不能为空！')
+            return
+        }
+        if ($scope.user.email == '') {
+            alert('邮箱不能为空！');
+            return
+        }else{
+            var re=/^\w+@[a-z0-9]+\.[a-z]+$/i;
+            if(!re.test($scope.user.email)) {
+                alert('请输入有效邮箱！')
+                return
+            }
+        }
         operateUser.update($scope.user);
     }
 }
