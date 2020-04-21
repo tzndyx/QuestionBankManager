@@ -686,6 +686,77 @@ const operatePaper = {
                 return (item != undefined)
             });
         }
+    },
+    'export': (id)=>{
+        let paper = operatePaper.query(id);
+        getPaperContent(paper)
+        function download(filename, filecontent) {
+            var element = document.createElement('a');
+            element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(filecontent));
+            element.setAttribute('download', filename);
+            element.style.display = 'none';
+            document.body.appendChild(element);
+            element.click();
+            document.body.removeChild(element);
+        }
+        function getPaperContent(paper){
+            let optionArr = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'];
+            let result = paper.title;
+            let blankSpace = "    ";
+            let lineFeed = "\n";
+            function dealChoice(arr){
+                result = result + "一、选择题";//标题
+                for(questionId in arr){ //题
+                    let question = operateQuestion.query(arr[questionId]);
+                    question.options = QBMsysUtils.getArray(question.options)
+                    result = result + lineFeed + (Number(questionId)+1) + '、' + question.describe + '  (  )' + lineFeed;
+                    // debugger
+                    for(option in question.options){ //选项 （尝试用 reduce 实现）
+                        result = result + optionArr[option] + ':' + question.options[option] + blankSpace;
+                    }
+                }
+            }
+            function dealFillblank(arr){
+                result = result + lineFeed + lineFeed + "二、填空题" + lineFeed;//标题
+                for(questionId in arr){ //题
+                    let question = operateQuestion.query(arr[questionId]);
+                    result = result + (Number(questionId)+1) + '、' + question.describe + lineFeed;
+                }
+            }
+            function dealJudgement(arr){
+                result = result + lineFeed + "三、判断题" + lineFeed;//标题
+                for(questionId in arr){ //题
+                    let question = operateQuestion.query(arr[questionId]);
+                    result = result + (Number(questionId)+1) + '、' + question.describe + '  (  )' + lineFeed;
+                }
+            }
+            function dealExplan(arr){
+                result = result + lineFeed + "四、名词解释题" + lineFeed;//标题
+                for(questionId in arr){ //题
+                    let question = operateQuestion.query(arr[questionId]);
+                    result = result + (Number(questionId)+1) + '、' + question.describe + lineFeed + lineFeed + lineFeed + lineFeed + lineFeed;
+                }
+            }
+            function dealShortanswer(arr){
+                result = result + lineFeed + "五、名词解释题" + lineFeed;//标题
+                for(questionId in arr){ //题
+                    let question = operateQuestion.query(arr[questionId]);
+                    result = result + (Number(questionId)+1) + '、' + question.describe + lineFeed + lineFeed + lineFeed + lineFeed + lineFeed;
+                }
+            }
+            result = result + paper.describe + lineFeed + lineFeed;
+
+            for(attr in paper){
+                switch(attr){
+                    case 'choiceQuestion': dealChoice(paper[attr]);break;
+                    case 'fillblankQuestion': dealFillblank(paper[attr]);break;
+                    case 'judgementQuestion': dealJudgement(paper[attr]);break;
+                    case 'explanQuestion': dealExplan(paper[attr]);break;
+                    case 'shortanswerQuestion': dealShortanswer(paper[attr]);break;
+                }
+            }
+            download(paper.title + '-' + QBMsysUtils.getTimeStamp(),result)
+        }
     }
 }
 // 用户 两个 申请待审核  审核通过

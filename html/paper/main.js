@@ -80,7 +80,9 @@ function mianCtrl($scope) {
             $scope.initData()
         }
     }
+    //生成txt
     $scope.exportPaper = function (item) {
+        operatePaper.export(item.id)
 
     }
     $scope.goPaperDetail = function (item) {
